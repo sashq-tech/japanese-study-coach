@@ -1,59 +1,86 @@
-# Japanese Learning Prototype
+# Japanese Study Coach
 
-Local prototype for a personalized Japanese study site focused on moving back to Japan.
+Static prototype for a beginner-first Japanese study coach focused on kana, JLPT N5 basics, and practical confidence for moving to Japan.
 
-## Prototype Goals
+This project is currently staged on GitHub only. There is no domain or Cloudflare deployment configured yet.
 
-- Make practice feel like real Japan-life preparation, not generic flashcards.
-- Keep all lesson content local and easy to revise after native-speaker feedback.
-- Start gently for a true beginner, then progress from JLPT N5 toward N1 over time.
-- Teach recognition and recall for hiragana, katakana, and later kanji before leaning too hard on full phrases.
-- Build a repeatable loop: learn characters, quiz recall, practice phrases, review weak items.
-- Give the learner a clear daily path so the app answers "what should I study right now?"
+## What It Does
+
+- Starts gently with hiragana and katakana recognition before introducing heavier content.
+- Uses a Start Calibration panel to recommend Hiragana, Katakana, or N5 Basics from local progress.
+- Teaches a tiny focus intro, then offers a guided five-question mini-session.
+- Routes into Today's Study Path for due review, kana, N5 practice, checkpoint sprint, and study timer logging.
+- Tracks weak items locally and schedules short review passes.
+- Includes browser-only progress export/import for moving between browsers or devices.
+- Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
+
+## Privacy Model
+
+There is no account, backend, analytics, or external API.
+
+Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, mini-session summary, study timer stats, and native-speaker notes. Clearing browser storage will remove progress unless a backup has been exported.
+
+## Learning Scope
+
+This is a prototype learning aid, not an official JLPT preparation product or claim of full N5 coverage.
+
+Current focus:
+
+- Kana-first beginner ramp
+- N5 starter vocabulary
+- Basic particles
+- Basic grammar patterns
+- Short sentence reading checks
+- Habit-building and retention loops
+
+Later roadmap:
+
+- N5 kanji side quest
+- More complete N5 coverage
+- Native-speaker review workflow
+- Listening/audio practice
+- N4-N1 progression
+- Mobile/PWA polish after a hosting target exists
 
 ## How To Run
 
-Open `index.html` directly in a browser. No server, account, API, database, or build step is required.
+Open `index.html` directly in a browser. No server, account, API, database, package install, or build step is required.
 
-For PWA install/offline testing, open the folder through a local server or future hosted domain. Browser service workers do not run from a raw `file://` page.
+For service worker and PWA install testing, serve the folder over `http://localhost` or a future hosted HTTPS URL. Service workers do not run from a raw `file://` page.
 
 ## File Map
 
-- `index.html` - app structure
+- `index.html` - app structure and static trust/scope copy
 - `styles.css` - responsive layout and visual design
+- `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content
-- `app.js` - interactions, scoring, progress, and review queue
 - `manifest.webmanifest`, `service-worker.js`, `icon.svg` - PWA groundwork for hosted/local-server use
 - `BACKLOG.md` - roadmap and learning progression ideas
 
-## Local Reference Sources
+## Validation
 
-- `C:\Users\rdrnr\Projects\Standalone Site Experiments\Japan language sources\kanjibookjlptn5.pdf` - N5 kanji reference for the later kanji side quest.
+Run these from the project folder:
 
-## Content Editing Notes
+```powershell
+node --check app.js
+node --check n5-content.js
+node --check service-worker.js
+node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest ok')"
+Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
+```
 
-Each lesson in `lessons.js` has:
+The no-kanji scan should return no matches while the first learning pass remains kana-first.
 
-- `title` - scenario name
-- `context` - why this scenario matters
-- `phrases` - Japanese, kana, romaji, English, and notes
-- `builder` - sentence-building challenge
-- `reviewPrompt` - short reflection prompt
+## Content Review Notes
 
-Native-speaker review should focus on naturalness, politeness level, and whether the phrase fits the scenario.
+Native-speaker review should focus on:
 
-## Current Direction
+- Naturalness
+- Politeness level
+- Whether phrases fit the intended situation
+- Whether beginner explanations are clear and not misleading
 
-The first prototype proved the scenario-training idea, but the next version should become more beginner-friendly:
+The local reference PDF for later N5 kanji work is outside this repo:
 
-- Begin with hiragana and katakana recognition drills.
-- Calibrate the first run with a tiny beginner-safe start choice: hiragana, katakana, or N5 basics.
-- Teach a tiny intro for the selected focus before routing into the quiz loop.
-- Offer a guided five-question mini-session after the intro to build confidence before open practice.
-- Add a Japanese typing surface that works without a system IME.
-- Organize lessons by JLPT level, starting with N5 basics.
-- Use the Today path to route the learner into due review, kana, N5 practice, checkpoint sprint, and timer logging, with live N5 focus chips showing progress and practice depth.
-- Show a lightweight session reflection after practice so the learner sees what was studied, weak areas, accuracy, and the next suggested action.
-- Keep real-life Japan move scenarios, but unlock them gradually after foundation practice.
-- Add optional side quests such as "Kanji of the Day" once the learner is ready.
+`C:\Users\rdrnr\Projects\Standalone Site Experiments\Japan language sources\kanjibookjlptn5.pdf`
