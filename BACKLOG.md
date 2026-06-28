@@ -44,6 +44,12 @@ The current prototype is useful as a concept demo, but the next version should f
 - Public trust-page navigation uses extensionless production routes: `/about`, `/privacy`, `/terms`, and `/contact`.
 - Later: add or document `www` only after it resolves or redirects.
 
+### Post-Launch Known Issues
+
+- Native-speaker review notes no longer work; investigate whether the feature can be repaired or should be removed.
+- Local Data import/export backup buttons are visually misaligned.
+- Mode buttons (`Kana`, `Typing`, `N5 Basics`, `Checkpoint`, `Everyday Japan`) change the mode, but the learner does not see the changed content until scrolling farther down the page; investigate improving visibility, scroll position, or focus feedback after mode selection.
+
 ### Returning Learner Continuity
 
 - Current prototype includes a compact Start Here nudge that routes to mini-session, kana, review, or N5 basics.
