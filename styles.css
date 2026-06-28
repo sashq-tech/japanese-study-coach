@@ -449,6 +449,73 @@ button {
   border-color: var(--red);
 }
 
+.start-here-panel {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  gap: 16px;
+  align-items: stretch;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.start-here-panel h3 {
+  margin: 4px 0 8px;
+  font-size: 1.45rem;
+  line-height: 1.15;
+}
+
+.start-here-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.start-here-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.start-here-actions button {
+  display: grid;
+  gap: 5px;
+  min-height: 112px;
+  padding: 11px;
+  color: var(--ink);
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.start-here-actions button.recommended {
+  background: #fff8f4;
+  border-color: #f0d5cd;
+}
+
+.start-here-actions span {
+  color: var(--red-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.start-here-actions strong {
+  font-size: 1rem;
+  line-height: 1.18;
+}
+
+.start-here-actions em {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-style: normal;
+  line-height: 1.3;
+}
+
 .onboarding-panel {
   display: grid;
   gap: 14px;
@@ -1779,11 +1846,13 @@ textarea {
 @media (max-width: 980px) {
   .app-shell,
   .practice-grid,
+  .start-here-panel,
   .review-row,
   .trust-panel,
   .review-queue-panel,
   .coverage-panel,
   .onboarding-choices,
+  .start-here-actions,
   .focus-intro,
   .mini-session-actions,
   .today-focus-stats,
@@ -1847,6 +1916,7 @@ textarea {
 
   .top-bar,
   .scenario-band,
+  .start-here-panel,
   .onboarding-route,
   .resume-snapshot,
   .mini-session-head,

@@ -7,6 +7,7 @@ This project is currently staged on GitHub only. There is no domain or Cloudflar
 ## What It Does
 
 - Starts gently with hiragana and katakana recognition before introducing heavier content.
+- Provides a compact Start Here nudge for guided mini-session, kana, review, or N5 basics.
 - Uses a Start Calibration panel to recommend Hiragana, Katakana, or N5 Basics from local progress.
 - Teaches a tiny focus intro, then offers a guided five-question mini-session.
 - Shows a local-only Resume Snapshot for returning learners.

@@ -158,6 +158,9 @@ const els = {
   correctCount: document.querySelector("#correctCount"),
   reviewCount: document.querySelector("#reviewCount"),
   streakCount: document.querySelector("#streakCount"),
+  startHereTitle: document.querySelector("#startHereTitle"),
+  startHereSummary: document.querySelector("#startHereSummary"),
+  startHereActions: document.querySelector("#startHereActions"),
   todayDateLabel: document.querySelector("#todayDateLabel"),
   todaySummary: document.querySelector("#todaySummary"),
   resumeTitle: document.querySelector("#resumeTitle"),
@@ -427,6 +430,7 @@ function renderProgress() {
   renderCheckpointProgress();
   renderStudyStats();
   renderReviewQueuePanel();
+  renderStartHereNudge();
   renderResumeSnapshot();
   renderOnboardingPanel();
   renderTodayStudyPath();
@@ -618,6 +622,63 @@ function renderTodayStudyPath() {
       <p>${step.detail}</p>
       <button type="button" data-today-action="${step.action}" ${step.complete && step.action !== "checkpoint" ? "disabled" : ""}>${step.actionLabel}</button>
     </section>
+  `).join("");
+}
+
+function buildStartHereActions() {
+  const dueCount = dueReviewItems().length;
+  const focus = activeOnboardingFocus();
+  const focusLabel = onboardingOptions().find((option) => option.key === focus)?.label || "Hiragana";
+  const kanaTask = getNextKanaTask();
+  const n5Task = getWeakestN5Mode();
+  return [
+    {
+      key: "mini",
+      label: "Fast start",
+      title: `${focusLabel} mini-session`,
+      detail: "Intro plus five guided questions.",
+      action: "mini-session",
+      recommended: !dueCount && !kanaTask && !n5Task
+    },
+    {
+      key: "kana",
+      label: "Kana",
+      title: kanaTask ? `Practice ${kanaTask.deck}` : "Kana refresher",
+      detail: kanaTask ? `${kanaTask.stats.remaining} characters left in this deck.` : "Both kana decks are complete for this pass.",
+      action: kanaTask ? `kana:${kanaTask.deck}` : "kana:hiragana",
+      recommended: !dueCount && !!kanaTask
+    },
+    {
+      key: "review",
+      label: "Review",
+      title: dueCount ? "Clear due items" : "Review pile is quiet",
+      detail: dueCount ? `${dueCount} weak item${dueCount === 1 ? "" : "s"} due now.` : "No weak items are due right now.",
+      action: dueCount ? "review" : "checkpoint",
+      recommended: dueCount > 0
+    },
+    {
+      key: "n5",
+      label: "N5",
+      title: n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "N5 starter checks",
+      detail: n5Task ? `${n5Task.count}/${n5Task.target} toward the starter target.` : "Starter N5 targets are ready for sprint review.",
+      action: n5Task ? `n5:${n5Task.mode}` : "checkpoint",
+      recommended: !dueCount && !kanaTask
+    }
+  ];
+}
+
+function renderStartHereNudge() {
+  if (!els.startHereActions) return;
+  const actions = buildStartHereActions();
+  const recommended = actions.find((item) => item.recommended) || actions[0];
+  els.startHereTitle.textContent = `Start with ${recommended.title}.`;
+  els.startHereSummary.textContent = "One tap is enough: guided warm-up, kana, review, or N5 basics.";
+  els.startHereActions.innerHTML = actions.map((item) => `
+    <button class="${item.key === recommended.key ? "recommended" : ""}" type="button" data-start-action="${item.action}">
+      <span>${item.label}</span>
+      <strong>${item.title}</strong>
+      <em>${item.detail}</em>
+    </button>
   `).join("");
 }
 
@@ -2108,6 +2169,10 @@ function showSection(id) {
 }
 
 function runTodayAction(action) {
+  if (action === "mini-session") {
+    startMiniSession();
+    return;
+  }
   if (action === "review") {
     showSection("n5Section");
     startReviewQuestion();
@@ -2157,6 +2222,12 @@ els.todayStudySteps.addEventListener("click", (event) => {
   const button = event.target.closest("[data-today-action]");
   if (!button || button.disabled) return;
   runTodayAction(button.dataset.todayAction);
+});
+
+els.startHereActions.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-start-action]");
+  if (!button) return;
+  runTodayAction(button.dataset.startAction);
 });
 
 els.todayFocusStats.addEventListener("click", (event) => {

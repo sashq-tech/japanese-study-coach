@@ -42,6 +42,7 @@ The current prototype is useful as a concept demo, but the next version should f
 
 ### Returning Learner Continuity
 
+- Current prototype includes a compact Start Here nudge that routes to mini-session, kana, review, or N5 basics.
 - Current prototype includes a local-only Resume Snapshot in Today's Study Path.
 - Resume Snapshot summarizes due review, total study hours, latest mini-session, sprint best, and routes to the next suggested action.
 - Later: add a fuller weekly history view only if it stays beginner-safe and does not require accounts.
