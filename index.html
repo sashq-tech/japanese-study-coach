@@ -449,14 +449,24 @@
           <span class="panel-label">Kanji side quest</span>
           <p id="kanjiLaterMessage"></p>
         </article>
-        <article>
-          <span class="panel-label">Progress backup</span>
-          <p class="review-copy">Export your local progress before switching browsers, clearing cache, or moving to a phone/tablet.</p>
+        <article class="local-data-panel">
+          <span class="panel-label">Local data</span>
+          <p class="review-copy">Everything is stored in this browser only: scores, kana mastery, weak review, study time, mini-session history, and notes.</p>
+          <ul class="local-data-list">
+            <li>No account, server, analytics, or cloud sync.</li>
+            <li>Export a backup before switching browsers or clearing cache.</li>
+            <li>Reset only when you want a clean local start.</li>
+          </ul>
           <div class="backup-actions">
             <button id="exportProgressButton" type="button">Export Backup</button>
             <label for="importProgressInput">Import Backup</label>
             <input id="importProgressInput" type="file" accept="application/json,.json">
           </div>
+          <label class="reset-confirm">
+            <input id="resetLocalDataConfirm" type="checkbox">
+            <span>I understand this clears local study data in this browser.</span>
+          </label>
+          <button id="resetLocalDataButton" class="danger-action" type="button" disabled>Reset Local Data</button>
           <p id="backupStatus" class="feedback" aria-live="polite"></p>
         </article>
         <article>

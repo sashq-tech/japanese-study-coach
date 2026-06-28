@@ -238,6 +238,8 @@ const els = {
   clearReviewButton: document.querySelector("#clearReviewButton"),
   exportProgressButton: document.querySelector("#exportProgressButton"),
   importProgressInput: document.querySelector("#importProgressInput"),
+  resetLocalDataConfirm: document.querySelector("#resetLocalDataConfirm"),
+  resetLocalDataButton: document.querySelector("#resetLocalDataButton"),
   backupStatus: document.querySelector("#backupStatus"),
   studyTimerDisplay: document.querySelector("#studyTimerDisplay"),
   startStudyButton: document.querySelector("#startStudyButton"),
@@ -398,6 +400,16 @@ function importProgressBackup(file) {
     els.importProgressInput.value = "";
   });
   reader.readAsText(file);
+}
+
+function resetAllLocalData() {
+  if (!els.resetLocalDataConfirm.checked) return;
+  const confirmed = window.confirm("Reset all Japanese Study Coach local data in this browser? Export a backup first if you want to keep it.");
+  if (!confirmed) return;
+  PROGRESS_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  els.backupStatus.textContent = "Local data reset. Reloading clean state...";
+  els.backupStatus.className = "feedback success";
+  window.setTimeout(() => window.location.reload(), 650);
 }
 
 function renderProgress() {
@@ -2226,6 +2238,10 @@ els.exportProgressButton.addEventListener("click", exportProgressBackup);
 els.importProgressInput.addEventListener("change", (event) => {
   importProgressBackup(event.target.files[0]);
 });
+els.resetLocalDataConfirm.addEventListener("change", () => {
+  els.resetLocalDataButton.disabled = !els.resetLocalDataConfirm.checked;
+});
+els.resetLocalDataButton.addEventListener("click", resetAllLocalData);
 els.startSprintButton.addEventListener("click", startSprint);
 els.nextSprintButton.addEventListener("click", nextSprintQuestion);
 els.clearSprintHistoryButton.addEventListener("click", clearSprintHistory);

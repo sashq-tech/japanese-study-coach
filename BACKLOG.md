@@ -46,6 +46,12 @@ The current prototype is useful as a concept demo, but the next version should f
 - Resume Snapshot summarizes due review, total study hours, latest mini-session, sprint best, and routes to the next suggested action.
 - Later: add a fuller weekly history view only if it stays beginner-safe and does not require accounts.
 
+### Local Data Control
+
+- Current prototype has a Local Data panel explaining browser-only storage.
+- Learners can export/import a progress backup and reset local data with an explicit checkbox plus browser confirmation.
+- Later: split backup contents by category only if the controls stay simple.
+
 ### Weak-Item Review
 
 - Current prototype stores missed N5 practice and sprint questions in a local review pile.

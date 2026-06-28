@@ -12,7 +12,7 @@ This project is currently staged on GitHub only. There is no domain or Cloudflar
 - Shows a local-only Resume Snapshot for returning learners.
 - Routes into Today's Study Path for due review, kana, N5 practice, checkpoint sprint, and study timer logging.
 - Tracks weak items locally and schedules short review passes.
-- Includes browser-only progress export/import for moving between browsers or devices.
+- Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
 
 ## Privacy Model
