@@ -1,13 +1,18 @@
-const CACHE_NAME = "japan-ready-japanese-v1";
+const CACHE_NAME = "japanese-study-coach-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
+  "./about.html",
+  "./privacy.html",
+  "./terms.html",
+  "./contact.html",
   "./styles.css",
   "./n5-content.js",
   "./lessons.js",
   "./app.js",
   "./manifest.webmanifest",
-  "./icon.svg"
+  "./icon.svg",
+  "./robots.txt"
 ];
 
 self.addEventListener("install", (event) => {

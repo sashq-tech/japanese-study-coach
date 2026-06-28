@@ -37,8 +37,9 @@ The current prototype is useful as a concept demo, but the next version should f
 ### Public Readiness
 
 - Current prototype includes in-app About, Privacy, and Learning Scope copy for GitHub-stage evaluation.
+- Current prototype includes static About, Privacy, Terms, and Contact pages plus `robots.txt` for soft-launch readiness.
 - README now explains the static/no-backend model, localStorage privacy, validation commands, and current no-domain status.
-- Later: add domain/hosting-specific legal pages only when a concrete publishing target exists.
+- Later: add sitemap.xml and domain-specific canonical/social URLs only when a concrete public domain exists.
 
 ### Returning Learner Continuity
 

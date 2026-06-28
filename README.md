@@ -15,6 +15,7 @@ This project is currently staged on GitHub only. There is no domain or Cloudflar
 - Tracks weak items locally and schedules short review passes.
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
+- Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
 
 ## Privacy Model
 
@@ -53,6 +54,8 @@ For service worker and PWA install testing, serve the folder over `http://localh
 ## File Map
 
 - `index.html` - app structure and static trust/scope copy
+- `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages
+- `robots.txt` - basic crawler policy; sitemap waits for a canonical domain
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
@@ -73,6 +76,8 @@ Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
 ```
 
 The no-kanji scan should return no matches while the first learning pass remains kana-first.
+
+A sitemap should be added after the public domain is connected so canonical URLs are correct.
 
 ## Content Review Notes
 

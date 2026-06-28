@@ -72,6 +72,33 @@ button {
   line-height: 1.55;
 }
 
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.site-nav a,
+.site-footer a {
+  display: inline-grid;
+  place-items: center;
+  min-height: 34px;
+  padding: 7px 10px;
+  color: var(--red-dark);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.site-nav a[aria-current="page"] {
+  color: #fff;
+  background: var(--red);
+  border-color: var(--red);
+}
+
 .eyebrow,
 .panel-label {
   display: block;
@@ -1843,12 +1870,98 @@ textarea {
   margin-top: 12px;
 }
 
+.site-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.site-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.static-page {
+  display: grid;
+  gap: 20px;
+  width: min(1080px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0;
+}
+
+.static-nav {
+  justify-content: flex-end;
+}
+
+.static-hero {
+  padding: 26px;
+  color: #fff;
+  background: #92303b;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.static-hero .panel-label {
+  color: #ffd9d9;
+}
+
+.static-hero h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.static-hero p {
+  max-width: 760px;
+  margin: 14px 0 0;
+  line-height: 1.55;
+}
+
+.static-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.static-grid article {
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.static-grid h2 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+}
+
+.static-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.static-footer {
+  margin-top: 4px;
+}
+
 @media (max-width: 980px) {
   .app-shell,
   .practice-grid,
   .start-here-panel,
   .review-row,
   .trust-panel,
+  .static-grid,
   .review-queue-panel,
   .coverage-panel,
   .onboarding-choices,
@@ -1924,6 +2037,14 @@ textarea {
   .section-heading {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .static-nav {
+    justify-content: flex-start;
+  }
+
+  .static-hero h1 {
+    font-size: 2.1rem;
   }
 
   .view-controls {

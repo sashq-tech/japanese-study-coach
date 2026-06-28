@@ -7,6 +7,7 @@ const STUDY_MILESTONES = [10, 25, 50, 100, 250, 500, 1000, 1700, 2200, 3000, 480
 const REVIEW_INTERVAL_DAYS = [0, 1, 3];
 const N5_MODE_TARGETS = { vocab: 10, particles: 8, grammar: 8, sentences: 8 };
 const BACKUP_VERSION = 1;
+const BACKUP_APP_NAMES = ["Japanese Study Coach", "Japan Ready Japanese"];
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -344,7 +345,7 @@ function collectProgressBackup() {
     if (value !== null) data[key] = value;
   });
   return {
-    app: "Japan Ready Japanese",
+    app: BACKUP_APP_NAMES[0],
     version: BACKUP_VERSION,
     exportedAt: new Date().toISOString(),
     data
@@ -370,8 +371,8 @@ function exportProgressBackup() {
 }
 
 function applyProgressBackup(backup) {
-  if (!backup || backup.app !== "Japan Ready Japanese" || !backup.data || typeof backup.data !== "object") {
-    throw new Error("This does not look like a Japan Ready Japanese progress backup.");
+  if (!backup || !BACKUP_APP_NAMES.includes(backup.app) || !backup.data || typeof backup.data !== "object") {
+    throw new Error("This does not look like a Japanese Study Coach progress backup.");
   }
   Object.entries(backup.data).forEach(([key, value]) => {
     if (PROGRESS_STORAGE_KEYS.includes(key) && typeof value === "string") {
