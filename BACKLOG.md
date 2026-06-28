@@ -38,9 +38,10 @@ The current prototype is useful as a concept demo, but the next version should f
 
 - Current prototype includes in-app About, Privacy, and Learning Scope copy for GitHub-stage evaluation.
 - Current prototype includes static About, Privacy, Terms, and Contact pages plus `robots.txt` for soft-launch readiness.
-- Public brand is now Japan Ready Coach, and `japanreadycoach.com` has been purchased for a future launch.
-- README now explains the static/no-backend model, localStorage privacy, validation commands, and purchased-but-not-connected domain status.
-- Later: add sitemap.xml and domain-specific canonical/social URLs only when `japanreadycoach.com` is connected.
+- Public brand is now Japan Ready Coach, live at the apex domain `https://japanreadycoach.com/`.
+- README now explains the static/no-backend model, localStorage privacy, validation commands, and live apex-domain status.
+- Current prototype includes apex-domain canonical/social metadata, `robots.txt`, and `sitemap.xml`.
+- Later: add or document `www` only after it resolves or redirects.
 
 ### Returning Learner Continuity
 
@@ -170,4 +171,4 @@ The current prototype is useful as a concept demo, but the next version should f
 ## Next Implementation Candidates
 
 1. Add weekly goals and streak rewards for the Today path.
-2. Add the About Me draft and real public contact channel before connecting japanreadycoach.com.
+2. Add the About Me draft and real public contact channel before broad public promotion.

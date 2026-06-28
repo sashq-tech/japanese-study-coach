@@ -1,4 +1,4 @@
-const CACHE_NAME = "japan-ready-coach-v3";
+const CACHE_NAME = "japan-ready-coach-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -12,7 +12,8 @@ const APP_SHELL = [
   "./app.js",
   "./manifest.webmanifest",
   "./icon.svg",
-  "./robots.txt"
+  "./robots.txt",
+  "./sitemap.xml"
 ];
 
 self.addEventListener("install", (event) => {

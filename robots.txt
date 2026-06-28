@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-# Add a Sitemap line after japanreadycoach.com is connected and verified.
+Sitemap: https://japanreadycoach.com/sitemap.xml
