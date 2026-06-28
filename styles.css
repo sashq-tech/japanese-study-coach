@@ -739,6 +739,62 @@ button {
   border-radius: 8px;
 }
 
+.resume-snapshot {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.9fr) auto;
+  gap: 14px;
+  align-items: center;
+  margin-top: 14px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.resume-snapshot h4 {
+  margin: 2px 0 6px;
+  font-size: 1.1rem;
+}
+
+.resume-snapshot p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.resume-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.resume-stats span {
+  display: grid;
+  gap: 3px;
+  min-height: 58px;
+  padding: 8px;
+  color: var(--muted);
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.76rem;
+}
+
+.resume-stats strong {
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.resume-snapshot button {
+  min-height: 42px;
+  padding: 10px 14px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
 .today-focus-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1699,6 +1755,7 @@ textarea {
   .mini-session-actions,
   .today-focus-stats,
   .today-step-list,
+  .resume-snapshot,
   .session-reflection,
   .n5-grid,
   .scenario-layout {
@@ -1717,6 +1774,10 @@ textarea {
 
   .focus-intro-examples {
     grid-template-columns: 1fr;
+  }
+
+  .resume-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1754,6 +1815,7 @@ textarea {
   .top-bar,
   .scenario-band,
   .onboarding-route,
+  .resume-snapshot,
   .mini-session-head,
   .mini-session-actions,
   .section-heading {

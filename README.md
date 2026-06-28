@@ -9,6 +9,7 @@ This project is currently staged on GitHub only. There is no domain or Cloudflar
 - Starts gently with hiragana and katakana recognition before introducing heavier content.
 - Uses a Start Calibration panel to recommend Hiragana, Katakana, or N5 Basics from local progress.
 - Teaches a tiny focus intro, then offers a guided five-question mini-session.
+- Shows a local-only Resume Snapshot for returning learners.
 - Routes into Today's Study Path for due review, kana, N5 practice, checkpoint sprint, and study timer logging.
 - Tracks weak items locally and schedules short review passes.
 - Includes browser-only progress export/import for moving between browsers or devices.
@@ -18,7 +19,7 @@ This project is currently staged on GitHub only. There is no domain or Cloudflar
 
 There is no account, backend, analytics, or external API.
 
-Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, mini-session summary, study timer stats, and native-speaker notes. Clearing browser storage will remove progress unless a backup has been exported.
+Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and native-speaker notes. Clearing browser storage will remove progress unless a backup has been exported.
 
 ## Learning Scope
 

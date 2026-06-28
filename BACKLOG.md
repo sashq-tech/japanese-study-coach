@@ -40,6 +40,12 @@ The current prototype is useful as a concept demo, but the next version should f
 - README now explains the static/no-backend model, localStorage privacy, validation commands, and current no-domain status.
 - Later: add domain/hosting-specific legal pages only when a concrete publishing target exists.
 
+### Returning Learner Continuity
+
+- Current prototype includes a local-only Resume Snapshot in Today's Study Path.
+- Resume Snapshot summarizes due review, total study hours, latest mini-session, sprint best, and routes to the next suggested action.
+- Later: add a fuller weekly history view only if it stays beginner-safe and does not require accounts.
+
 ### Weak-Item Review
 
 - Current prototype stores missed N5 practice and sprint questions in a local review pile.

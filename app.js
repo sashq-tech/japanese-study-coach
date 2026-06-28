@@ -160,6 +160,10 @@ const els = {
   streakCount: document.querySelector("#streakCount"),
   todayDateLabel: document.querySelector("#todayDateLabel"),
   todaySummary: document.querySelector("#todaySummary"),
+  resumeTitle: document.querySelector("#resumeTitle"),
+  resumeSummary: document.querySelector("#resumeSummary"),
+  resumeStats: document.querySelector("#resumeStats"),
+  resumeActionButton: document.querySelector("#resumeActionButton"),
   todayFocusStats: document.querySelector("#todayFocusStats"),
   todayStudySteps: document.querySelector("#todayStudySteps"),
   onboardingStatus: document.querySelector("#onboardingStatus"),
@@ -411,6 +415,7 @@ function renderProgress() {
   renderCheckpointProgress();
   renderStudyStats();
   renderReviewQueuePanel();
+  renderResumeSnapshot();
   renderOnboardingPanel();
   renderTodayStudyPath();
   renderSessionReflection();
@@ -602,6 +607,52 @@ function renderTodayStudyPath() {
       <button type="button" data-today-action="${step.action}" ${step.complete && step.action !== "checkpoint" ? "disabled" : ""}>${step.actionLabel}</button>
     </section>
   `).join("");
+}
+
+function latestStudySession() {
+  return [...(state.studyStats.sessions || [])].sort((a, b) => {
+    return Date.parse(b.completedAt || 0) - Date.parse(a.completedAt || 0);
+  })[0] || null;
+}
+
+function formatShortDate(isoDate) {
+  if (!isoDate || Number.isNaN(Date.parse(isoDate))) return "Not yet";
+  return new Date(isoDate).toLocaleString([], {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  });
+}
+
+function renderResumeSnapshot() {
+  if (!els.resumeTitle) return;
+  const lastStudy = latestStudySession();
+  const latestMini = state.miniSession.latest || {};
+  const latestSprint = state.sprintHistory[0] || null;
+  const dueCount = dueReviewItems().length;
+  const focus = activeOnboardingFocus();
+  const focusLabel = onboardingOptions().find((option) => option.key === focus)?.label || "Hiragana";
+  const next = getReflectionNextAction();
+  const totalHours = totalStudySeconds() / 3600;
+  const hasAnyProgress = state.correct > 0 || state.review > 0 || lastStudy || latestMini.completedAt || latestSprint;
+
+  els.resumeTitle.textContent = hasAnyProgress
+    ? `Continue ${focusLabel}`
+    : "Start with a short beginner session.";
+  els.resumeSummary.textContent = hasAnyProgress
+    ? `Last study: ${lastStudy ? `${lastStudy.minutes} min on ${formatShortDate(lastStudy.completedAt)}` : "no timer logged yet"}.`
+    : "No account needed. Your progress starts and stays in this browser.";
+  els.resumeStats.innerHTML = [
+    { label: "Due review", value: dueCount },
+    { label: "Total hours", value: totalHours.toFixed(1) },
+    { label: "Mini-session", value: latestMini.completedAt ? `${latestMini.correct}/${latestMini.total}` : "Not yet" },
+    { label: "Sprint best", value: `${state.sprintBest}%` }
+  ].map((item) => `
+    <span><strong>${item.value}</strong>${item.label}</span>
+  `).join("");
+  els.resumeActionButton.textContent = next.label;
+  els.resumeActionButton.dataset.todayAction = next.action;
 }
 
 function onboardingOptions() {
@@ -2100,6 +2151,10 @@ els.todayFocusStats.addEventListener("click", (event) => {
   const button = event.target.closest("[data-today-action]");
   if (!button) return;
   runTodayAction(button.dataset.todayAction);
+});
+
+els.resumeActionButton.addEventListener("click", () => {
+  runTodayAction(els.resumeActionButton.dataset.todayAction);
 });
 
 els.onboardingChoices.addEventListener("click", (event) => {
