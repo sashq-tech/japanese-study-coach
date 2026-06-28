@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#c83f49">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Japan Ready">
+  <title>Japan Ready Japanese</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Learning path">
+      <div class="brand-block">
+        <p class="eyebrow">Local prototype</p>
+        <h1>Japan Ready Japanese</h1>
+        <p class="brand-copy">A beginner-first path from kana and N5 basics toward useful Japan-life confidence.</p>
+      </div>
+
+      <section class="progress-panel" aria-label="Progress">
+        <div>
+          <span class="panel-label">N5 Foundation</span>
+          <strong id="readinessScore">0%</strong>
+        </div>
+        <div class="meter" aria-hidden="true">
+          <span id="readinessBar"></span>
+        </div>
+        <dl class="stats-grid">
+          <div>
+            <dt>Correct</dt>
+            <dd id="correctCount">0</dd>
+          </div>
+          <div>
+            <dt>Review</dt>
+            <dd id="reviewCount">0</dd>
+          </div>
+          <div>
+            <dt>Streak</dt>
+            <dd id="streakCount">0</dd>
+          </div>
+        </dl>
+        <button id="resetProgressButton" class="secondary-action" type="button">Reset Score</button>
+      </section>
+
+      <nav class="level-list" id="levelList" aria-label="JLPT progression"></nav>
+    </aside>
+
+    <main class="lesson-area">
+      <header class="top-bar">
+        <div>
+          <p class="eyebrow">N5 Starter Dashboard</p>
+          <h2>Start with kana, then build small wins.</h2>
+        </div>
+        <div class="mode-tabs" aria-label="Practice sections">
+          <button class="active" type="button" data-section="kanaSection">Kana</button>
+          <button type="button" data-section="typingSection">Typing</button>
+          <button type="button" data-section="n5Section">N5 Basics</button>
+          <button type="button" data-section="checkpointSection">Checkpoint</button>
+          <button type="button" data-section="scenarioSection">Everyday Japan</button>
+        </div>
+      </header>
+
+      <section class="scenario-band foundation-band">
+        <div>
+          <span class="scenario-tag">Beginner ramp</span>
+          <p>Kanji stays out of the first lap. The early loop is recognize kana, connect sounds, type without IME, learn particles, and only then practice full phrases.</p>
+        </div>
+        <div class="study-tracker" aria-label="Study timer and progress">
+          <div class="study-timer-display" id="studyTimerDisplay">15:00</div>
+          <div class="study-duration-picker" aria-label="Study timer length">
+            <button class="active" type="button" data-study-minutes="15">15</button>
+            <button type="button" data-study-minutes="30">30</button>
+            <button type="button" data-study-minutes="45">45</button>
+            <button type="button" data-study-minutes="60">60</button>
+          </div>
+          <div class="study-actions">
+            <button id="startStudyButton" type="button">Start</button>
+            <button id="pauseStudyButton" type="button" disabled>Pause</button>
+            <button id="finishStudyButton" type="button" disabled>Finish</button>
+          </div>
+          <p id="studySessionStatus">Complete a timer to log study time.</p>
+          <dl class="study-stats">
+            <div>
+              <dt>Streak</dt>
+              <dd id="studyDayStreak">0 days</dd>
+            </div>
+            <div>
+              <dt>Days</dt>
+              <dd id="studyDaysCount">0</dd>
+            </div>
+            <div>
+              <dt>Hours</dt>
+              <dd id="studyHoursCount">0.0</dd>
+            </div>
+            <div>
+              <dt>Today</dt>
+              <dd id="studyTodayCount">0 min</dd>
+            </div>
+          </dl>
+          <div class="study-horizon">
+            <div>
+              <span>N1 horizon</span>
+              <strong id="n1HorizonProgress">0.0% of 3,000 hrs</strong>
+            </div>
+            <div class="meter" aria-hidden="true">
+              <span id="n1HorizonBar"></span>
+            </div>
+            <p id="studyMilestoneText">Next milestone: 100 hours.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="onboarding-panel" aria-label="Beginner start calibration">
+        <div class="section-heading">
+          <div>
+            <span class="panel-label">Start calibration</span>
+            <h3>Pick the lightest useful start.</h3>
+          </div>
+          <strong id="onboardingStatus">Beginner-safe</strong>
+        </div>
+        <p id="onboardingSummary" class="section-copy">Start with kana recognition, then move into N5 basics when the sounds feel familiar.</p>
+        <div id="onboardingChoices" class="onboarding-choices"></div>
+        <article class="focus-intro" aria-label="Selected focus introduction">
+          <div>
+            <span id="focusIntroLabel">Tiny lesson</span>
+            <h4 id="focusIntroTitle">Choose a focus to see a short intro.</h4>
+            <p id="focusIntroBody">A few examples will appear here before you start quizzing.</p>
+          </div>
+          <div id="focusIntroExamples" class="focus-intro-examples"></div>
+        </article>
+        <article class="mini-session-card" aria-label="Guided mini session">
+          <div class="mini-session-head">
+            <div>
+              <span class="panel-label">Guided mini-session</span>
+              <h4 id="miniSessionTitle">Intro, five questions, then reflect.</h4>
+            </div>
+            <strong id="miniSessionStatus">Ready</strong>
+          </div>
+          <div class="mini-session-question">
+            <span id="miniSessionMeta">Selected focus</span>
+            <strong id="miniSessionPrompt">Start a short guided run when you are ready.</strong>
+            <p id="miniSessionHint">This uses the focus above and feeds your daily reflection.</p>
+          </div>
+          <div id="miniSessionChoices" class="choice-grid" aria-label="Guided mini-session choices"></div>
+          <div class="mini-session-actions">
+            <button id="startMiniSessionButton" type="button">Start Mini-Session</button>
+            <button id="nextMiniSessionButton" type="button" disabled>Next</button>
+            <button id="miniSessionPracticeButton" type="button">Practice This Focus</button>
+          </div>
+          <p id="miniSessionFeedback" class="feedback" aria-live="polite"></p>
+        </article>
+        <div class="onboarding-route">
+          <span id="onboardingRecommendation">Recommended: hiragana first.</span>
+          <button id="onboardingStartButton" type="button">Start Today's Path</button>
+        </div>
+      </section>
+
+      <section class="today-panel" aria-label="Today's study path">
+        <div class="section-heading">
+          <div>
+            <span class="panel-label">Today</span>
+            <h3>Follow a short N5 path.</h3>
+          </div>
+          <strong id="todayDateLabel">Today</strong>
+        </div>
+        <p id="todaySummary" class="section-copy">Loading today's plan.</p>
+        <div id="todayFocusStats" class="today-focus-stats" aria-label="N5 focus progress"></div>
+        <div id="todayStudySteps" class="today-step-list"></div>
+        <article class="session-reflection" aria-label="Session reflection">
+          <div>
+            <span class="panel-label">Session reflection</span>
+            <h4 id="reflectionTitle">Practice a few questions to build a summary.</h4>
+            <p id="reflectionSummary">This will show what you practiced today, weak areas, and the next best action.</p>
+          </div>
+          <div id="reflectionStats" class="reflection-stats"></div>
+          <div id="reflectionWeakAreas" class="reflection-weak-areas"></div>
+          <button id="reflectionActionButton" type="button" data-today-action="timer">Start Timer</button>
+        </article>
+      </section>
+
+      <section id="kanaSection" class="app-section">
+        <div class="practice-grid">
+          <article class="quiz-panel">
+            <div class="section-heading">
+              <span class="panel-label">Kana recognition</span>
+              <div class="kana-controls">
+                <div class="segmented-control" aria-label="Kana deck">
+                  <button class="active" type="button" data-deck="hiragana">Hiragana</button>
+                  <button type="button" data-deck="katakana">Katakana</button>
+                </div>
+                <div class="segmented-control" aria-label="Kana quiz direction">
+                  <button class="active" type="button" data-kana-mode="recognition">Kana -> Sound</button>
+                  <button type="button" data-kana-mode="reverse">Sound -> Kana</button>
+                </div>
+              </div>
+            </div>
+            <div class="kana-quiz-card">
+              <span id="quizDeckLabel">Hiragana</span>
+              <strong id="quizKana" lang="ja">あ</strong>
+              <p id="quizPrompt">Choose the matching sound.</p>
+            </div>
+            <div class="deck-progress" aria-label="Deck progress">
+              <div>
+                <span class="panel-label">Deck progress</span>
+                <strong id="deckProgressLabel">0 / 0 mastered</strong>
+              </div>
+              <div class="meter" aria-hidden="true">
+                <span id="deckProgressBar"></span>
+              </div>
+              <p id="deckProgressNote">Get each kana correct 3 times to master it.</p>
+            </div>
+            <div id="quizChoices" class="choice-grid" aria-label="Kana answer choices"></div>
+            <div class="quiz-actions">
+              <button id="newQuizButton" type="button">New Card</button>
+              <button id="resetDeckButton" type="button">Reset Deck</button>
+            </div>
+            <p id="quizFeedback" class="feedback" aria-live="polite"></p>
+          </article>
+
+          <article class="chart-panel">
+            <div class="section-heading">
+              <span class="panel-label">Study chart</span>
+              <button id="toggleChartButton" type="button" aria-expanded="false">Reveal Chart</button>
+            </div>
+            <p class="section-copy">Closed during recognition practice so the quiz stays honest.</p>
+            <div id="kanaChart" class="kana-chart hidden"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="typingSection" class="app-section hidden">
+        <div class="practice-grid">
+          <article class="typing-panel">
+            <span class="panel-label">No-IME typing practice</span>
+            <p class="section-copy">Type romaji for Japanese practice, or try a known English name to see pronunciation-based katakana.</p>
+            <label class="input-label" for="romajiInput">Romaji input</label>
+            <input id="romajiInput" type="text" autocomplete="off" placeholder="Try: sumimasen, watashi, or Sean">
+            <div class="typing-output">
+              <span>Hiragana</span>
+              <strong id="hiraganaOutput" lang="ja"></strong>
+            </div>
+            <div class="typing-output">
+              <span>Katakana</span>
+              <strong id="katakanaOutput" lang="ja"></strong>
+            </div>
+            <div class="typing-check">
+              <span class="panel-label">Active target</span>
+              <p id="typingTargetLabel">Choose a practice target to check your kana.</p>
+              <p id="typingFeedback" class="feedback" aria-live="polite"></p>
+            </div>
+          </article>
+
+          <article class="typing-panel">
+            <span class="panel-label">Practice targets</span>
+            <div id="typingTargets" class="target-list"></div>
+          </article>
+        </div>
+        <article class="name-helper-panel">
+          <div>
+            <span class="panel-label">Name in Japanese</span>
+            <p class="section-copy">Foreign names usually use katakana and follow pronunciation, not English spelling. Try a name here for a curated result or a rough kana guess.</p>
+          </div>
+          <div class="name-helper-row">
+            <label class="input-label" for="nameInput">English name</label>
+            <input id="nameInput" type="text" autocomplete="off" placeholder="Try: Sean, Sarah, Michael">
+            <button id="nameConvertButton" type="button">Show Name</button>
+          </div>
+          <div id="nameResult" class="name-result" aria-live="polite"></div>
+        </article>
+      </section>
+
+      <section id="n5Section" class="app-section hidden">
+        <section class="coverage-panel" aria-label="N5 content coverage snapshot">
+          <div>
+            <span class="panel-label">N5 coverage target</span>
+            <h3>Build the foundation in layers.</h3>
+            <p>These counts are prototype coverage indicators, not a claim of full JLPT coverage yet.</p>
+          </div>
+          <dl id="coverageStats" class="coverage-stats"></dl>
+        </section>
+
+        <article class="n5-practice-panel">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">N5 practice loop</span>
+              <h3 id="n5PracticeTitle">Vocabulary check</h3>
+            </div>
+            <div class="segmented-control" aria-label="N5 practice mode">
+              <button class="active" type="button" data-n5-mode="vocab">Vocab</button>
+              <button type="button" data-n5-mode="particles">Particles</button>
+              <button type="button" data-n5-mode="grammar">Grammar</button>
+              <button type="button" data-n5-mode="sentences">Sentences</button>
+            </div>
+          </div>
+          <div class="n5-question-card">
+            <span id="n5QuestionMeta">Beginner N5</span>
+            <strong id="n5QuestionText">Loading question</strong>
+            <p id="n5QuestionHint"></p>
+          </div>
+          <div id="n5Choices" class="choice-grid" aria-label="N5 answer choices"></div>
+          <div class="quiz-actions">
+            <button id="nextN5Button" type="button">Next Question</button>
+          </div>
+          <p id="n5Feedback" class="feedback" aria-live="polite"></p>
+        </article>
+
+        <article class="review-queue-panel">
+          <div>
+            <span class="panel-label">Weak-item review</span>
+            <h3>Clear the review pile.</h3>
+            <p class="section-copy">Missed N5 practice and sprint questions land here. Correct review answers move through a short due-date ladder before clearing.</p>
+          </div>
+          <div class="review-queue-actions">
+            <strong id="n5ReviewCount">0 items</strong>
+            <button id="startReviewButton" type="button">Review Due</button>
+            <button id="clearReviewButton" type="button">Clear Pile</button>
+          </div>
+          <div id="reviewCategoryStats" class="review-category-stats"></div>
+        </article>
+
+        <div class="n5-grid">
+          <article>
+            <span class="panel-label">Starter vocabulary</span>
+            <div id="vocabList" class="mini-card-grid"></div>
+          </article>
+          <article>
+            <span class="panel-label">Particles</span>
+            <div id="particleList" class="mini-card-grid"></div>
+          </article>
+          <article>
+            <span class="panel-label">Grammar patterns</span>
+            <div id="grammarList" class="mini-card-grid"></div>
+          </article>
+          <article>
+            <span class="panel-label">Starter phrases</span>
+            <div id="starterPhraseList" class="mini-card-grid"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="checkpointSection" class="app-section hidden">
+        <article class="checkpoint-panel">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">N5 checkpoint</span>
+              <h3>Earn N4 prep readiness.</h3>
+            </div>
+            <strong id="checkpointStatus">Not ready yet</strong>
+          </div>
+          <p class="section-copy">This is a prototype gate, not an official JLPT claim. Finish the foundation tasks to mark yourself ready to start N4 prep.</p>
+          <div class="checkpoint-meter">
+            <div class="meter" aria-hidden="true">
+              <span id="checkpointBar"></span>
+            </div>
+            <span id="checkpointScore">0 / 5 complete</span>
+          </div>
+          <div id="checkpointCriteria" class="checkpoint-criteria"></div>
+        </article>
+
+        <article class="sprint-panel">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">N5 sprint</span>
+              <h3>12-question mixed review.</h3>
+            </div>
+            <strong id="sprintStatus">Ready</strong>
+          </div>
+          <p class="section-copy">A short checkpoint run with a finish line. It mixes vocabulary, particles, grammar, and sentence reading.</p>
+          <div class="checkpoint-meter">
+            <div class="meter" aria-hidden="true">
+              <span id="sprintBar"></span>
+            </div>
+            <span id="sprintScore">Best score: 0%</span>
+          </div>
+          <div class="n5-question-card sprint-question-card">
+            <span id="sprintQuestionMeta">Mixed N5 sprint</span>
+            <strong id="sprintQuestionText">Start a 12-question checkpoint run.</strong>
+            <p id="sprintQuestionHint">Pass target: 80%.</p>
+          </div>
+          <div id="sprintChoices" class="choice-grid" aria-label="N5 sprint answer choices"></div>
+          <div class="quiz-actions">
+            <button id="startSprintButton" type="button">Start Sprint</button>
+            <button id="nextSprintButton" type="button" disabled>Next</button>
+          </div>
+          <p id="sprintFeedback" class="feedback" aria-live="polite"></p>
+          <div class="sprint-history">
+            <div class="section-heading">
+              <span class="panel-label">Recent attempts</span>
+              <button id="clearSprintHistoryButton" type="button">Clear History</button>
+            </div>
+            <div id="sprintHistoryList" class="sprint-history-list"></div>
+          </div>
+        </article>
+      </section>
+
+      <section id="scenarioSection" class="app-section hidden">
+        <div class="scenario-note">
+          <span class="panel-label">Later practice</span>
+          <p>These Japan-life missions are still here, but they belong after the N5 foundation starts to feel familiar.</p>
+        </div>
+        <div class="scenario-layout">
+          <nav class="mission-list" id="missionList" aria-label="Available missions"></nav>
+          <article class="phrase-panel">
+            <div class="section-heading">
+              <span class="panel-label" id="missionType">Daily mission</span>
+              <button id="shufflePhraseButton" type="button">Shuffle</button>
+            </div>
+            <h3 id="lessonTitle">Loading mission</h3>
+            <p id="lessonContext" class="section-copy"></p>
+            <div id="phraseCards" class="phrase-cards"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="review-row" aria-label="Review and feedback">
+        <article>
+          <span class="panel-label">Kanji side quest</span>
+          <p id="kanjiLaterMessage"></p>
+        </article>
+        <article>
+          <span class="panel-label">Progress backup</span>
+          <p class="review-copy">Export your local progress before switching browsers, clearing cache, or moving to a phone/tablet.</p>
+          <div class="backup-actions">
+            <button id="exportProgressButton" type="button">Export Backup</button>
+            <label for="importProgressInput">Import Backup</label>
+            <input id="importProgressInput" type="file" accept="application/json,.json">
+          </div>
+          <p id="backupStatus" class="feedback" aria-live="polite"></p>
+        </article>
+        <article>
+          <span class="panel-label">Native-speaker review notes</span>
+          <p class="review-copy">Use this space for future feedback on naturalness, politeness, or better phrase choices.</p>
+          <textarea id="wifeNotesInput" rows="4" placeholder="Example: This sounds stiff. Say it this way instead..."></textarea>
+          <button id="saveNotesButton" type="button">Save Notes</button>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="n5-content.js"></script>
+  <script src="lessons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

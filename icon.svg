@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Japan Ready Japanese icon">
+  <rect width="512" height="512" rx="112" fill="#fbfaf7"/>
+  <circle cx="256" cy="188" r="104" fill="#c83f49"/>
+  <path fill="#26735f" d="M130 350c38-44 78-66 122-66s86 22 130 66v46H130z"/>
+  <path fill="#172026" d="M180 396h152v26H180z"/>
+  <text x="256" y="217" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="96" font-weight="800" fill="#fff">あ</text>
+</svg>

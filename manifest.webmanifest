@@ -1,0 +1,19 @@
+{
+  "name": "Japan Ready Japanese",
+  "short_name": "Japan Ready",
+  "description": "A beginner-first Japanese study prototype for kana, N5 basics, and Japan-life confidence.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfaf7",
+  "theme_color": "#c83f49",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
