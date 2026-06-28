@@ -4,6 +4,18 @@ Static prototype for a beginner-first Japanese study coach focused on kana, JLPT
 
 Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain is not currently part of the verified launch path.
 
+## Human Launch Checklist
+
+Recommended public description:
+
+> Japan Ready Coach is a local-first Japanese study coach for beginners who want to build kana, JLPT N5 basics, and practical confidence for life in Japan.
+
+- Google Search Console: add the apex property for `https://japanreadycoach.com/`, verify ownership, submit `https://japanreadycoach.com/sitemap.xml`, and request indexing for the homepage plus `/about`, `/privacy`, `/terms`, and `/contact`.
+- Bing Webmaster Tools: add the apex site, import from Google Search Console if useful, submit the same sitemap, and spot-check crawl/index status.
+- Cloudflare/domain sanity: keep verifying HTTPS, apex `200` responses, `robots.txt`, `sitemap.xml`, and extensionless trust-page routes. Do not advertise `www` until it resolves or redirects correctly.
+- Directory/community positioning: present the site as a beta, local-first Japanese learning coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
+- Trust copy before broad promotion: add a real public contact channel and an About Me draft when ready, then re-check Privacy/Terms copy for the actual launch posture.
+
 ## What It Does
 
 - Starts gently with hiragana and katakana recognition before introducing heavier content.
