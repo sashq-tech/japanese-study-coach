@@ -1,8 +1,8 @@
-# Japanese Study Coach
+# Japan Ready Coach
 
 Static prototype for a beginner-first Japanese study coach focused on kana, JLPT N5 basics, and practical confidence for moving to Japan.
 
-This project is currently staged on GitHub only. There is no domain or Cloudflare deployment configured yet.
+The domain `japanreadycoach.com` has been purchased for a future public launch, but it is not connected or deployed yet. This project is currently staged on GitHub only.
 
 ## What It Does
 
@@ -55,7 +55,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 
 - `index.html` - app structure and static trust/scope copy
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages
-- `robots.txt` - basic crawler policy; sitemap waits for a canonical domain
+- `robots.txt` - basic crawler policy; sitemap waits until `japanreadycoach.com` is connected
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
@@ -77,7 +77,7 @@ Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
 
 The no-kanji scan should return no matches while the first learning pass remains kana-first.
 
-A sitemap should be added after the public domain is connected so canonical URLs are correct.
+A sitemap and canonical/social URLs should be added after `japanreadycoach.com` is connected so public URLs are correct.
 
 ## Content Review Notes
 

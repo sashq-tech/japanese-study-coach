@@ -1,4 +1,4 @@
-const CACHE_NAME = "japanese-study-coach-v2";
+const CACHE_NAME = "japan-ready-coach-v3";
 const APP_SHELL = [
   "./",
   "./index.html",

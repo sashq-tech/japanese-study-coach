@@ -1,6 +1,6 @@
 {
-  "name": "Japanese Study Coach",
-  "short_name": "Study Coach",
+  "name": "Japan Ready Coach",
+  "short_name": "Japan Ready",
   "description": "A beginner-first Japanese study prototype for kana, N5 basics, and Japan-life confidence.",
   "start_url": "./index.html",
   "scope": "./",

@@ -7,7 +7,7 @@ const STUDY_MILESTONES = [10, 25, 50, 100, 250, 500, 1000, 1700, 2200, 3000, 480
 const REVIEW_INTERVAL_DAYS = [0, 1, 3];
 const N5_MODE_TARGETS = { vocab: 10, particles: 8, grammar: 8, sentences: 8 };
 const BACKUP_VERSION = 1;
-const BACKUP_APP_NAMES = ["Japanese Study Coach", "Japan Ready Japanese"];
+const BACKUP_APP_NAMES = ["Japan Ready Coach", "Japanese Study Coach", "Japan Ready Japanese"];
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -361,7 +361,7 @@ function exportProgressBackup() {
   const dateStamp = new Date().toISOString().slice(0, 10);
   const link = document.createElement("a");
   link.href = url;
-  link.download = `japan-ready-japanese-progress-${dateStamp}.json`;
+  link.download = `japan-ready-coach-progress-${dateStamp}.json`;
   document.body.appendChild(link);
   link.click();
   link.remove();
@@ -372,7 +372,7 @@ function exportProgressBackup() {
 
 function applyProgressBackup(backup) {
   if (!backup || !BACKUP_APP_NAMES.includes(backup.app) || !backup.data || typeof backup.data !== "object") {
-    throw new Error("This does not look like a Japanese Study Coach progress backup.");
+    throw new Error("This does not look like a Japan Ready Coach progress backup.");
   }
   Object.entries(backup.data).forEach(([key, value]) => {
     if (PROGRESS_STORAGE_KEYS.includes(key) && typeof value === "string") {
@@ -408,7 +408,7 @@ function importProgressBackup(file) {
 
 function resetAllLocalData() {
   if (!els.resetLocalDataConfirm.checked) return;
-  const confirmed = window.confirm("Reset all Japanese Study Coach local data in this browser? Export a backup first if you want to keep it.");
+  const confirmed = window.confirm("Reset all Japan Ready Coach local data in this browser? Export a backup first if you want to keep it.");
   if (!confirmed) return;
   PROGRESS_STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
   els.backupStatus.textContent = "Local data reset. Reloading clean state...";
