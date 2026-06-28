@@ -41,6 +41,7 @@ The current prototype is useful as a concept demo, but the next version should f
 - Public brand is now Japan Ready Coach, live at the apex domain `https://japanreadycoach.com/`.
 - README now explains the static/no-backend model, localStorage privacy, validation commands, and live apex-domain status.
 - Current prototype includes apex-domain canonical/social metadata, `robots.txt`, and `sitemap.xml`.
+- Public trust-page navigation uses extensionless production routes: `/about`, `/privacy`, `/terms`, and `/contact`.
 - Later: add or document `www` only after it resolves or redirects.
 
 ### Returning Learner Continuity

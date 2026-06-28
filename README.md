@@ -53,8 +53,8 @@ For service worker and PWA install testing, serve the folder over `http://localh
 
 ## File Map
 
-- `index.html` - app structure and static trust/scope copy
-- `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages
+- `index.html` - app structure and static trust/scope copy, deployed at `/`
+- `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `robots.txt`, `sitemap.xml` - crawler policy and apex-domain sitemap for `https://japanreadycoach.com/`
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
@@ -77,7 +77,7 @@ Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
 
 The no-kanji scan should return no matches while the first learning pass remains kana-first.
 
-Canonical and social metadata use the apex domain `https://japanreadycoach.com/`. Do not advertise `www` unless it resolves or redirects.
+Canonical, social metadata, navigation, and sitemap entries use extensionless apex routes such as `https://japanreadycoach.com/about`. Do not advertise `www` unless it resolves or redirects.
 
 ## Content Review Notes
 

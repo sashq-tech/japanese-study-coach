@@ -1,11 +1,11 @@
-const CACHE_NAME = "japan-ready-coach-v4";
+const CACHE_NAME = "japan-ready-coach-v5";
 const APP_SHELL = [
   "./",
-  "./index.html",
-  "./about.html",
-  "./privacy.html",
-  "./terms.html",
-  "./contact.html",
+  "/",
+  "/about",
+  "/privacy",
+  "/terms",
+  "/contact",
   "./styles.css",
   "./n5-content.js",
   "./lessons.js",
