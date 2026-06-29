@@ -46,9 +46,38 @@ The current prototype is useful as a concept demo, but the next version should f
 
 ### Post-Launch Known Issues
 
-- Native-speaker review notes no longer work; investigate whether the feature can be repaired or should be removed.
-- Local Data import/export backup buttons are visually misaligned.
-- Mode buttons (`Kana`, `Typing`, `N5 Basics`, `Checkpoint`, `Everyday Japan`) change the mode, but the learner does not see the changed content until scrolling farther down the page; investigate improving visibility, scroll position, or focus feedback after mode selection.
+Do first:
+
+1. Fix mode-button visibility because it affects every learner's first impression and can make the app feel broken.
+2. Fix or remove native-speaker review notes because a non-working control erodes trust after launch.
+
+Do later:
+
+1. Polish Local Data import/export alignment after the main study flow feels clear.
+
+#### Mode Buttons Change Content Below The Fold
+
+- Issue: `Kana`, `Typing`, `N5 Basics`, `Checkpoint`, and `Everyday Japan` change the active section, but the learner may not see the selected content until scrolling farther down the page.
+- Likely cause: the tab click updates section visibility/state without moving focus or scroll position to the active learning panel, and the top-of-page dashboard/trust content can keep the changed section out of view.
+- Suggested fix path: after mode selection, scroll the selected section heading into view, move keyboard focus to the active section or heading, and provide a small visible active-state confirmation. Preserve the sticky/mobile tab behavior and avoid disorienting jumps when the selected section is already visible.
+- Acceptance criteria: selecting each mode visibly lands the learner on the matching content on desktop and mobile; keyboard users get a sensible focus target; no section overlaps the sticky controls; repeated clicks on the current mode do not cause unnecessary page jumps.
+- Risk/effort: medium effort, low-to-medium risk. It touches shared navigation behavior and should be checked across desktop/mobile viewports.
+
+#### Native-Speaker Review Notes Broken
+
+- Issue: native-speaker review notes no longer work; investigate whether the feature can be repaired or should be removed.
+- Likely cause: the notes input/save path may not be wired to localStorage correctly after later progress-backup and local-data changes, or the control may be hidden/disconnected from the save handler.
+- Suggested fix path: verify the textarea and save button IDs, restore save/load behavior for `jrj-wife-notes`, include the value in export/import/reset flows if keeping the feature, or remove the visible control until there is a clearer review workflow.
+- Acceptance criteria: notes persist after reload, export/import preserves them, reset clears them, and the UI gives clear feedback after saving. If removed, no broken notes control remains visible and backlog keeps the future review workflow.
+- Risk/effort: low-to-medium effort, medium trust risk. The feature is small, but it touches local data and backup expectations.
+
+#### Local Data Import/Export Buttons Misaligned
+
+- Issue: Local Data import/export backup controls are visually misaligned.
+- Likely cause: the export button, import label, and file input are different element types sharing a compact layout without consistent dimensions, wrapping, or mobile rules.
+- Suggested fix path: normalize the controls as a small action row or stacked mobile group, hide the raw file input behind a styled label accessibly, and keep reset controls visually separate from backup actions.
+- Acceptance criteria: export/import controls align cleanly on desktop and mobile, labels do not overflow, focus states remain visible, and the real file input remains keyboard/screen-reader accessible.
+- Risk/effort: low effort, low risk. This is mostly CSS/layout polish.
 
 ### Returning Learner Continuity
 
