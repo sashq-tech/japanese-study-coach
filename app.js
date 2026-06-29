@@ -2160,13 +2160,28 @@ function renderScenario() {
   renderMissions();
 }
 
-function showSection(id) {
+function revealActiveSection(section) {
+  if (!section) return;
+  if (!section.hasAttribute("tabindex")) {
+    section.setAttribute("tabindex", "-1");
+  }
+  section.focus({ preventScroll: true });
+  const scrollMargin = Number.parseFloat(window.getComputedStyle(section).scrollMarginTop) || 0;
+  const targetTop = Math.max(0, window.scrollY + section.getBoundingClientRect().top - scrollMargin);
+  window.scrollTo({ top: targetTop, behavior: "smooth" });
+}
+
+function showSection(id, options = {}) {
+  const activeSection = document.getElementById(id);
   document.querySelectorAll(".app-section").forEach((section) => {
     section.classList.toggle("hidden", section.id !== id);
   });
   document.querySelectorAll("[data-section]").forEach((button) => {
     button.classList.toggle("active", button.dataset.section === id);
   });
+  if (options.reveal) {
+    window.requestAnimationFrame(() => revealActiveSection(activeSection));
+  }
 }
 
 function runTodayAction(action) {
@@ -2212,7 +2227,7 @@ document.querySelectorAll("[data-kana-mode]").forEach((button) => {
 });
 
 document.querySelectorAll("[data-section]").forEach((button) => {
-  button.addEventListener("click", () => showSection(button.dataset.section));
+  button.addEventListener("click", () => showSection(button.dataset.section, { reveal: true }));
 });
 
 document.querySelectorAll("[data-n5-mode]").forEach((button) => {

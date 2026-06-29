@@ -48,20 +48,12 @@ The current prototype is useful as a concept demo, but the next version should f
 
 Do first:
 
-1. Fix mode-button visibility because it affects every learner's first impression and can make the app feel broken.
-2. Fix or remove native-speaker review notes because a non-working control erodes trust after launch.
+1. Fix or remove native-speaker review notes because a non-working control erodes trust after launch.
 
 Recently resolved:
 
+- Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
-
-#### Mode Buttons Change Content Below The Fold
-
-- Issue: `Kana`, `Typing`, `N5 Basics`, `Checkpoint`, and `Everyday Japan` change the active section, but the learner may not see the selected content until scrolling farther down the page.
-- Likely cause: the tab click updates section visibility/state without moving focus or scroll position to the active learning panel, and the top-of-page dashboard/trust content can keep the changed section out of view.
-- Suggested fix path: after mode selection, scroll the selected section heading into view, move keyboard focus to the active section or heading, and provide a small visible active-state confirmation. Preserve the sticky/mobile tab behavior and avoid disorienting jumps when the selected section is already visible.
-- Acceptance criteria: selecting each mode visibly lands the learner on the matching content on desktop and mobile; keyboard users get a sensible focus target; no section overlaps the sticky controls; repeated clicks on the current mode do not cause unnecessary page jumps.
-- Risk/effort: medium effort, low-to-medium risk. It touches shared navigation behavior and should be checked across desktop/mobile viewports.
 
 #### Native-Speaker Review Notes Broken
 

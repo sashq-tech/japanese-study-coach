@@ -785,6 +785,14 @@ button {
   gap: 20px;
 }
 
+.app-section {
+  scroll-margin-top: 24px;
+}
+
+.app-section:focus {
+  outline: none;
+}
+
 .phrase-panel,
 .builder-panel,
 .quiz-panel,
@@ -2039,6 +2047,10 @@ textarea {
     background: rgba(251, 250, 247, 0.96);
     border-bottom: 1px solid var(--line);
     backdrop-filter: blur(14px);
+  }
+
+  .app-section {
+    scroll-margin-top: 170px;
   }
 
   .top-bar h2 {
