@@ -263,6 +263,7 @@ const els = {
   starterPhraseList: document.querySelector("#starterPhraseList"),
   kanjiLaterMessage: document.querySelector("#kanjiLaterMessage"),
   wifeNotesInput: document.querySelector("#wifeNotesInput"),
+  notesStatus: document.querySelector("#notesStatus"),
   missionList: document.querySelector("#missionList"),
   missionType: document.querySelector("#missionType"),
   lessonTitle: document.querySelector("#lessonTitle"),
@@ -2351,6 +2352,12 @@ document.querySelector("#shufflePhraseButton").addEventListener("click", () => {
 });
 document.querySelector("#saveNotesButton").addEventListener("click", () => {
   localStorage.setItem("jrj-wife-notes", els.wifeNotesInput.value.trim());
+  els.notesStatus.textContent = "Review notes saved in this browser.";
+  els.notesStatus.className = "feedback success";
+});
+els.wifeNotesInput.addEventListener("input", () => {
+  els.notesStatus.textContent = "";
+  els.notesStatus.className = "feedback";
 });
 els.romajiInput.addEventListener("input", updateTyping);
 els.nameConvertButton.addEventListener("click", renderNameResult);

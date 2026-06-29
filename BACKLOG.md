@@ -46,22 +46,11 @@ The current prototype is useful as a concept demo, but the next version should f
 
 ### Post-Launch Known Issues
 
-Do first:
-
-1. Fix or remove native-speaker review notes because a non-working control erodes trust after launch.
-
 Recently resolved:
 
+- Native-speaker review notes were storing correctly, but the save action had no visible confirmation. Save feedback is now shown with an aria-live status message.
 - Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
-
-#### Native-Speaker Review Notes Broken
-
-- Issue: native-speaker review notes no longer work; investigate whether the feature can be repaired or should be removed.
-- Likely cause: the notes input/save path may not be wired to localStorage correctly after later progress-backup and local-data changes, or the control may be hidden/disconnected from the save handler.
-- Suggested fix path: verify the textarea and save button IDs, restore save/load behavior for `jrj-wife-notes`, include the value in export/import/reset flows if keeping the feature, or remove the visible control until there is a clearer review workflow.
-- Acceptance criteria: notes persist after reload, export/import preserves them, reset clears them, and the UI gives clear feedback after saving. If removed, no broken notes control remains visible and backlog keeps the future review workflow.
-- Risk/effort: low-to-medium effort, medium trust risk. The feature is small, but it touches local data and backup expectations.
 
 ### Returning Learner Continuity
 
