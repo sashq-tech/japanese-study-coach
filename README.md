@@ -4,6 +4,14 @@ Static prototype for a beginner-first Japanese study coach focused on kana, JLPT
 
 Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain is not currently part of the verified launch path.
 
+## Production Status
+
+- Live apex domain: `https://japanreadycoach.com/`
+- Public routes verified: `/`, `/about`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, and `/sitemap.xml`.
+- Current launch posture: static browser-only beta, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
+- Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and native-speaker notes save feedback.
+- Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal native-speaker review workflow.
+
 ## Human Launch Checklist
 
 Recommended public description:

@@ -44,13 +44,15 @@ The current prototype is useful as a concept demo, but the next version should f
 - Public trust-page navigation uses extensionless production routes: `/about`, `/privacy`, `/terms`, and `/contact`.
 - Later: add or document `www` only after it resolves or redirects.
 
-### Post-Launch Known Issues
+### Post-Launch Stabilization
 
-Recently resolved:
+Current status: no active post-launch known issues are tracked here after the initial soft-launch fixes.
 
 - Native-speaker review notes were storing correctly, but the save action had no visible confirmation. Save feedback is now shown with an aria-live status message.
 - Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
+
+Recommended next area: continue strengthening beginner N5 retention and review flow before adding broader N4+ content or larger native-speaker review workflows.
 
 ### Returning Learner Continuity
 
