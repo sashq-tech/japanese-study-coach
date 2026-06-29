@@ -51,9 +51,9 @@ Do first:
 1. Fix mode-button visibility because it affects every learner's first impression and can make the app feel broken.
 2. Fix or remove native-speaker review notes because a non-working control erodes trust after launch.
 
-Do later:
+Recently resolved:
 
-1. Polish Local Data import/export alignment after the main study flow feels clear.
+- Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
 
 #### Mode Buttons Change Content Below The Fold
 
@@ -70,14 +70,6 @@ Do later:
 - Suggested fix path: verify the textarea and save button IDs, restore save/load behavior for `jrj-wife-notes`, include the value in export/import/reset flows if keeping the feature, or remove the visible control until there is a clearer review workflow.
 - Acceptance criteria: notes persist after reload, export/import preserves them, reset clears them, and the UI gives clear feedback after saving. If removed, no broken notes control remains visible and backlog keeps the future review workflow.
 - Risk/effort: low-to-medium effort, medium trust risk. The feature is small, but it touches local data and backup expectations.
-
-#### Local Data Import/Export Buttons Misaligned
-
-- Issue: Local Data import/export backup controls are visually misaligned.
-- Likely cause: the export button, import label, and file input are different element types sharing a compact layout without consistent dimensions, wrapping, or mobile rules.
-- Suggested fix path: normalize the controls as a small action row or stacked mobile group, hide the raw file input behind a styled label accessibly, and keep reset controls visually separate from backup actions.
-- Acceptance criteria: export/import controls align cleanly on desktop and mobile, labels do not overflow, focus states remain visible, and the real file input remains keyboard/screen-reader accessible.
-- Risk/effort: low effort, low risk. This is mostly CSS/layout polish.
 
 ### Returning Learner Continuity
 
