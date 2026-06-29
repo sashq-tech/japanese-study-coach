@@ -72,6 +72,7 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 - Current prototype stores missed N5 practice and sprint questions in a local review pile.
 - Review pile is deduped so repeated misses increase the miss count instead of creating duplicate cards.
 - Current prototype shows review counts by category: vocabulary, particles, grammar, and sentence reading.
+- Review controls now show how many weak items are due or when the next review opens.
 - Review starts with the most-missed items first.
 - Current prototype uses simple spaced repetition timing: due now, then 1 day, then 3 days, then cleared.
 - Later: show recent miss history and make the timing ladder adjustable.

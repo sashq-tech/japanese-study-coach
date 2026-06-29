@@ -1601,6 +1601,12 @@ function renderReviewQueuePanel() {
     ? `${dueCount} due / ${count} total`
     : "0 items";
   els.startReviewButton.disabled = dueCount === 0;
+  const nextDue = nextReviewDueAt();
+  els.startReviewButton.textContent = dueCount
+    ? `Review ${dueCount} Due`
+    : count && nextDue
+      ? `Next in ${formatDueDistance(nextDue)}`
+      : "Review Due";
   els.clearReviewButton.disabled = count === 0;
   const totals = state.n5ReviewQueue.reduce((summary, item) => {
     const mode = ["vocab", "particles", "grammar", "sentences"].includes(item.mode) ? item.mode : "other";
@@ -1900,7 +1906,7 @@ function checkN5Answer(answer) {
     state.streak = 0;
     recordPracticeEvent(isReview ? "review" : "n5", `${isReview ? "review" : "n5"} ${state.n5Question.reviewSourceMode || state.n5Mode}`, false);
     addReviewQuestion(state.n5Question);
-    els.n5Feedback.textContent = `Review this: ${state.n5Question.explanation}`;
+    els.n5Feedback.textContent = `Added to weak-item review. ${state.n5Question.explanation}`;
     els.n5Feedback.className = "feedback needs-review";
   }
   saveProgress();
