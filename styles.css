@@ -1978,6 +1978,32 @@ textarea {
   line-height: 1.55;
 }
 
+.about-narrative {
+  width: min(760px, 100%);
+  margin: 6px auto 2px;
+}
+
+.about-narrative h2 {
+  margin: 0 0 16px;
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+.about-narrative p {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.72;
+}
+
+.about-narrative p:last-child {
+  margin-bottom: 0;
+}
+
+.about-details-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .article-page {
   max-width: 920px;
 }
