@@ -36,7 +36,7 @@ Recommended public description:
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
-- Provides a lightweight static Blog section with a starter practical guide: Cash, Cards, and Suica in Japan.
+- Provides a lightweight static Blog section with a starter first-person practical note: Cash, Cards, and Suica in Japan.
 
 ## Privacy Model
 
