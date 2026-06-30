@@ -7,7 +7,7 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 ## Production Status
 
 - Live apex domain: `https://japanreadycoach.com/`
-- Public routes verified: `/`, `/about`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, and `/sitemap.xml`.
+- Public routes verified: `/`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
 - Current launch posture: static browser-only beta, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
 - Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and native-speaker notes save feedback.
 - Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal native-speaker review workflow.
@@ -22,7 +22,7 @@ Recommended public description:
 - Bing Webmaster Tools: add the apex site, import from Google Search Console if useful, submit the same sitemap, and spot-check crawl/index status.
 - Cloudflare/domain sanity: keep verifying HTTPS, apex `200` responses, `robots.txt`, `sitemap.xml`, and extensionless trust-page routes. Do not advertise `www` until it resolves or redirects correctly.
 - Directory/community positioning: present the site as a beta, local-first Japanese learning coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
-- Trust copy before broad promotion: add a real public contact channel and an About Me draft when ready, then re-check Privacy/Terms copy for the actual launch posture.
+- Trust copy before broad promotion: add a real public contact channel when ready, then re-check Privacy/Terms copy for the actual launch posture.
 
 ## What It Does
 
@@ -36,6 +36,7 @@ Recommended public description:
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
+- Provides a lightweight static Blog section with a starter practical guide: Cash, Cards, and Suica in Japan.
 
 ## Privacy Model
 
@@ -75,6 +76,9 @@ For service worker and PWA install testing, serve the folder over `http://localh
 
 - `index.html` - app structure and static trust/scope copy, deployed at `/`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
+- `blog.html` - static blog index, linked publicly as `/blog`
+- `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
+- `ads.txt` - AdSense publisher authorization file at `/ads.txt`
 - `robots.txt`, `sitemap.xml` - crawler policy and apex-domain sitemap for `https://japanreadycoach.com/`
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions

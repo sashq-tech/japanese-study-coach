@@ -1978,6 +1978,45 @@ textarea {
   line-height: 1.55;
 }
 
+.article-page {
+  max-width: 920px;
+}
+
+.article-body {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.article-body h2,
+.article-body p,
+.article-body ul {
+  margin: 0;
+}
+
+.article-body h2 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.article-body p,
+.article-body li {
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.article-body ul {
+  padding-left: 22px;
+}
+
+.article-intro {
+  font-size: 1.04rem;
+  color: var(--ink) !important;
+}
+
 .static-footer {
   margin-top: 4px;
 }
