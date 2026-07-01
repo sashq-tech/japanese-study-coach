@@ -50,11 +50,11 @@ The current prototype is useful as a concept demo, but the next version should f
 
 Current status: no active post-launch known issues are tracked here after the initial soft-launch fixes.
 
-- Native-speaker review notes were storing correctly, but the save action had no visible confirmation. Save feedback is now shown with an aria-live status message.
+- Human review notes are a local-only note pad with visible save/load feedback and backup export support. The app does not imply server-side or guaranteed native-speaker review.
 - Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
 
-Recommended next area: continue strengthening beginner N5 retention and review flow before adding broader N4+ content or larger native-speaker review workflows.
+Recommended next area: continue strengthening beginner N5 retention and review flow before adding broader N4+ content or larger human review workflows.
 
 ### Returning Learner Continuity
 
@@ -83,7 +83,7 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 
 - Current prototype can export local browser progress to a JSON file.
 - Current prototype can import a valid backup JSON and restore progress in the browser.
-- Backup includes kana mastery, scores, N5 mode counts, sprint score, weak-item review pile, session reflection, mini-session summary, study stats, selected timer length, and native-speaker notes.
+- Backup includes kana mastery, scores, N5 mode counts, sprint score, weak-item review pile, session reflection, mini-session summary, study stats, selected timer length, and local human review notes.
 - Later: add cloud sync or account-based progress only if publishing and multi-device use truly require it.
 
 ### Study Habit Tracker
@@ -113,7 +113,7 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 
 - Current prototype has expanded kana-only N5 seed content for daily life, directions, study, conversation, places, verbs, adjectives, particles, grammar checks, sentence comprehension, and survival phrases.
 - Beginner-facing N5 content remains kana/katakana-first. Kanji is still held for the later side quest.
-- Later: have native-speaker review phrase naturalness and add listening-style prompts once audio or speech support is planned.
+- Later: have reviewer feedback check phrase naturalness and add listening-style prompts once audio or speech support is planned.
 
 ### Kana Trainer
 
@@ -155,16 +155,16 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 - Current prototype includes a 12-question mixed N5 sprint with an 80% pass target.
 - Current prototype stores recent N5 sprint attempts locally and includes them in progress backups.
 
-### Wife Review Workflow
+### Human Review Workflow
 
-- Keep native-speaker notes per lesson.
+- Keep local human review notes per lesson.
 - Add a review status: needs review, reviewed, approved, needs rewrite.
 - Add an easy export/copy view for lesson feedback.
 
 ### Foreign Name Helper
 
 - Keep as a later engagement feature, not a core learning priority.
-- Store curated name-to-katakana mappings only after pronunciation or native-speaker review.
+- Store curated name-to-katakana mappings only after pronunciation or human review.
 - Avoid showing mixed Latin/kana guesses that look authoritative but are wrong.
 - Eventually support common names, pronunciation notes, and "How to introduce yourself" examples.
 

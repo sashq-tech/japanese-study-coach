@@ -9,8 +9,8 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 - Live apex domain: `https://japanreadycoach.com/`
 - Public routes verified: `/`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
 - Current launch posture: static browser-only beta, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
-- Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and native-speaker notes save feedback.
-- Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal native-speaker review workflow.
+- Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and local human review notes save feedback.
+- Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal human review workflow.
 
 ## Human Launch Checklist
 
@@ -42,7 +42,7 @@ Recommended public description:
 
 There is no account, backend, analytics, or external API.
 
-Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and native-speaker notes. Clearing browser storage will remove progress unless a backup has been exported.
+Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and local human review notes. Clearing browser storage will remove progress unless a backup has been exported.
 
 ## Learning Scope
 
@@ -61,7 +61,7 @@ Later roadmap:
 
 - N5 kanji side quest
 - More complete N5 coverage
-- Native-speaker review workflow
+- Human review workflow
 - Listening/audio practice
 - N4-N1 progression
 - Mobile/PWA polish after a hosting target exists
@@ -105,7 +105,9 @@ Canonical, social metadata, navigation, and sitemap entries use extensionless ap
 
 ## Content Review Notes
 
-Native-speaker review should focus on:
+Human review notes are stored locally in the browser and included in progress backups. They are a note pad for future feedback, not a server-side review workflow.
+
+Reviewer feedback should focus on:
 
 - Naturalness
 - Politeness level

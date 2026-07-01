@@ -8,6 +8,7 @@ const REVIEW_INTERVAL_DAYS = [0, 1, 3];
 const N5_MODE_TARGETS = { vocab: 10, particles: 8, grammar: 8, sentences: 8 };
 const BACKUP_VERSION = 1;
 const BACKUP_APP_NAMES = ["Japan Ready Coach", "Japanese Study Coach", "Japan Ready Japanese"];
+const REVIEW_NOTES_STORAGE_KEY = "jrj-wife-notes";
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -26,7 +27,7 @@ const PROGRESS_STORAGE_KEYS = [
   "jrj-mini-session-summary",
   "jrj-study-stats",
   "jrj-study-selected-minutes",
-  "jrj-wife-notes"
+  REVIEW_NOTES_STORAGE_KEY
 ];
 
 function loadKanaHits() {
@@ -262,7 +263,7 @@ const els = {
   grammarList: document.querySelector("#grammarList"),
   starterPhraseList: document.querySelector("#starterPhraseList"),
   kanjiLaterMessage: document.querySelector("#kanjiLaterMessage"),
-  wifeNotesInput: document.querySelector("#wifeNotesInput"),
+  reviewNotesInput: document.querySelector("#reviewNotesInput"),
   notesStatus: document.querySelector("#notesStatus"),
   missionList: document.querySelector("#missionList"),
   missionType: document.querySelector("#missionType"),
@@ -355,7 +356,7 @@ function collectProgressBackup() {
 
 function exportProgressBackup() {
   saveProgress();
-  localStorage.setItem("jrj-wife-notes", els.wifeNotesInput.value.trim());
+  saveReviewNotes({ silent: true });
   const backup = collectProgressBackup();
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -415,6 +416,27 @@ function resetAllLocalData() {
   els.backupStatus.textContent = "Local data reset. Reloading clean state...";
   els.backupStatus.className = "feedback success";
   window.setTimeout(() => window.location.reload(), 650);
+}
+
+function saveReviewNotes(options = {}) {
+  const value = els.reviewNotesInput.value;
+  localStorage.setItem(REVIEW_NOTES_STORAGE_KEY, value);
+  if (!options.silent) {
+    const trimmed = value.trim();
+    els.notesStatus.textContent = trimmed
+      ? "Review notes saved in this browser and included in backups."
+      : "Empty review notes saved. This clears the saved note in this browser.";
+    els.notesStatus.className = "feedback success";
+  }
+}
+
+function loadReviewNotes() {
+  const savedNotes = localStorage.getItem(REVIEW_NOTES_STORAGE_KEY) || "";
+  els.reviewNotesInput.value = savedNotes;
+  if (savedNotes.trim()) {
+    els.notesStatus.textContent = "Saved review notes loaded from this browser.";
+    els.notesStatus.className = "feedback success";
+  }
 }
 
 function renderProgress() {
@@ -2357,11 +2379,9 @@ document.querySelector("#shufflePhraseButton").addEventListener("click", () => {
   renderScenario();
 });
 document.querySelector("#saveNotesButton").addEventListener("click", () => {
-  localStorage.setItem("jrj-wife-notes", els.wifeNotesInput.value.trim());
-  els.notesStatus.textContent = "Review notes saved in this browser.";
-  els.notesStatus.className = "feedback success";
+  saveReviewNotes();
 });
-els.wifeNotesInput.addEventListener("input", () => {
+els.reviewNotesInput.addEventListener("input", () => {
   els.notesStatus.textContent = "";
   els.notesStatus.className = "feedback";
 });
@@ -2372,7 +2392,7 @@ els.nameInput.addEventListener("keydown", (event) => {
 });
 
 els.kanjiLaterMessage.textContent = n5Content.kanjiLater.message;
-els.wifeNotesInput.value = localStorage.getItem("jrj-wife-notes") || "";
+loadReviewNotes();
 renderLevels();
 renderProgress();
 renderKanaModeButtons();
