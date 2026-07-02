@@ -1,7 +1,7 @@
 {
   "name": "Japan Ready Coach",
   "short_name": "Japan Ready",
-  "description": "A beginner-first Japanese study prototype for kana, N5 basics, and Japan-life confidence.",
+  "description": "A beginner-first Japanese study app for kana, N5 basics, and Japan-life confidence.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

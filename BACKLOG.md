@@ -4,7 +4,7 @@
 
 Build a personalized Japanese learning site that starts at a true beginner level and gradually unlocks practical Japan-life scenarios.
 
-The current prototype is useful as a concept demo, but the next version should feel less advanced on first open. The learner should be able to start with character recognition, sound association, and small wins before being asked to assemble full official or family-life phrases.
+The current app is useful as an early version, but the next version should feel less advanced on first open. The learner should be able to start with character recognition, sound association, and small wins before being asked to assemble full official or family-life phrases.
 
 ## Learning Progression
 
@@ -36,13 +36,13 @@ The current prototype is useful as a concept demo, but the next version should f
 
 ### Public Readiness
 
-- Current prototype includes in-app About, Privacy, and Learning Scope copy for GitHub-stage evaluation.
-- Current prototype includes static About, Privacy, Terms, and Contact pages plus `robots.txt` for soft-launch readiness.
+- Current app includes in-app About, Privacy, and Learning Scope copy for GitHub-stage evaluation.
+- Current app includes static About, Privacy, Terms, and Contact pages plus `robots.txt` for soft-launch readiness.
 - Public brand is now Japan Ready Coach, live at the apex domain `https://japanreadycoach.com/`.
 - README now explains the static/no-backend model, localStorage privacy, validation commands, and live apex-domain status.
-- Current prototype includes apex-domain canonical/social metadata, `robots.txt`, and `sitemap.xml`.
-- Current prototype includes a first-person, human-grounded About page and a lightweight Blog section with a starter Cash, Cards, and Suica article based on Sean and Emi's Japan travel notes.
-- Current prototype includes root `ads.txt` for AdSense publisher authorization.
+- Current app includes apex-domain canonical/social metadata, `robots.txt`, and `sitemap.xml`.
+- Current app includes a first-person, human-grounded About page and a lightweight Blog section with a starter Cash, Cards, and Suica article based on Sean and Emi's Japan travel notes.
+- Current app includes root `ads.txt` for AdSense publisher authorization.
 - Public trust-page navigation uses extensionless production routes: `/about`, `/privacy`, `/terms`, and `/contact`.
 - Later: add or document `www` only after it resolves or redirects.
 
@@ -58,60 +58,60 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 
 ### Returning Learner Continuity
 
-- Current prototype includes a compact Start Here nudge that routes to mini-session, kana, review, or N5 basics.
-- Current prototype includes a local-only Resume Snapshot in Today's Study Path.
+- Current app includes a compact Start Here nudge that routes to mini-session, kana, review, or N5 basics.
+- Current app includes a local-only Resume Snapshot in Today's Study Path.
 - Resume Snapshot summarizes due review, total study hours, latest mini-session, sprint best, and routes to the next suggested action.
 - Later: add a fuller weekly history view only if it stays beginner-safe and does not require accounts.
 
 ### Local Data Control
 
-- Current prototype has a Local Data panel explaining browser-only storage.
+- Current app has a Local Data panel explaining browser-only storage.
 - Learners can export/import a progress backup and reset local data with an explicit checkbox plus browser confirmation.
 - Later: split backup contents by category only if the controls stay simple.
 
 ### Weak-Item Review
 
-- Current prototype stores missed N5 practice and sprint questions in a local review pile.
+- Current app stores missed N5 practice and sprint questions in a local review pile.
 - Review pile is deduped so repeated misses increase the miss count instead of creating duplicate cards.
-- Current prototype shows review counts by category: vocabulary, particles, grammar, and sentence reading.
+- Current app shows review counts by category: vocabulary, particles, grammar, and sentence reading.
 - Review controls now show how many weak items are due or when the next review opens.
 - Review starts with the most-missed items first.
-- Current prototype uses simple spaced repetition timing: due now, then 1 day, then 3 days, then cleared.
+- Current app uses simple spaced repetition timing: due now, then 1 day, then 3 days, then cleared.
 - Later: show recent miss history and make the timing ladder adjustable.
 
 ### Progress Backup
 
-- Current prototype can export local browser progress to a JSON file.
-- Current prototype can import a valid backup JSON and restore progress in the browser.
+- Current app can export local browser progress to a JSON file.
+- Current app can import a valid backup JSON and restore progress in the browser.
 - Backup includes kana mastery, scores, N5 mode counts, sprint score, weak-item review pile, session reflection, mini-session summary, study stats, selected timer length, and local human review notes.
 - Later: add cloud sync or account-based progress only if publishing and multi-device use truly require it.
 
 ### Study Habit Tracker
 
-- Current prototype has 15, 30, 45, and 60 minute study timers.
+- Current app has 15, 30, 45, and 60 minute study timers.
 - Timer can be paused and resumed during interruptions.
 - Completed or manually finished sessions are logged locally.
 - Track consecutive days studied, total study days, total study hours, and today's minutes.
-- Current prototype shows a long-range N1 horizon using 3,000-4,800 hours for English speakers without prior kanji knowledge.
+- Current app shows a long-range N1 horizon using 3,000-4,800 hours for English speakers without prior kanji knowledge.
 - Long-range reference range to keep in mind: 1,700-2,600 hours with prior kanji knowledge, 3,000-4,800 hours without prior kanji knowledge.
 - Later: add session history, weekly goal, and more milestone markers tied to N5/N4/N3/N2 checkpoints.
 
 ### Today's Study Path
 
-- Current prototype shows a guided daily N5 path near the top of the app.
-- Current prototype includes a first-run/returning calibration panel that recommends hiragana, katakana, or N5 basics from local progress and routes into practice.
-- Current prototype shows a tiny lesson intro for the selected calibration focus before quizzing.
-- Current prototype offers a guided five-question mini-session for the selected focus and feeds results into daily reflection.
+- Current app shows a guided daily N5 path near the top of the app.
+- Current app includes a first-run/returning calibration panel that recommends hiragana, katakana, or N5 basics from local progress and routes into practice.
+- Current app shows a tiny lesson intro for the selected calibration focus before quizzing.
+- Current app offers a guided five-question mini-session for the selected focus and feeds results into daily reflection.
 - Path pulls from live state: due weak-item review, kana deck progress, weakest N5 mode, sprint readiness, and today's logged study minutes.
-- Current prototype shows N5 focus chips for vocabulary, particles, grammar, and sentences with progress targets and practice-pool depth.
+- Current app shows N5 focus chips for vocabulary, particles, grammar, and sentences with progress targets and practice-pool depth.
 - The N5 focus card includes a rotating daily sample from the suggested weak area.
-- Current prototype includes a daily session reflection with practiced areas, weak areas, accuracy, and the next suggested action.
+- Current app includes a daily session reflection with practiced areas, weak areas, accuracy, and the next suggested action.
 - Each path card jumps into the matching practice area instead of creating a separate lesson system.
 - Later: add weekly goals, streak rewards, and optional "short / normal / deep" session plans.
 
 ### N5 Content Depth
 
-- Current prototype has expanded kana-only N5 seed content for daily life, directions, study, conversation, places, verbs, adjectives, particles, grammar checks, sentence comprehension, and survival phrases.
+- Current app has expanded kana-only N5 seed content for daily life, directions, study, conversation, places, verbs, adjectives, particles, grammar checks, sentence comprehension, and survival phrases.
 - Beginner-facing N5 content remains kana/katakana-first. Kanji is still held for the later side quest.
 - Later: have reviewer feedback check phrase naturalness and add listening-style prompts once audio or speech support is planned.
 
@@ -120,7 +120,7 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 - Hiragana chart with stroke-order hints later.
 - Katakana chart with loanword examples.
 - Flashcard quiz: see character, choose sound.
-- Current prototype includes reverse quiz mode: see sound, choose character.
+- Current app includes reverse quiz mode: see sound, choose character.
 - Timed recognition mode for speed.
 - Weak-character review queue.
 
@@ -152,8 +152,8 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 - Keep practice sections open, but use checkpoint completion to unlock progress badges and readiness labels.
 - Gate on multiple skills, not one stressful exam: kana decks, starter vocabulary, particles, grammar, reading, and practical phrases.
 - Let retakes feel normal and route missed areas into review.
-- Current prototype includes a 12-question mixed N5 sprint with an 80% pass target.
-- Current prototype stores recent N5 sprint attempts locally and includes them in progress backups.
+- Current app includes a 12-question mixed N5 sprint with an 80% pass target.
+- Current app stores recent N5 sprint attempts locally and includes them in progress backups.
 
 ### Human Review Workflow
 
@@ -173,12 +173,12 @@ Recommended next area: continue strengthening beginner N5 retention and review f
 - Draft an About Me page before buying a domain or applying for ads.
 - Explain the personal reason for the site: Japan background, family connection, move planning, and why a more engaging learning path matters.
 - Add Contact, Privacy Policy, and Learning Roadmap pages before public launch.
-- Keep ads and monetization out of the prototype until the learning loop is genuinely useful.
+- Keep ads and monetization limited until the learning loop is genuinely useful.
 
 ### Mobile / PWA Groundwork
 
-- Current prototype includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Current prototype keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
+- Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
+- Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.
 

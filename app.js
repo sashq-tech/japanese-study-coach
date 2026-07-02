@@ -2148,7 +2148,7 @@ function renderCoverageStats() {
   const stats = [
     { label: "Hiragana", value: n5Content.kanaDecks.hiragana.length, target: "core set" },
     { label: "Katakana", value: n5Content.kanaDecks.katakana.length, target: "core set" },
-    { label: "Vocabulary", value: n5Content.n5Vocabulary.length, target: "prototype seed" },
+    { label: "Vocabulary", value: n5Content.n5Vocabulary.length, target: "starter seed" },
     { label: "Particles", value: n5Content.particles.length, target: "N5 basics" },
     { label: "Grammar", value: n5Content.grammarPatterns.length, target: "starter nodes" },
     { label: "Sentence Qs", value: n5Content.sentencePractice.length, target: "reading checks" },

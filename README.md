@@ -1,6 +1,6 @@
 # Japan Ready Coach
 
-Static prototype for a beginner-first Japanese study coach focused on kana, JLPT N5 basics, and practical confidence for moving to Japan.
+Static study app for a beginner-first Japanese study coach focused on kana, JLPT N5 basics, and practical confidence for moving to Japan.
 
 Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain is not currently part of the verified launch path.
 
@@ -46,7 +46,7 @@ Progress is stored in browser `localStorage`, including scores, kana mastery, N5
 
 ## Learning Scope
 
-This is a prototype learning aid, not an official JLPT preparation product or claim of full N5 coverage.
+This is a beta learning aid, not an official JLPT preparation product or claim of full N5 coverage.
 
 Current focus:
 
