@@ -2069,6 +2069,15 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .app-shell,
+  .sidebar,
+  .lesson-area,
+  .brand-block,
+  .progress-panel {
+    width: 100%;
+    min-width: 0;
+  }
+
   .sidebar {
     border-right: 0;
     border-bottom: 1px solid var(--line);
