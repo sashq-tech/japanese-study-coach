@@ -20,6 +20,7 @@ Recommended public description:
 
 - Google Search Console: add the apex property for `https://japanreadycoach.com/`, verify ownership, submit `https://japanreadycoach.com/sitemap.xml`, and request indexing for the homepage plus `/about`, `/privacy`, `/terms`, and `/contact`.
 - Bing Webmaster Tools: add the apex site, import from Google Search Console if useful, submit the same sitemap, and spot-check crawl/index status.
+- IndexNow: key file is `https://japanreadycoach.com/8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6.txt`; manual submit example: `https://www.bing.com/indexnow?url=https://japanreadycoach.com/&key=8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6`.
 - Cloudflare/domain sanity: keep verifying HTTPS, apex `200` responses, `robots.txt`, `sitemap.xml`, and extensionless trust-page routes. Do not advertise `www` until it resolves or redirects correctly.
 - Directory/community positioning: present the site as a beta, local-first Japanese learning coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
 - Trust copy before broad promotion: add a real public contact channel when ready, then re-check Privacy/Terms copy for the actual launch posture.
