@@ -8,7 +8,7 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 
 - Live apex domain: `https://japanreadycoach.com/`
 - Public routes verified: `/`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
-- Current launch posture: static browser-only beta, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
+- Current launch posture: browser-based public site, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
 - Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and local human review notes save feedback.
 - Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal human review workflow.
 
@@ -16,13 +16,13 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 
 Recommended public description:
 
-> Japan Ready Coach is a local-first Japanese study coach for beginners who want to build kana, JLPT N5 basics, and practical confidence for life in Japan.
+> Japan Ready Coach is a privacy-first Japanese study coach for beginners who want to build kana, JLPT N5 basics, practical phrases, and confidence for life in Japan.
 
 - Google Search Console: add the apex property for `https://japanreadycoach.com/`, verify ownership, submit `https://japanreadycoach.com/sitemap.xml`, and request indexing for the homepage plus `/about`, `/privacy`, `/terms`, and `/contact`.
 - Bing Webmaster Tools: add the apex site, import from Google Search Console if useful, submit the same sitemap, and spot-check crawl/index status.
 - IndexNow: key file is `https://japanreadycoach.com/8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6.txt`; manual submit example: `https://www.bing.com/indexnow?url=https://japanreadycoach.com/&key=8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6`.
 - Cloudflare/domain sanity: keep verifying HTTPS, apex `200` responses, `robots.txt`, `sitemap.xml`, and extensionless trust-page routes. Do not advertise `www` until it resolves or redirects correctly.
-- Directory/community positioning: present the site as a beta, local-first Japanese learning coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
+- Directory/community positioning: present the site as a privacy-first Japanese study coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
 - Trust copy before broad promotion: add a real public contact channel when ready, then re-check Privacy/Terms copy for the actual launch posture.
 
 ## What It Does
@@ -47,7 +47,7 @@ Progress is stored in browser `localStorage`, including scores, kana mastery, N5
 
 ## Learning Scope
 
-This is a beta learning aid, not an official JLPT preparation product or claim of full N5 coverage.
+This is a beginner learning aid, not an official JLPT preparation product or claim of full N5 coverage.
 
 Current focus:
 
