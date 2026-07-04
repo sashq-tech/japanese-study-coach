@@ -1,4 +1,4 @@
-const CACHE_NAME = "japan-ready-coach-v25";
+const CACHE_NAME = "japan-ready-coach-v26";
 const APP_SHELL = [
   "./",
   "/",
@@ -9,6 +9,7 @@ const APP_SHELL = [
   "/blog/japan-luggage-etiquette",
   "/blog/first-day-simple-phrases",
   "/blog/convenience-store-japanese",
+  "/blog/okinawa-vs-mainland-japan",
   "/privacy",
   "/terms",
   "/contact",
