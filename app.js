@@ -2013,9 +2013,7 @@ function romajiToHiragana(input) {
 }
 
 function findNameTransliteration(input) {
-  const normalized = input.trim().toLowerCase();
-  if (!normalized) return null;
-  return n5Content.nameTransliterations.find((entry) => entry.input.includes(normalized)) || null;
+  return JapanReadyNameHelper.findCuratedName(input, n5Content.nameTransliterations);
 }
 
 function hiraganaToKatakana(text) {
@@ -2033,7 +2031,7 @@ function updateTyping() {
 
 function updateTypingFeedback(hiragana, nameMatch = null) {
   if (nameMatch) {
-    els.typingTargetLabel.textContent = `Foreign name helper -> ${nameMatch.katakana}`;
+    els.typingTargetLabel.textContent = `Katakana name helper -> ${nameMatch.katakana}`;
     els.typingFeedback.textContent = nameMatch.note;
     els.typingFeedback.className = "feedback success";
     return;
@@ -2057,45 +2055,67 @@ function updateTypingFeedback(hiragana, nameMatch = null) {
   }
 }
 
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
+
 function renderNameResult() {
   const rawName = els.nameInput.value.trim();
   if (!rawName) {
-    els.nameResult.innerHTML = `<p>Type a name to see a katakana form.</p>`;
+    els.nameResult.innerHTML = `<p>Type a name to get a Katakana helper suggestion.</p>`;
     return;
   }
-  const nameMatch = findNameTransliteration(rawName);
-  if (nameMatch) {
-    els.nameResult.innerHTML = `
-      <section>
-        <span>Curated name form</span>
-        <strong lang="ja">${nameMatch.katakana}</strong>
-        <p>${rawName} is usually written from the sound: ${nameMatch.sound}.</p>
-        <small>${nameMatch.note}</small>
-      </section>
-    `;
-    return;
-  }
-  const hiraganaGuess = romajiToHiragana(rawName);
-  const katakanaGuess = hiraganaToKatakana(hiraganaGuess);
-  if (/[a-z]/i.test(katakanaGuess)) {
+  const suggestion = JapanReadyNameHelper.suggestKatakanaName(rawName, n5Content.nameTransliterations);
+  if (!suggestion) {
     els.nameResult.innerHTML = `
       <section>
         <span>Needs pronunciation</span>
         <strong>Check sound first</strong>
-        <p>I could not make a reliable kana guess from the spelling alone.</p>
-        <small>Foreign names should be converted from pronunciation. Add this name to the curated list after confirming the common katakana form.</small>
+        <p>I could not make a reliable Katakana helper suggestion from the spelling alone.</p>
+        <small>Foreign names should be converted from pronunciation. Add this name to the curated list after confirming the common Katakana form.</small>
       </section>
     `;
     return;
   }
+  const label = suggestion.source === "curated" ? "Curated helper suggestion" : "Rough helper suggestion";
   els.nameResult.innerHTML = `
     <section>
-      <span>Rough kana guess</span>
-      <strong lang="ja">${katakanaGuess || "No result yet"}</strong>
-      <p>This is a spelling-based approximation. A real name form should be checked by pronunciation or a native speaker.</p>
-      <small>Foreign names normally use katakana, and English spelling can be misleading.</small>
+      <span>${label}</span>
+      <label class="input-label" for="nameSuggestionOutput">Editable Katakana</label>
+      <div class="name-output-row">
+        <input id="nameSuggestionOutput" class="name-output-edit" type="text" lang="ja" value="${escapeHtml(suggestion.katakana)}" aria-label="Editable Katakana suggestion">
+        <button class="secondary-action" type="button" data-copy-name>Copy</button>
+      </div>
+      <p>${escapeHtml(rawName)} was matched from the sound cue: ${escapeHtml(suggestion.sound)}.</p>
+      <small>${escapeHtml(suggestion.note)} Native review is recommended for official, personal, or printed use.</small>
     </section>
   `;
+}
+
+function copyNameSuggestion() {
+  const output = document.querySelector("#nameSuggestionOutput");
+  if (!output) return;
+  const status = els.nameResult.querySelector("small");
+  const value = output.value.trim();
+  if (!value) return;
+  const finish = (message) => {
+    if (status) status.textContent = message;
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(value)
+      .then(() => finish("Copied. Keep it editable and ask a fluent speaker before using it officially."))
+      .catch(() => finish("Could not copy automatically. You can still select and copy the editable Katakana."));
+    return;
+  }
+  output.select();
+  const copied = document.execCommand("copy");
+  finish(copied ? "Copied. Keep it editable and ask a fluent speaker before using it officially." : "Select the editable Katakana and copy it manually.");
 }
 
 function renderMiniCards() {
@@ -2389,6 +2409,11 @@ els.romajiInput.addEventListener("input", updateTyping);
 els.nameConvertButton.addEventListener("click", renderNameResult);
 els.nameInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") renderNameResult();
+});
+els.nameResult.addEventListener("click", (event) => {
+  if (event.target.closest("[data-copy-name]")) {
+    copyNameSuggestion();
+  }
 });
 
 els.kanjiLaterMessage.textContent = n5Content.kanjiLater.message;

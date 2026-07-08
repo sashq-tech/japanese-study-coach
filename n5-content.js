@@ -466,6 +466,20 @@ const n5Content = {
       note: "A common katakana form for Sarah/Sara."
     },
     {
+      input: ["emily", "emilie"],
+      katakana: "エミリー",
+      hiragana: "えみりー",
+      sound: "emirii",
+      note: "Emily is commonly adapted as エミリー, with the long vowel mark at the end."
+    },
+    {
+      input: ["mark", "marc"],
+      katakana: "マーク",
+      hiragana: "まーく",
+      sound: "maaku",
+      note: "Mark/Marc is commonly adapted as マーク, with the long vowel mark after マ."
+    },
+    {
       input: ["john", "jon"],
       katakana: "ジョン",
       hiragana: "じょん",

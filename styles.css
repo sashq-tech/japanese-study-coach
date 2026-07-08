@@ -1370,6 +1370,29 @@ button {
   line-height: 1.1;
 }
 
+.name-output-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.name-output-edit {
+  min-height: 54px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.name-output-row button {
+  min-height: 48px;
+}
+
 .name-result p,
 .name-result small {
   display: block;
@@ -2255,6 +2278,10 @@ textarea {
   }
 
   .name-helper-row {
+    grid-template-columns: 1fr;
+  }
+
+  .name-output-row {
     grid-template-columns: 1fr;
   }
 

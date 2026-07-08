@@ -296,13 +296,13 @@
         </div>
         <article class="name-helper-panel">
           <div>
-            <span class="panel-label">Name in Japanese</span>
-            <p class="section-copy">Foreign names usually use katakana and follow pronunciation, not English spelling. Try a name here for a curated result or a rough kana guess.</p>
+            <span class="panel-label">Katakana name helper</span>
+            <p class="section-copy">This is a helper, not a guaranteed translator. English spelling is inconsistent, and Japanese name forms depend on pronunciation and personal preference.</p>
           </div>
           <div class="name-helper-row">
             <label class="input-label" for="nameInput">English name</label>
             <input id="nameInput" type="text" autocomplete="off" placeholder="Try: Sean, Sarah, Michael">
-            <button id="nameConvertButton" type="button">Show Name</button>
+            <button id="nameConvertButton" type="button">Suggest Katakana</button>
           </div>
           <div id="nameResult" class="name-result" aria-live="polite"></div>
         </article>
@@ -523,6 +523,7 @@
 
   <script src="n5-content.js"></script>
   <script src="lessons.js"></script>
+  <script src="name-helper.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
