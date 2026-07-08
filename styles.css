@@ -1972,7 +1972,38 @@ textarea {
   font-size: 1.25rem;
 }
 
+.static-grid h3 {
+  margin: 0 0 10px;
+  font-size: 1.12rem;
+  line-height: 1.25;
+}
+
 .static-grid p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.blog-section {
+  display: grid;
+  gap: 14px;
+}
+
+.blog-section + .blog-section {
+  margin-top: 4px;
+}
+
+.blog-section-header {
+  max-width: 820px;
+}
+
+.blog-section-header h2 {
+  margin: 4px 0 8px;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.blog-section-header p {
   margin: 0;
   color: var(--muted);
   line-height: 1.55;
