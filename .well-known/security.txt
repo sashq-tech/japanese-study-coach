@@ -1,0 +1,6 @@
+Contact: mailto:contact@japanreadycoach.com
+Contact: https://japanreadycoach.com/contact
+Expires: 2027-06-30T23:59:00Z
+Preferred-Languages: en
+Canonical: https://japanreadycoach.com/.well-known/security.txt
+Policy: https://japanreadycoach.com/terms
