@@ -4,18 +4,19 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#c83f49">
-  <meta name="description" content="Contact Japan Ready Coach by email for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
+  <meta name="description" content="Contact Japan Ready Coach with a mailto contact form for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
   <link rel="canonical" href="https://japanreadycoach.com/contact">
   <meta property="og:title" content="Contact | Japan Ready Coach">
-  <meta property="og:description" content="Contact Japan Ready Coach by email for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
+  <meta property="og:description" content="Contact Japan Ready Coach with a mailto contact form for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://japanreadycoach.com/contact">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Contact | Japan Ready Coach">
-  <meta name="twitter:description" content="Contact Japan Ready Coach by email for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
+  <meta name="twitter:description" content="Contact Japan Ready Coach with a mailto contact form for corrections, privacy questions, accessibility issues, and practical Japan feedback.">
   <title>Contact | Japan Ready Coach</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","name":"Contact Japan Ready Coach","description":"Contact Japan Ready Coach for corrections, privacy questions, accessibility issues, and practical Japan feedback.","url":"https://japanreadycoach.com/contact","isPartOf":{"@type":"WebSite","name":"Japan Ready Coach","url":"https://japanreadycoach.com/"},"contactPoint":{"@type":"ContactPoint","email":"contact@japanreadycoach.com","contactType":"site feedback"}}</script>
 </head>
 <body>
   <main class="static-page">
@@ -31,22 +32,64 @@
     <header class="static-hero">
       <span class="panel-label">Contact</span>
       <h1>Contact Japan Ready Coach.</h1>
-      <p>Email <a href="mailto:contact@japanreadycoach.com">contact@japanreadycoach.com</a> for language corrections, practical Japan notes, privacy questions, accessibility issues, or site feedback.</p>
+      <p>Use the form below to prepare an email to <a href="mailto:contact@japanreadycoach.com">contact@japanreadycoach.com</a>. The site does not store or submit messages through a server.</p>
     </header>
 
-    <section class="static-grid">
-      <article>
-        <h2>Email</h2>
-        <p>The current contact path is <a href="mailto:contact@japanreadycoach.com">contact@japanreadycoach.com</a>. Corrections are easiest to act on when they include the page, phrase, and suggested change.</p>
+    <section class="contact-layout">
+      <article class="contact-form-panel">
+        <h2>Prepare an email message</h2>
+        <p class="contact-note-text">When you press the button, your browser opens a pre-filled email draft. Nothing is sent until you send it from your own email app.</p>
+        <form class="contact-form" id="contact-form" novalidate>
+          <div class="field">
+            <label for="contact-name">Your name</label>
+            <input id="contact-name" type="text" name="name" autocomplete="name" required placeholder="Jane Smith">
+          </div>
+          <div class="field">
+            <label for="contact-email">Your email</label>
+            <input id="contact-email" type="email" name="email" autocomplete="email" required placeholder="jane@example.com">
+          </div>
+          <div class="field">
+            <label for="contact-subject">Subject</label>
+            <select id="contact-subject" name="subject">
+              <option value="Language correction">Language correction</option>
+              <option value="Practical Japan note">Practical Japan note</option>
+              <option value="Site feedback">Site feedback</option>
+              <option value="Privacy question">Privacy question</option>
+              <option value="Accessibility issue">Accessibility issue</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="contact-page">Page or feature <span>(optional)</span></label>
+            <input id="contact-page" type="text" name="page" placeholder="Example: /blog/cash-cards-suica or Kana practice">
+          </div>
+          <div class="field">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" rows="6" required placeholder="Describe the correction, question, or suggestion..."></textarea>
+          </div>
+          <button class="contact-submit" type="submit">Open email draft</button>
+          <p class="contact-status" id="contact-status" role="status"></p>
+        </form>
       </article>
-      <article>
-        <h2>Language Corrections</h2>
-        <p>Japanese content should be reviewed by native speakers or qualified teachers. Corrections should include the phrase, context, and suggested wording.</p>
-      </article>
-      <article>
-        <h2>Repository</h2>
-        <p>Public project feedback can also use the GitHub repository: <a href="https://github.com/sashq-tech/japanese-study-coach" rel="noopener">github.com/sashq-tech/japanese-study-coach</a>. Do not include private personal information, account details, or sensitive travel/immigration information in public repository feedback.</p>
-      </article>
+
+      <aside class="contact-side-panel">
+        <section>
+          <h2>Direct email</h2>
+          <p>Email <a href="mailto:contact@japanreadycoach.com?subject=Japan%20Ready%20Coach%20Feedback">contact@japanreadycoach.com</a> if the button does not open your email app.</p>
+        </section>
+        <section>
+          <h2>Good feedback topics</h2>
+          <p>Language corrections, practical Japan notes, privacy questions, accessibility issues, broken links, and confusing beginner-study flow are all useful.</p>
+        </section>
+        <section>
+          <h2>Privacy note</h2>
+          <p>Do not send private travel documents, account details, passwords, immigration case details, or sensitive personal information. This static page does not collect or store the message.</p>
+        </section>
+        <section>
+          <h2>Repository</h2>
+          <p>Public project feedback can also use <a href="https://github.com/sashq-tech/japanese-study-coach" rel="noopener">GitHub</a>. Do not post private information there.</p>
+        </section>
+      </aside>
     </section>
 
     <footer class="site-footer static-footer">
@@ -54,5 +97,51 @@
       <a href="/">Return to app</a>
     </footer>
   </main>
+  <script>
+    (function () {
+      var form = document.getElementById("contact-form");
+      var status = document.getElementById("contact-status");
+      if (!form || !status) return;
+
+      function showStatus(message, tone) {
+        status.textContent = message;
+        status.className = "contact-status" + (tone ? " " + tone : "");
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var name = document.getElementById("contact-name").value.trim();
+        var email = document.getElementById("contact-email").value.trim();
+        var subject = document.getElementById("contact-subject").value;
+        var page = document.getElementById("contact-page").value.trim();
+        var message = document.getElementById("contact-message").value.trim();
+
+        if (!name || !email || !message) {
+          showStatus("Please fill in your name, email, and message.", "is-warning");
+          return;
+        }
+
+        if (!document.getElementById("contact-email").checkValidity()) {
+          showStatus("Please enter a valid email address.", "is-warning");
+          return;
+        }
+
+        var body = [
+          "Name: " + name,
+          "Email: " + email,
+          page ? "Page or feature: " + page : "",
+          "",
+          message
+        ].filter(Boolean).join("\n");
+
+        var mailto = "mailto:contact@japanreadycoach.com"
+          + "?subject=" + encodeURIComponent("[Japan Ready Coach] " + subject)
+          + "&body=" + encodeURIComponent(body);
+
+        window.location.href = mailto;
+        showStatus("Your email app should open with the message pre-filled. If it did not open, email contact@japanreadycoach.com directly.", "is-success");
+      });
+    })();
+  </script>
 </body>
 </html>

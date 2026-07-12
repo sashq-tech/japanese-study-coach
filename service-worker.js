@@ -1,4 +1,4 @@
-const CACHE_NAME = "japan-ready-coach-v31";
+const CACHE_NAME = "japan-ready-coach-v32";
 const APP_SHELL = [
   "./",
   "/",

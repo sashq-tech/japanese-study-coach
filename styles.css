@@ -2007,6 +2007,107 @@ textarea {
   line-height: 1.55;
 }
 
+.contact-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.contact-form-panel,
+.contact-side-panel section {
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.contact-form-panel h2,
+.contact-side-panel h2 {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
+}
+
+.contact-note-text,
+.contact-side-panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.contact-form .field {
+  display: grid;
+  gap: 7px;
+}
+
+.contact-form label {
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.contact-form label span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  width: 100%;
+  min-height: 46px;
+  padding: 10px 12px;
+  color: var(--ink);
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.contact-form select {
+  appearance: auto;
+}
+
+.contact-form textarea {
+  min-height: 150px;
+}
+
+.contact-submit {
+  justify-self: start;
+  min-height: 42px;
+  padding: 10px 16px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.contact-status {
+  min-height: 24px;
+  margin: 0;
+  color: var(--muted);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+.contact-status.is-warning {
+  color: var(--amber);
+}
+
+.contact-status.is-success {
+  color: var(--green);
+}
+
+.contact-side-panel {
+  display: grid;
+  gap: 14px;
+}
+
 .blog-section {
   display: grid;
   gap: 14px;
@@ -2108,6 +2209,7 @@ textarea {
   .review-row,
   .trust-panel,
   .static-grid,
+  .contact-layout,
   .review-queue-panel,
   .coverage-panel,
   .onboarding-choices,
