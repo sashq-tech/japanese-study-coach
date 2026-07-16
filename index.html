@@ -300,14 +300,31 @@
             <p id="quizFeedback" class="feedback" aria-live="polite"></p>
           </article>
 
-          <article class="chart-panel">
-            <div class="section-heading">
-              <span class="panel-label">Study chart</span>
-              <button id="toggleChartButton" type="button" aria-expanded="false">Reveal Chart</button>
-            </div>
-            <p class="section-copy">Closed during recognition practice so the quiz stays honest.</p>
-            <div id="kanaChart" class="kana-chart hidden"></div>
-          </article>
+          <div class="kana-support-stack">
+            <article class="chart-panel">
+              <div class="section-heading">
+                <span class="panel-label">Study chart</span>
+                <button id="toggleChartButton" type="button" aria-expanded="false">Reveal Chart</button>
+              </div>
+              <p class="section-copy">Closed during recognition practice so the quiz stays honest.</p>
+              <div id="kanaChart" class="kana-chart hidden"></div>
+            </article>
+
+            <article class="worksheet-panel">
+              <div class="section-heading">
+                <span class="panel-label">Stage 1 workbook</span>
+                <button id="printWorksheetButton" type="button">Print Worksheet</button>
+              </div>
+              <p class="section-copy">Workbook-style kana writing practice for paper, pencil, and repetition. This uses browser print only.</p>
+              <div class="worksheet-controls segmented-control" aria-label="Printable worksheet deck">
+                <button class="active" type="button" data-worksheet-deck="hiragana">Hiragana</button>
+                <button type="button" data-worksheet-deck="katakana">Katakana</button>
+                <button type="button" data-worksheet-deck="both">Both</button>
+              </div>
+              <div id="kanaWorksheet" class="kana-worksheet" aria-label="Printable kana worksheet"></div>
+              <p id="worksheetStatus" class="feedback" aria-live="polite"></p>
+            </article>
+          </div>
         </div>
       </section>
 

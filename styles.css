@@ -969,6 +969,11 @@ button {
   gap: 20px;
 }
 
+.kana-support-stack {
+  display: grid;
+  gap: 20px;
+}
+
 .app-section {
   scroll-margin-top: 24px;
 }
@@ -983,6 +988,7 @@ button {
 .chart-panel,
 .typing-panel,
 .name-helper-panel,
+.worksheet-panel,
 .coverage-panel,
 .checkpoint-panel,
 .sprint-panel,
@@ -998,6 +1004,7 @@ button {
 .chart-panel,
 .typing-panel,
 .name-helper-panel,
+.worksheet-panel,
 .coverage-panel,
 .checkpoint-panel,
 .sprint-panel,
@@ -1740,6 +1747,113 @@ button {
 .kana-chart span {
   color: var(--muted);
   font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.worksheet-panel .section-heading button {
+  min-height: 40px;
+  padding: 9px 13px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.worksheet-controls {
+  margin-top: 14px;
+}
+
+.kana-worksheet {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 14px;
+  background: #fbfcfc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.worksheet-title {
+  display: grid;
+  gap: 6px;
+}
+
+.worksheet-title strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.18rem;
+}
+
+.worksheet-title p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.worksheet-grid {
+  display: grid;
+  gap: 8px;
+  max-height: 420px;
+  overflow: auto;
+}
+
+.worksheet-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+}
+
+.worksheet-prompt {
+  display: grid;
+  place-items: center;
+  min-height: 54px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.worksheet-prompt em {
+  color: var(--red-dark);
+  font-size: 0.66rem;
+  font-style: normal;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.worksheet-prompt strong {
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.worksheet-prompt span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.worksheet-cells {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(42px, 1fr));
+  gap: 6px;
+}
+
+.worksheet-cells span {
+  display: grid;
+  place-items: center;
+  min-height: 54px;
+  background:
+    linear-gradient(to right, transparent calc(50% - 0.5px), #d7dedb calc(50% - 0.5px), #d7dedb calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    linear-gradient(to bottom, transparent calc(50% - 0.5px), #d7dedb calc(50% - 0.5px), #d7dedb calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+    #fff;
+  border: 1px solid #cfd9d5;
+  border-radius: 8px;
+}
+
+.worksheet-cells .trace {
+  color: rgba(128, 38, 31, 0.22);
+  font-size: 2rem;
   font-weight: 800;
 }
 
@@ -2557,7 +2671,8 @@ textarea {
 
   .roadmap-actions button,
   .roadmap-actions .compact-action,
-  .roadmap-resume button {
+  .roadmap-resume button,
+  .worksheet-panel .section-heading button {
     width: 100%;
   }
 
@@ -2575,6 +2690,14 @@ textarea {
 
   .kana-quiz-card strong.sound-card {
     font-size: 3.6rem;
+  }
+
+  .worksheet-row {
+    grid-template-columns: 62px minmax(0, 1fr);
+  }
+
+  .worksheet-cells {
+    grid-template-columns: repeat(3, minmax(42px, 1fr));
   }
 
   .n5-question-card strong,
@@ -2612,5 +2735,114 @@ textarea {
   .review-queue-actions strong {
     grid-column: 1 / -1;
     text-align: center;
+  }
+}
+
+@media print {
+  body.printing-worksheet {
+    background: #fff;
+  }
+
+  body.printing-worksheet .site-header,
+  body.printing-worksheet .sidebar,
+  body.printing-worksheet .top-bar,
+  body.printing-worksheet .scoreboard,
+  body.printing-worksheet .roadmap-panel,
+  body.printing-worksheet .scenario-band,
+  body.printing-worksheet .start-here-panel,
+  body.printing-worksheet .today-panel,
+  body.printing-worksheet .typing-panel,
+  body.printing-worksheet .coverage-panel,
+  body.printing-worksheet .checkpoint-panel,
+  body.printing-worksheet .sprint-panel,
+  body.printing-worksheet .n5-practice-panel,
+  body.printing-worksheet .review-queue-panel,
+  body.printing-worksheet .scenario-note,
+  body.printing-worksheet .trust-panel,
+  body.printing-worksheet .site-footer,
+  body.printing-worksheet .quiz-panel,
+  body.printing-worksheet .chart-panel,
+  body.printing-worksheet .worksheet-panel > .section-heading,
+  body.printing-worksheet .worksheet-panel > .section-copy,
+  body.printing-worksheet .worksheet-controls,
+  body.printing-worksheet #worksheetStatus {
+    display: none !important;
+  }
+
+  body.printing-worksheet .app-shell,
+  body.printing-worksheet .practice-grid,
+  body.printing-worksheet .kana-support-stack,
+  body.printing-worksheet #kanaSection,
+  body.printing-worksheet .worksheet-panel {
+    display: block !important;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 0;
+    box-shadow: none;
+  }
+
+  body.printing-worksheet .kana-worksheet {
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  body.printing-worksheet .worksheet-grid {
+    display: grid;
+    gap: 6px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  body.printing-worksheet .worksheet-title {
+    margin-bottom: 12px;
+  }
+
+  body.printing-worksheet .worksheet-title strong {
+    font-size: 18pt;
+  }
+
+  body.printing-worksheet .worksheet-title p,
+  body.printing-worksheet .panel-label {
+    color: #222;
+  }
+
+  body.printing-worksheet .worksheet-row {
+    break-inside: avoid;
+    grid-template-columns: 0.8in 1fr;
+    gap: 0.08in;
+    margin-bottom: 0.06in;
+  }
+
+  body.printing-worksheet .worksheet-prompt,
+  body.printing-worksheet .worksheet-cells span {
+    min-height: 0.52in;
+    border-color: #222;
+    border-radius: 0;
+  }
+
+  body.printing-worksheet .worksheet-cells {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.06in;
+  }
+
+  body.printing-worksheet .worksheet-cells span {
+    background:
+      linear-gradient(to right, transparent calc(50% - 0.5px), #bbb calc(50% - 0.5px), #bbb calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      linear-gradient(to bottom, transparent calc(50% - 0.5px), #bbb calc(50% - 0.5px), #bbb calc(50% + 0.5px), transparent calc(50% + 0.5px)),
+      #fff;
+  }
+
+  body.printing-worksheet .worksheet-prompt strong {
+    font-size: 18pt;
+  }
+
+  body.printing-worksheet .worksheet-cells .trace {
+    color: #bbb;
+    font-size: 20pt;
   }
 }
