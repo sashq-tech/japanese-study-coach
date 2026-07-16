@@ -6,15 +6,15 @@
   <meta name="theme-color" content="#c83f49">
   <meta name="msvalidate.01" content="FC369EE131EBAAE00FC1406DE58D0B36" />
   <meta name="websitelaunches-verification" content="6b9e86ee23a1762f4772934532dde976">
-  <meta name="description" content="Japan Ready Coach is a privacy-first Japanese study coach for beginners, focused on kana recognition, JLPT N5 basics, practical phrases, and daily practice.">
+  <meta name="description" content="Japan Ready Coach is a privacy-first Japanese study coach with a structured beginner path: kana first, then N5 vocabulary, grammar examples, and basic kanji.">
   <link rel="canonical" href="https://japanreadycoach.com/">
   <meta property="og:title" content="Japan Ready Coach">
-  <meta property="og:description" content="A privacy-first Japanese study coach for kana recognition, JLPT N5 basics, practical phrases, and daily practice.">
+  <meta property="og:description" content="A privacy-first Japanese study coach with a structured beginner path: kana first, then N5 vocabulary, grammar examples, and basic kanji.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://japanreadycoach.com/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Japan Ready Coach">
-  <meta name="twitter:description" content="A privacy-first Japanese study coach for kana recognition, JLPT N5 basics, practical phrases, and daily practice.">
+  <meta name="twitter:description" content="A privacy-first Japanese study coach with a structured beginner path: kana first, then N5 vocabulary, grammar examples, and basic kanji.">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Japan Ready">
   <title>Japan Ready Coach</title>
@@ -69,17 +69,55 @@
     <main class="lesson-area">
       <header class="top-bar">
         <div>
-          <p class="eyebrow">N5 Starter Dashboard</p>
-          <h2>Start with kana, then build small wins.</h2>
+          <p class="eyebrow">N5 Starter Path</p>
+          <h2>Start with kana, then follow the ladder.</h2>
         </div>
-        <div class="mode-tabs" aria-label="Practice sections">
-          <button class="active" type="button" data-section="kanaSection">Kana</button>
-          <button type="button" data-section="typingSection">Typing</button>
-          <button type="button" data-section="n5Section">N5 Basics</button>
-          <button type="button" data-section="checkpointSection">Checkpoint</button>
-          <button type="button" data-section="scenarioSection">Everyday Japan</button>
-        </div>
+        <details class="mode-drawer">
+          <summary>Practice tools</summary>
+          <div class="mode-tabs" aria-label="Practice sections">
+            <button class="active" type="button" data-section="kanaSection">Kana</button>
+            <button type="button" data-section="typingSection">Typing</button>
+            <button type="button" data-section="n5Section">N5 Basics</button>
+            <button type="button" data-section="checkpointSection">Checkpoint</button>
+            <button type="button" data-section="scenarioSection">Everyday Japan</button>
+          </div>
+        </details>
       </header>
+
+      <section class="roadmap-panel" aria-label="N5 structured learning path">
+        <div class="roadmap-intro">
+          <span class="panel-label">Structured N5 roadmap</span>
+          <h3>One step at a time.</h3>
+          <p>Japan Ready Coach now starts with the path instead of a wall of tools. The first job is kana. Vocabulary, grammar, and kanji stay visible as the ladder, but they do not need to compete for attention on day one.</p>
+          <div class="roadmap-actions">
+            <button type="button" data-section="kanaSection">Practice Step 1</button>
+            <button class="secondary-action compact-action" type="button" data-section="n5Section">Preview N5 basics</button>
+          </div>
+        </div>
+        <ol class="roadmap-steps">
+          <li class="current">
+            <span>Step 1</span>
+            <strong>Hiragana and Katakana</strong>
+            <p>Recognize kana, connect sounds, type without IME, and build confidence before kanji.</p>
+          </li>
+          <li>
+            <span>Step 2</span>
+            <strong>840 basic vocabulary words</strong>
+            <p>Grow in small practical groups instead of one giant list.</p>
+          </li>
+          <li>
+            <span>Step 3</span>
+            <strong>100 grammar example sentences</strong>
+            <p>Learn particles and patterns through short examples and checks.</p>
+          </li>
+          <li>
+            <span>Step 4</span>
+            <strong>100 basic kanji</strong>
+            <p>Add kanji after kana and starter N5 patterns feel familiar.</p>
+          </li>
+        </ol>
+        <p class="roadmap-later">Later N4-N1 can mirror this ladder: vocabulary, grammar, kanji, reading, review, and a checkpoint before moving on.</p>
+      </section>
 
       <section class="scenario-band foundation-band">
         <div>
