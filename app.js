@@ -160,6 +160,10 @@ const els = {
   correctCount: document.querySelector("#correctCount"),
   reviewCount: document.querySelector("#reviewCount"),
   streakCount: document.querySelector("#streakCount"),
+  roadmapResumeMeta: document.querySelector("#roadmapResumeMeta"),
+  roadmapResumeTitle: document.querySelector("#roadmapResumeTitle"),
+  roadmapResumeSummary: document.querySelector("#roadmapResumeSummary"),
+  roadmapResumeButton: document.querySelector("#roadmapResumeButton"),
   startHereTitle: document.querySelector("#startHereTitle"),
   startHereSummary: document.querySelector("#startHereSummary"),
   startHereActions: document.querySelector("#startHereActions"),
@@ -451,6 +455,7 @@ function renderProgress() {
   els.reviewCount.textContent = state.review;
   els.streakCount.textContent = state.streak;
   renderDeckProgress();
+  renderRoadmapResume();
   renderCheckpointProgress();
   renderStudyStats();
   renderReviewQueuePanel();
@@ -483,6 +488,106 @@ function getNextKanaTask() {
   if (hiragana.remaining > 0) return { deck: "hiragana", stats: hiragana };
   if (katakana.remaining > 0) return { deck: "katakana", stats: katakana };
   return null;
+}
+
+function getRoadmapResumeState() {
+  const dueItems = dueReviewItems();
+  const dueCount = dueItems.length;
+  if (dueCount) {
+    const dueMode = dueItems[0]?.mode;
+    const reviewStep = dueMode === "vocab"
+      ? 2
+      : ["particles", "grammar", "sentences"].includes(dueMode)
+        ? 3
+        : 1;
+    return {
+      step: reviewStep,
+      meta: "Current focus - review first",
+      title: "Review due weak items",
+      summary: `${dueCount} local review item${dueCount === 1 ? "" : "s"} due before adding more new material.`,
+      action: "review",
+      actionLabel: "Review Due"
+    };
+  }
+
+  const hiragana = deckStatsFor("hiragana");
+  const katakana = deckStatsFor("katakana");
+  const kanaTask = getNextKanaTask();
+  const hasUsefulProgress = state.correct > 0
+    || state.review > 0
+    || studyDayCount() > 0
+    || hiragana.mastered > 0
+    || katakana.mastered > 0
+    || Object.values(state.n5ModeCorrect).some((count) => count > 0);
+
+  if (kanaTask || !hasUsefulProgress) {
+    const deck = kanaTask?.deck || "hiragana";
+    const stats = kanaTask?.stats || hiragana;
+    return {
+      step: 1,
+      meta: hasUsefulProgress ? "Current focus - Step 1" : "Start here - Step 1",
+      title: `${deck === "katakana" ? "Katakana" : "Hiragana"} and kana confidence`,
+      summary: hasUsefulProgress
+        ? `${stats.mastered}/${stats.total} mastered in this deck. Keep the first lap focused on kana before kanji.`
+        : "No saved study progress found in this browser yet. Start with hiragana recognition.",
+      action: `kana:${deck}`,
+      actionLabel: hasUsefulProgress ? "Resume Kana" : "Start Step 1"
+    };
+  }
+
+  if ((state.n5ModeCorrect.vocab || 0) < N5_MODE_TARGETS.vocab) {
+    return {
+      step: 2,
+      meta: "Current focus - Step 2",
+      title: "Build basic vocabulary",
+      summary: `${state.n5ModeCorrect.vocab || 0}/${N5_MODE_TARGETS.vocab} starter vocabulary checks complete here. The larger roadmap target is about 840 words.`,
+      action: "n5:vocab",
+      actionLabel: "Practice Vocab"
+    };
+  }
+
+  const grammarModes = ["particles", "grammar", "sentences"];
+  const grammarTask = grammarModes
+    .map((mode) => ({
+      mode,
+      count: state.n5ModeCorrect[mode] || 0,
+      target: N5_MODE_TARGETS[mode] || 1
+    }))
+    .find((item) => item.count < item.target);
+  if (grammarTask) {
+    return {
+      step: 3,
+      meta: "Current focus - Step 3",
+      title: `Build ${n5ModeLabel(grammarTask.mode)}`,
+      summary: `${grammarTask.count}/${grammarTask.target} starter checks complete. Treat this as grammar guidance, not official JLPT readiness.`,
+      action: `n5:${grammarTask.mode}`,
+      actionLabel: "Practice Grammar"
+    };
+  }
+
+  return {
+    step: 4,
+    meta: "Next focus - Step 4",
+    title: "Kanji is next on the roadmap",
+    summary: "The 100-kanji path is planned. Use the checkpoint while kanji stays a later layer.",
+    action: "checkpoint",
+    actionLabel: "Open Checkpoint"
+  };
+}
+
+function renderRoadmapResume() {
+  if (!els.roadmapResumeTitle) return;
+  const focus = getRoadmapResumeState();
+  els.roadmapResumeMeta.textContent = focus.meta;
+  els.roadmapResumeTitle.textContent = focus.title;
+  els.roadmapResumeSummary.textContent = focus.summary;
+  els.roadmapResumeButton.textContent = focus.actionLabel;
+  els.roadmapResumeButton.dataset.roadmapAction = focus.action;
+  document.querySelectorAll("[data-roadmap-step]").forEach((step) => {
+    const stepNumber = Number(step.dataset.roadmapStep);
+    step.classList.toggle("current", stepNumber === focus.step);
+    step.classList.toggle("complete", stepNumber < focus.step);
+  });
 }
 
 function n5ModeLabel(mode) {
@@ -2233,28 +2338,28 @@ function showSection(id, options = {}) {
   }
 }
 
-function runTodayAction(action) {
+function runTodayAction(action, options = {}) {
   if (action === "mini-session") {
     startMiniSession();
     return;
   }
   if (action === "review") {
-    showSection("n5Section");
+    showSection("n5Section", options);
     startReviewQuestion();
     return;
   }
   if (action.startsWith("kana:")) {
-    showSection("kanaSection");
+    showSection("kanaSection", options);
     chooseDeck(action.split(":")[1]);
     return;
   }
   if (action.startsWith("n5:")) {
-    showSection("n5Section");
+    showSection("n5Section", options);
     chooseN5Mode(action.split(":")[1]);
     return;
   }
   if (action === "checkpoint") {
-    showSection("checkpointSection");
+    showSection("checkpointSection", options);
     if (!state.sprint.active && state.sprintBest < SPRINT_PASS_PERCENT) {
       startSprint();
     }
@@ -2281,6 +2386,10 @@ document.querySelectorAll("[data-section]").forEach((button) => {
 
 document.querySelectorAll("[data-n5-mode]").forEach((button) => {
   button.addEventListener("click", () => chooseN5Mode(button.dataset.n5Mode));
+});
+
+els.roadmapResumeButton.addEventListener("click", () => {
+  runTodayAction(els.roadmapResumeButton.dataset.roadmapAction, { reveal: true });
 });
 
 els.todayStudySteps.addEventListener("click", (event) => {

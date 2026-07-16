@@ -402,6 +402,44 @@ button {
   background: #f4f6f3;
 }
 
+.roadmap-resume {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.roadmap-resume span {
+  color: var(--red-dark);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.roadmap-resume strong {
+  font-size: 1.15rem;
+  line-height: 1.25;
+}
+
+.roadmap-resume p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.roadmap-resume button {
+  justify-self: start;
+  min-height: 40px;
+  padding: 9px 13px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
 .roadmap-steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -425,6 +463,11 @@ button {
 .roadmap-steps li.current {
   background: #fff8f4;
   border-color: #f0d5cd;
+}
+
+.roadmap-steps li.complete {
+  background: var(--mist);
+  border-color: #cfe1dc;
 }
 
 .roadmap-steps span {
@@ -2513,7 +2556,8 @@ textarea {
   }
 
   .roadmap-actions button,
-  .roadmap-actions .compact-action {
+  .roadmap-actions .compact-action,
+  .roadmap-resume button {
     width: 100%;
   }
 
