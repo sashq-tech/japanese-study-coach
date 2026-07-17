@@ -1541,6 +1541,13 @@ function worksheetGroupLabel(group) {
   }[group] || "all rows";
 }
 
+function worksheetModeLabel(mode) {
+  return {
+    trace: "trace practice",
+    quiz: "blank quiz"
+  }[mode] || "trace practice";
+}
+
 function worksheetGroupKeys(group) {
   return {
     vowels: ["vowels"],
@@ -1553,7 +1560,8 @@ function worksheetGroupKeys(group) {
 function activeWorksheetSettings() {
   return {
     deck: document.querySelector("[data-worksheet-deck].active")?.dataset.worksheetDeck || "hiragana",
-    group: document.querySelector("[data-worksheet-group].active")?.dataset.worksheetGroup || "all"
+    group: document.querySelector("[data-worksheet-group].active")?.dataset.worksheetGroup || "all",
+    mode: document.querySelector("[data-worksheet-mode].active")?.dataset.worksheetMode || "trace"
   };
 }
 
@@ -1573,64 +1581,115 @@ function worksheetItems(deck, group = "all") {
   return filterByGroup(n5Content.kanaDecks[safeDeck]).map((item) => ({ ...item, script }));
 }
 
-function renderKanaWorksheet(deck = "hiragana", group = "all") {
+function worksheetPrompt(item, mode, index, items) {
+  const scriptLabel = index === 0 || items[index - 1].script !== item.script ? `<em>${item.script}</em>` : "";
+  if (mode === "quiz") {
+    return `
+      ${scriptLabel}
+      <strong>${item.romaji}</strong>
+      <span>write kana</span>
+    `;
+  }
+  return `
+    ${scriptLabel}
+    <strong lang="ja">${item.kana}</strong>
+    <span>${item.romaji}</span>
+  `;
+}
+
+function worksheetCells(item, mode) {
+  if (mode === "quiz") {
+    return "<span></span><span></span><span></span><span></span><span></span>";
+  }
+  return `
+    <span class="trace" lang="ja">${item.kana}</span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  `;
+}
+
+function renderWorksheetAnswerKey(items, mode) {
+  if (mode !== "quiz") return "";
+  return `
+    <section class="worksheet-answer-key" aria-label="Worksheet answer key">
+      <strong>Answer key</strong>
+      <div>
+        ${items.map((item) => `
+          <span><b lang="ja">${item.kana}</b> ${item.romaji}</span>
+        `).join("")}
+      </div>
+    </section>
+  `;
+}
+
+function renderKanaWorksheet(deck = "hiragana", group = "all", mode = "trace") {
   if (!els.kanaWorksheet) return;
   const items = worksheetItems(deck, group);
-  const title = `${worksheetDeckLabel(deck)} writing worksheet`;
+  const safeMode = mode === "quiz" ? "quiz" : "trace";
+  const title = `${worksheetDeckLabel(deck)} ${safeMode === "quiz" ? "blank quiz" : "writing worksheet"}`;
+  const instructions = safeMode === "quiz"
+    ? "Write the kana from memory, then check the answer key."
+    : "Trace once, copy a few times, then try one from memory.";
   els.kanaWorksheet.innerHTML = `
     <section class="worksheet-title">
       <div>
         <span class="panel-label">Printable kana practice</span>
         <strong>${title}</strong>
       </div>
-      <p>${items.length} kana from ${worksheetGroupLabel(group)}. Trace once, copy a few times, then try one from memory.</p>
+      <p>${items.length} kana from ${worksheetGroupLabel(group)}. ${instructions}</p>
     </section>
     <div class="worksheet-grid">
       ${items.map((item, index) => `
-        <section class="worksheet-row">
+        <section class="worksheet-row ${safeMode === "quiz" ? "worksheet-row-quiz" : ""}">
           <div class="worksheet-prompt">
-            ${index === 0 || items[index - 1].script !== item.script ? `<em>${item.script}</em>` : ""}
-            <strong lang="ja">${item.kana}</strong>
-            <span>${item.romaji}</span>
+            ${worksheetPrompt(item, safeMode, index, items)}
           </div>
           <div class="worksheet-cells" aria-hidden="true">
-            <span class="trace" lang="ja">${item.kana}</span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            ${worksheetCells(item, safeMode)}
           </div>
         </section>
       `).join("")}
     </div>
+    ${renderWorksheetAnswerKey(items, safeMode)}
   `;
 }
 
-function setWorksheetDeck(deck, group = activeWorksheetSettings().group) {
+function updateWorksheetStatus(deck, group, mode) {
+  if (!els.worksheetStatus) return;
+  els.worksheetStatus.textContent = `${worksheetDeckLabel(deck)} ${worksheetModeLabel(mode)} ready for ${worksheetGroupLabel(group)}.`;
+  els.worksheetStatus.className = "feedback";
+}
+
+function setWorksheetDeck(deck, group = activeWorksheetSettings().group, mode = activeWorksheetSettings().mode) {
   document.querySelectorAll("[data-worksheet-deck]").forEach((button) => {
     button.classList.toggle("active", button.dataset.worksheetDeck === deck);
   });
-  renderKanaWorksheet(deck, group);
-  if (els.worksheetStatus) {
-    els.worksheetStatus.textContent = `${worksheetDeckLabel(deck)} worksheet ready for ${worksheetGroupLabel(group)}.`;
-    els.worksheetStatus.className = "feedback";
-  }
+  renderKanaWorksheet(deck, group, mode);
+  updateWorksheetStatus(deck, group, mode);
 }
 
-function setWorksheetGroup(group, deck = activeWorksheetSettings().deck) {
+function setWorksheetGroup(group, deck = activeWorksheetSettings().deck, mode = activeWorksheetSettings().mode) {
   document.querySelectorAll("[data-worksheet-group]").forEach((button) => {
     button.classList.toggle("active", button.dataset.worksheetGroup === group);
   });
-  renderKanaWorksheet(deck, group);
-  if (els.worksheetStatus) {
-    els.worksheetStatus.textContent = `${worksheetDeckLabel(deck)} worksheet ready for ${worksheetGroupLabel(group)}.`;
-    els.worksheetStatus.className = "feedback";
-  }
+  renderKanaWorksheet(deck, group, mode);
+  updateWorksheetStatus(deck, group, mode);
+}
+
+function setWorksheetMode(mode, settings = activeWorksheetSettings()) {
+  const safeMode = mode === "quiz" ? "quiz" : "trace";
+  document.querySelectorAll("[data-worksheet-mode]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.worksheetMode === safeMode);
+  });
+  renderKanaWorksheet(settings.deck, settings.group, safeMode);
+  updateWorksheetStatus(settings.deck, settings.group, safeMode);
 }
 
 function printKanaWorksheet() {
-  const { deck, group } = activeWorksheetSettings();
-  renderKanaWorksheet(deck, group);
+  const { deck, group, mode } = activeWorksheetSettings();
+  renderKanaWorksheet(deck, group, mode);
   document.body.classList.add("printing-worksheet");
   if (els.worksheetStatus) {
     els.worksheetStatus.textContent = "Opening browser print. Choose paper or Save as PDF from the print dialog.";
@@ -2510,6 +2569,10 @@ document.querySelectorAll("[data-worksheet-group]").forEach((button) => {
   button.addEventListener("click", () => setWorksheetGroup(button.dataset.worksheetGroup));
 });
 
+document.querySelectorAll("[data-worksheet-mode]").forEach((button) => {
+  button.addEventListener("click", () => setWorksheetMode(button.dataset.worksheetMode));
+});
+
 document.querySelectorAll("[data-section]").forEach((button) => {
   button.addEventListener("click", () => showSection(button.dataset.section, { reveal: true }));
 });
@@ -2665,7 +2728,7 @@ renderLevels();
 renderProgress();
 renderKanaModeButtons();
 renderKanaChart();
-renderKanaWorksheet(activeWorksheetSettings().deck, activeWorksheetSettings().group);
+renderKanaWorksheet(activeWorksheetSettings().deck, activeWorksheetSettings().group, activeWorksheetSettings().mode);
 renderMiniCards();
 renderCoverageStats();
 renderScenario();

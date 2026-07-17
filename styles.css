@@ -1767,8 +1767,13 @@ button {
   margin-top: 8px;
 }
 
-.worksheet-filter button {
+.worksheet-filter button,
+.worksheet-mode button {
   background: #fbfcfc;
+}
+
+.worksheet-mode {
+  margin-top: 8px;
 }
 
 .kana-worksheet {
@@ -1841,6 +1846,11 @@ button {
   font-weight: 800;
 }
 
+.worksheet-row-quiz .worksheet-prompt strong {
+  color: var(--red-dark);
+  font-size: 1.15rem;
+}
+
 .worksheet-cells {
   display: grid;
   grid-template-columns: repeat(5, minmax(42px, 1fr));
@@ -1863,6 +1873,42 @@ button {
   color: rgba(128, 38, 31, 0.22);
   font-size: 2rem;
   font-weight: 800;
+}
+
+.worksheet-answer-key {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.worksheet-answer-key strong {
+  color: var(--red-dark);
+  font-size: 0.92rem;
+}
+
+.worksheet-answer-key div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.worksheet-answer-key span {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 5px 7px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.worksheet-answer-key b {
+  color: var(--ink);
+  font-size: 1rem;
 }
 
 .input-label {
@@ -2852,5 +2898,21 @@ textarea {
   body.printing-worksheet .worksheet-cells .trace {
     color: #bbb;
     font-size: 20pt;
+  }
+
+  body.printing-worksheet .worksheet-answer-key {
+    margin-top: 0.18in;
+    padding-top: 0.12in;
+    border-top-color: #222;
+  }
+
+  body.printing-worksheet .worksheet-answer-key div {
+    gap: 0.05in;
+  }
+
+  body.printing-worksheet .worksheet-answer-key span {
+    border-color: #222;
+    border-radius: 0;
+    color: #222;
   }
 }
