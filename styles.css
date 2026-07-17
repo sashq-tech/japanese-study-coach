@@ -1763,6 +1763,14 @@ button {
   margin-top: 14px;
 }
 
+.worksheet-filter {
+  margin-top: 8px;
+}
+
+.worksheet-filter button {
+  background: #fbfcfc;
+}
+
 .kana-worksheet {
   display: grid;
   gap: 12px;
