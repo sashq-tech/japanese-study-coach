@@ -79,7 +79,7 @@
         </div>
         <details class="mode-drawer">
           <summary>Practice tools</summary>
-          <div class="mode-tabs" aria-label="Practice sections">
+          <div class="mode-tabs" role="group" aria-label="Practice sections">
             <button class="active" type="button" data-section="kanaSection" aria-controls="kanaSection" aria-pressed="true">Kana</button>
             <button type="button" data-section="typingSection" aria-controls="typingSection" aria-pressed="false">Typing</button>
             <button type="button" data-section="n5Section" aria-controls="n5Section" aria-pressed="false">N5 Basics</button>
@@ -146,11 +146,11 @@
         </div>
         <div class="study-tracker" aria-label="Study timer and progress">
           <div class="study-timer-display" id="studyTimerDisplay">15:00</div>
-          <div class="study-duration-picker" aria-label="Study timer length">
-            <button class="active" type="button" data-study-minutes="15">15</button>
-            <button type="button" data-study-minutes="30">30</button>
-            <button type="button" data-study-minutes="45">45</button>
-            <button type="button" data-study-minutes="60">60</button>
+          <div class="study-duration-picker" role="group" aria-label="Study timer length">
+            <button class="active" type="button" data-study-minutes="15" aria-pressed="true">15</button>
+            <button type="button" data-study-minutes="30" aria-pressed="false">30</button>
+            <button type="button" data-study-minutes="45" aria-pressed="false">45</button>
+            <button type="button" data-study-minutes="60" aria-pressed="false">60</button>
           </div>
           <div class="study-actions">
             <button id="startStudyButton" type="button">Start</button>
@@ -207,7 +207,7 @@
           <strong id="onboardingStatus">Beginner-safe</strong>
         </div>
         <p id="onboardingSummary" class="section-copy">Start with kana recognition, then move into N5 basics when the sounds feel familiar.</p>
-        <div id="onboardingChoices" class="onboarding-choices"></div>
+        <div id="onboardingChoices" class="onboarding-choices" role="group" aria-label="Initial study focus"></div>
         <article class="focus-intro" aria-label="Selected focus introduction">
           <div>
             <span id="focusIntroLabel">Tiny lesson</span>
@@ -283,13 +283,13 @@
             <div class="section-heading">
               <span class="panel-label">Kana recognition</span>
               <div class="kana-controls">
-                <div class="segmented-control" aria-label="Kana deck">
-                  <button class="active" type="button" data-deck="hiragana">Hiragana</button>
-                  <button type="button" data-deck="katakana">Katakana</button>
+                <div class="segmented-control" role="group" aria-label="Kana deck">
+                  <button class="active" type="button" data-deck="hiragana" aria-pressed="true">Hiragana</button>
+                  <button type="button" data-deck="katakana" aria-pressed="false">Katakana</button>
                 </div>
-                <div class="segmented-control" aria-label="Kana quiz direction">
-                  <button class="active" type="button" data-kana-mode="recognition">Kana -> Sound</button>
-                  <button type="button" data-kana-mode="reverse">Sound -> Kana</button>
+                <div class="segmented-control" role="group" aria-label="Kana quiz direction">
+                  <button class="active" type="button" data-kana-mode="recognition" aria-pressed="true">Kana -> Sound</button>
+                  <button type="button" data-kana-mode="reverse" aria-pressed="false">Sound -> Kana</button>
                 </div>
               </div>
             </div>
@@ -332,21 +332,21 @@
                 <button id="printWorksheetButton" type="button">Print Worksheet</button>
               </div>
               <p class="section-copy">Workbook-style kana writing practice for paper, pencil, and repetition. This uses browser print only.</p>
-              <div class="worksheet-controls segmented-control" aria-label="Printable worksheet deck">
-                <button class="active" type="button" data-worksheet-deck="hiragana">Hiragana</button>
-                <button type="button" data-worksheet-deck="katakana">Katakana</button>
-                <button type="button" data-worksheet-deck="both">Both</button>
+              <div class="worksheet-controls segmented-control" role="group" aria-label="Printable worksheet deck">
+                <button class="active" type="button" data-worksheet-deck="hiragana" aria-pressed="true">Hiragana</button>
+                <button type="button" data-worksheet-deck="katakana" aria-pressed="false">Katakana</button>
+                <button type="button" data-worksheet-deck="both" aria-pressed="false">Both</button>
               </div>
-              <div class="worksheet-controls worksheet-filter segmented-control" aria-label="Printable worksheet row group">
-                <button class="active" type="button" data-worksheet-group="all">All Rows</button>
-                <button type="button" data-worksheet-group="vowels">Vowels</button>
-                <button type="button" data-worksheet-group="kst">K/S/T</button>
-                <button type="button" data-worksheet-group="nhm">N/H/M</button>
-                <button type="button" data-worksheet-group="yrw">Y/R/W</button>
+              <div class="worksheet-controls worksheet-filter segmented-control" role="group" aria-label="Printable worksheet row group">
+                <button class="active" type="button" data-worksheet-group="all" aria-pressed="true">All Rows</button>
+                <button type="button" data-worksheet-group="vowels" aria-pressed="false">Vowels</button>
+                <button type="button" data-worksheet-group="kst" aria-pressed="false">K/S/T</button>
+                <button type="button" data-worksheet-group="nhm" aria-pressed="false">N/H/M</button>
+                <button type="button" data-worksheet-group="yrw" aria-pressed="false">Y/R/W</button>
               </div>
-              <div class="worksheet-controls worksheet-mode segmented-control" aria-label="Printable worksheet mode">
-                <button class="active" type="button" data-worksheet-mode="trace">Trace</button>
-                <button type="button" data-worksheet-mode="quiz">Blank Quiz</button>
+              <div class="worksheet-controls worksheet-mode segmented-control" role="group" aria-label="Printable worksheet mode">
+                <button class="active" type="button" data-worksheet-mode="trace" aria-pressed="true">Trace</button>
+                <button type="button" data-worksheet-mode="quiz" aria-pressed="false">Blank Quiz</button>
               </div>
               <div id="kanaWorksheet" class="kana-worksheet" aria-label="Printable kana worksheet"></div>
               <p id="worksheetStatus" class="feedback" aria-live="polite"></p>
@@ -448,11 +448,11 @@
               <span class="panel-label">N5 practice loop</span>
               <h3 id="n5PracticeTitle">Vocabulary check</h3>
             </div>
-            <div class="segmented-control" aria-label="N5 practice mode">
-              <button class="active" type="button" data-n5-mode="vocab">Vocab</button>
-              <button type="button" data-n5-mode="particles">Particles</button>
-              <button type="button" data-n5-mode="grammar">Grammar</button>
-              <button type="button" data-n5-mode="sentences">Sentences</button>
+            <div class="segmented-control" role="group" aria-label="N5 practice mode">
+              <button class="active" type="button" data-n5-mode="vocab" aria-pressed="true">Vocab</button>
+              <button type="button" data-n5-mode="particles" aria-pressed="false">Particles</button>
+              <button type="button" data-n5-mode="grammar" aria-pressed="false">Grammar</button>
+              <button type="button" data-n5-mode="sentences" aria-pressed="false">Sentences</button>
             </div>
           </div>
           <div class="n5-question-card">

@@ -2620,6 +2620,25 @@ textarea {
   min-height: 150px;
 }
 
+.contact-form .field.has-error input,
+.contact-form .field.has-error textarea {
+  border-color: var(--red-dark);
+  box-shadow: 0 0 0 2px rgba(159, 37, 51, 0.14);
+}
+
+.field-error {
+  min-height: 0;
+  margin: 0;
+  color: var(--red-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.field-error:empty {
+  display: none;
+}
+
 .contact-submit {
   justify-self: start;
   min-height: 42px;

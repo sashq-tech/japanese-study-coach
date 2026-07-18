@@ -318,6 +318,16 @@ if (sidebarProgressDrawer && window.matchMedia("(max-width: 980px)").matches) {
   sidebarProgressDrawer.open = false;
 }
 
+function syncPressedState(selector, isSelected) {
+  const buttons = [...document.querySelectorAll(selector)];
+  buttons.forEach((button) => {
+    const selected = Boolean(isSelected(button));
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+  return buttons;
+}
+
 const romajiMap = [
   ["kya", "きゃ"], ["kyu", "きゅ"], ["kyo", "きょ"],
   ["sha", "しゃ"], ["shu", "しゅ"], ["sho", "しょ"],
@@ -1002,7 +1012,7 @@ function renderOnboardingPanel() {
     </section>
   `).join("");
   els.onboardingChoices.innerHTML = onboardingOptions().map((option) => `
-    <button class="${option.key === active ? "active" : ""}" type="button" data-onboarding-focus="${option.key}">
+    <button class="${option.key === active ? "active" : ""}" type="button" data-onboarding-focus="${option.key}" aria-pressed="${option.key === active}">
       <span>${option.label}</span>
       <strong>${option.title}</strong>
       <em>${option.detail}</em>
@@ -1325,8 +1335,9 @@ function renderStudyStats() {
   els.studyMilestoneText.textContent = hours >= STUDY_MILESTONES[STUDY_MILESTONES.length - 1]
     ? `Long-range milestone reached: ${N1_NO_KANJI_UPPER_HOURS.toLocaleString()} hours.`
     : `Next milestone: ${nextMilestone.toLocaleString()} hours (${remainingToMilestone.toFixed(1)} left). N1 estimate for English speakers: ${N1_NO_KANJI_LOWER_HOURS.toLocaleString()}-${N1_NO_KANJI_UPPER_HOURS.toLocaleString()} hours.`;
-  document.querySelectorAll("[data-study-minutes]").forEach((button) => {
-    button.classList.toggle("active", Number(button.dataset.studyMinutes) === state.selectedStudyMinutes);
+  syncPressedState("[data-study-minutes]", (button) => (
+    Number(button.dataset.studyMinutes) === state.selectedStudyMinutes
+  )).forEach((button) => {
     button.disabled = state.studyTimer.running;
   });
 }
@@ -1705,26 +1716,20 @@ function updateWorksheetStatus(deck, group, mode) {
 }
 
 function setWorksheetDeck(deck, group = activeWorksheetSettings().group, mode = activeWorksheetSettings().mode) {
-  document.querySelectorAll("[data-worksheet-deck]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.worksheetDeck === deck);
-  });
+  syncPressedState("[data-worksheet-deck]", (button) => button.dataset.worksheetDeck === deck);
   renderKanaWorksheet(deck, group, mode);
   updateWorksheetStatus(deck, group, mode);
 }
 
 function setWorksheetGroup(group, deck = activeWorksheetSettings().deck, mode = activeWorksheetSettings().mode) {
-  document.querySelectorAll("[data-worksheet-group]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.worksheetGroup === group);
-  });
+  syncPressedState("[data-worksheet-group]", (button) => button.dataset.worksheetGroup === group);
   renderKanaWorksheet(deck, group, mode);
   updateWorksheetStatus(deck, group, mode);
 }
 
 function setWorksheetMode(mode, settings = activeWorksheetSettings()) {
   const safeMode = mode === "quiz" ? "quiz" : "trace";
-  document.querySelectorAll("[data-worksheet-mode]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.worksheetMode === safeMode);
-  });
+  syncPressedState("[data-worksheet-mode]", (button) => button.dataset.worksheetMode === safeMode);
   renderKanaWorksheet(settings.deck, settings.group, safeMode);
   updateWorksheetStatus(settings.deck, settings.group, safeMode);
 }
@@ -1745,18 +1750,14 @@ function printKanaWorksheet() {
 
 function chooseDeck(deck) {
   state.deck = deck;
-  document.querySelectorAll("[data-deck]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.deck === deck);
-  });
+  syncPressedState("[data-deck]", (button) => button.dataset.deck === deck);
   renderKanaChart();
   renderDeckProgress();
   startQuiz();
 }
 
 function renderKanaModeButtons() {
-  document.querySelectorAll("[data-kana-mode]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.kanaMode === state.kanaMode);
-  });
+  syncPressedState("[data-kana-mode]", (button) => button.dataset.kanaMode === state.kanaMode);
 }
 
 function chooseKanaMode(mode) {
@@ -2223,9 +2224,7 @@ function nextSprintQuestion() {
 
 function chooseN5Mode(mode) {
   state.n5Mode = mode;
-  document.querySelectorAll("[data-n5-mode]").forEach((button) => {
-    button.classList.toggle("active", button.dataset.n5Mode === mode);
-  });
+  syncPressedState("[data-n5-mode]", (button) => button.dataset.n5Mode === mode);
   startN5Question();
 }
 
@@ -2683,9 +2682,7 @@ function showSection(id, options = {}) {
   document.querySelectorAll("[data-section]").forEach((button) => {
     button.classList.toggle("active", button.dataset.section === id);
   });
-  document.querySelectorAll(".mode-tabs [data-section]").forEach((button) => {
-    button.setAttribute("aria-pressed", String(button.dataset.section === id));
-  });
+  syncPressedState(".mode-tabs [data-section]", (button) => button.dataset.section === id);
   if (options.reveal) {
     window.requestAnimationFrame(() => revealActiveSection(activeSection));
   }

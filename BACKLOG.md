@@ -73,12 +73,15 @@ Resolved in the front-door consolidation release:
 - The roadmap Resume action and active Kana workspace now appear before the optional guidance stack.
 - Practice-section buttons expose one current `aria-pressed` state and retain direct focus routing.
 
+Resolved in the accessibility and Contact polish release:
+
+- Timer, calibration, Kana, worksheet, and N5 single-select button groups expose synchronized `aria-pressed` state.
+- Contact validation marks every invalid required field, provides inline guidance, and focuses the first field needing attention without changing the truthful mailto flow.
+
 Severity-ranked follow-up:
 
-1. **Medium - remaining selected-control semantics:** the central Practice tools mode switch now reports `aria-pressed`, but N5 modes, timer lengths, kana choices, worksheet filters, and calibration choices still rely mainly on visual `.active` state. Add semantics group by group in bounded passes.
-2. **Medium - Contact form validation:** invalid submission uses a shared status message but does not mark or focus the first invalid field. Add field-level `aria-invalid`, descriptions, and focus without changing the truthful mailto workflow.
-3. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
-4. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
+1. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
+2. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
 
 ### Staged Reading Scenarios
 

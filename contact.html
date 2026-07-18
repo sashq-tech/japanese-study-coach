@@ -42,11 +42,13 @@
         <form class="contact-form" id="contact-form" novalidate>
           <div class="field">
             <label for="contact-name">Your name</label>
-            <input id="contact-name" type="text" name="name" autocomplete="name" required placeholder="Jane Smith">
+            <input id="contact-name" type="text" name="name" autocomplete="name" required placeholder="Jane Smith" aria-describedby="contact-name-error">
+            <p class="field-error" id="contact-name-error"></p>
           </div>
           <div class="field">
             <label for="contact-email">Your email</label>
-            <input id="contact-email" type="email" name="email" autocomplete="email" required placeholder="jane@example.com">
+            <input id="contact-email" type="email" name="email" autocomplete="email" required placeholder="jane@example.com" aria-describedby="contact-email-error">
+            <p class="field-error" id="contact-email-error"></p>
           </div>
           <div class="field">
             <label for="contact-subject">Subject</label>
@@ -65,7 +67,8 @@
           </div>
           <div class="field">
             <label for="contact-message">Message</label>
-            <textarea id="contact-message" name="message" rows="6" required placeholder="Describe the correction, question, or suggestion..."></textarea>
+            <textarea id="contact-message" name="message" rows="6" required placeholder="Describe the correction, question, or suggestion..." aria-describedby="contact-message-error"></textarea>
+            <p class="field-error" id="contact-message-error"></p>
           </div>
           <button class="contact-submit" type="submit">Open email draft</button>
           <p class="contact-status" id="contact-status" role="status"></p>
@@ -103,10 +106,51 @@
       var status = document.getElementById("contact-status");
       if (!form || !status) return;
 
+      var requiredFields = [
+        { field: document.getElementById("contact-name"), empty: "Enter your name." },
+        { field: document.getElementById("contact-email"), empty: "Enter your email address.", invalid: "Enter a valid email address." },
+        { field: document.getElementById("contact-message"), empty: "Enter a message." }
+      ];
+
       function showStatus(message, tone) {
         status.textContent = message;
         status.className = "contact-status" + (tone ? " " + tone : "");
       }
+
+      function clearFieldError(field) {
+        var error = document.getElementById(field.getAttribute("aria-describedby"));
+        field.removeAttribute("aria-invalid");
+        field.closest(".field").classList.remove("has-error");
+        if (error) error.textContent = "";
+      }
+
+      function fieldError(item) {
+        if (!item.field.value.trim()) return item.empty;
+        if (item.field.type === "email" && !item.field.checkValidity()) return item.invalid;
+        return "";
+      }
+
+      function validateForm() {
+        var invalid = [];
+        requiredFields.forEach(function (item) {
+          var message = fieldError(item);
+          clearFieldError(item.field);
+          if (!message) return;
+          var error = document.getElementById(item.field.getAttribute("aria-describedby"));
+          item.field.setAttribute("aria-invalid", "true");
+          item.field.closest(".field").classList.add("has-error");
+          if (error) error.textContent = message;
+          invalid.push(item);
+        });
+        return invalid;
+      }
+
+      requiredFields.forEach(function (item) {
+        item.field.addEventListener("input", function () {
+          clearFieldError(item.field);
+          if (status.classList.contains("is-warning")) showStatus("", "");
+        });
+      });
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
@@ -116,13 +160,11 @@
         var page = document.getElementById("contact-page").value.trim();
         var message = document.getElementById("contact-message").value.trim();
 
-        if (!name || !email || !message) {
-          showStatus("Please fill in your name, email, and message.", "is-warning");
-          return;
-        }
-
-        if (!document.getElementById("contact-email").checkValidity()) {
-          showStatus("Please enter a valid email address.", "is-warning");
+        var invalid = validateForm();
+        if (invalid.length) {
+          var firstLabel = form.querySelector("label[for='" + invalid[0].field.id + "']").textContent.trim();
+          showStatus("Please correct the highlighted " + (invalid.length === 1 ? "field" : "fields") + ". Start with " + firstLabel + ".", "is-warning");
+          invalid[0].field.focus();
           return;
         }
 
@@ -138,8 +180,8 @@
           + "?subject=" + encodeURIComponent("[Japan Ready Coach] " + subject)
           + "&body=" + encodeURIComponent(body);
 
-        window.location.href = mailto;
         showStatus("Your email app should open with the message pre-filled. If it did not open, email contact@japanreadycoach.com directly.", "is-success");
+        window.location.href = mailto;
       });
     })();
   </script>
