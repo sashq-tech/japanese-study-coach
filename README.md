@@ -33,6 +33,8 @@ Recommended public description:
 - Teaches a tiny focus intro, then offers a guided five-question mini-session.
 - Shows a local-only Resume Snapshot for returning learners.
 - Routes into Today's Study Path for due review, kana, N5 practice, checkpoint sprint, and study timer logging.
+- Keeps the roadmap and active Kana workspace prominent while timer, calibration, mini-session, Today, and reflection tools remain available inside one Guided study plan disclosure.
+- Collapses progress and JLPT levels on small screens while keeping them open by default in the desktop sidebar.
 - Tracks weak items locally and schedules short review passes.
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.

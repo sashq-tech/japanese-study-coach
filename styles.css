@@ -124,6 +124,44 @@ button {
   padding: 18px;
 }
 
+.sidebar-progress-drawer,
+.sidebar-progress-content {
+  display: grid;
+  gap: 16px;
+}
+
+.sidebar-progress-drawer > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 8px 10px;
+  color: var(--red-dark);
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 900;
+  list-style: none;
+  cursor: pointer;
+}
+
+.sidebar-progress-drawer > summary::-webkit-details-marker,
+.study-guide-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.sidebar-progress-drawer > summary::after,
+.study-guide-drawer > summary::after {
+  content: "+";
+  font-size: 1.1rem;
+}
+
+.sidebar-progress-drawer[open] > summary::after,
+.study-guide-drawer[open] > summary::after {
+  content: "-";
+}
+
 .progress-panel > div:first-child {
   display: flex;
   justify-content: space-between;
@@ -306,6 +344,42 @@ button {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.study-guide-drawer > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 58px;
+  padding: 12px 16px;
+  color: var(--ink);
+  background: var(--mist);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.study-guide-drawer > summary span {
+  display: grid;
+  gap: 3px;
+}
+
+.study-guide-drawer > summary strong {
+  color: var(--red-dark);
+  font-size: 1rem;
+}
+
+.study-guide-drawer > summary small {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.study-guide-content {
+  display: grid;
+  gap: 20px;
+  padding-top: 20px;
 }
 
 .lesson-area {
@@ -2705,6 +2779,8 @@ textarea {
   }
 
   .sidebar {
+    gap: 10px;
+    padding: 16px;
     border-right: 0;
     border-bottom: 1px solid var(--line);
   }
@@ -2797,6 +2873,10 @@ textarea {
   .mode-drawer,
   .mode-drawer summary {
     width: 100%;
+  }
+
+  .study-guide-drawer > summary {
+    align-items: flex-start;
   }
 
   .mode-drawer,
@@ -2947,6 +3027,7 @@ textarea {
   body.printing-worksheet .top-bar,
   body.printing-worksheet .scoreboard,
   body.printing-worksheet .roadmap-panel,
+  body.printing-worksheet .study-guide-drawer,
   body.printing-worksheet .scenario-band,
   body.printing-worksheet .start-here-panel,
   body.printing-worksheet .onboarding-panel,

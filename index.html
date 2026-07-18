@@ -38,32 +38,37 @@
         <a href="/contact">Contact</a>
       </nav>
 
-      <section class="progress-panel" aria-label="Progress">
-        <div>
-          <span class="panel-label">N5 Foundation</span>
-          <strong id="readinessScore">0%</strong>
-        </div>
-        <div class="meter" aria-hidden="true">
-          <span id="readinessBar"></span>
-        </div>
-        <dl class="stats-grid">
-          <div>
-            <dt>Correct</dt>
-            <dd id="correctCount">0</dd>
-          </div>
-          <div>
-            <dt>Review</dt>
-            <dd id="reviewCount">0</dd>
-          </div>
-          <div>
-            <dt>Streak</dt>
-            <dd id="streakCount">0</dd>
-          </div>
-        </dl>
-        <button id="resetProgressButton" class="secondary-action" type="button">Reset Score</button>
-      </section>
+      <details class="sidebar-progress-drawer" open>
+        <summary>Progress and JLPT levels</summary>
+        <div class="sidebar-progress-content">
+          <section class="progress-panel" aria-label="Progress">
+            <div>
+              <span class="panel-label">N5 Foundation</span>
+              <strong id="readinessScore">0%</strong>
+            </div>
+            <div class="meter" aria-hidden="true">
+              <span id="readinessBar"></span>
+            </div>
+            <dl class="stats-grid">
+              <div>
+                <dt>Correct</dt>
+                <dd id="correctCount">0</dd>
+              </div>
+              <div>
+                <dt>Review</dt>
+                <dd id="reviewCount">0</dd>
+              </div>
+              <div>
+                <dt>Streak</dt>
+                <dd id="streakCount">0</dd>
+              </div>
+            </dl>
+            <button id="resetProgressButton" class="secondary-action" type="button">Reset Score</button>
+          </section>
 
-      <nav class="level-list" id="levelList" aria-label="JLPT progression"></nav>
+          <nav class="level-list" id="levelList" aria-label="JLPT progression"></nav>
+        </div>
+      </details>
     </aside>
 
     <main class="lesson-area">
@@ -75,12 +80,12 @@
         <details class="mode-drawer">
           <summary>Practice tools</summary>
           <div class="mode-tabs" aria-label="Practice sections">
-            <button class="active" type="button" data-section="kanaSection">Kana</button>
-            <button type="button" data-section="typingSection">Typing</button>
-            <button type="button" data-section="n5Section">N5 Basics</button>
-            <button type="button" data-section="readingSection">Reading</button>
-            <button type="button" data-section="checkpointSection">Checkpoint</button>
-            <button type="button" data-section="scenarioSection">Everyday Japan</button>
+            <button class="active" type="button" data-section="kanaSection" aria-controls="kanaSection" aria-pressed="true">Kana</button>
+            <button type="button" data-section="typingSection" aria-controls="typingSection" aria-pressed="false">Typing</button>
+            <button type="button" data-section="n5Section" aria-controls="n5Section" aria-pressed="false">N5 Basics</button>
+            <button type="button" data-section="readingSection" aria-controls="readingSection" aria-pressed="false">Reading</button>
+            <button type="button" data-section="checkpointSection" aria-controls="checkpointSection" aria-pressed="false">Checkpoint</button>
+            <button type="button" data-section="scenarioSection" aria-controls="scenarioSection" aria-pressed="false">Everyday Japan</button>
           </div>
         </details>
       </header>
@@ -126,6 +131,14 @@
         <p class="roadmap-later">Later N4-N1 can mirror this ladder: vocabulary, grammar, kanji, reading, review, and a checkpoint before moving on.</p>
       </section>
 
+      <details class="study-guide-drawer">
+        <summary>
+          <span>
+            <strong>Guided study plan</strong>
+            <small>Timer, calibration, mini-session, today's path, and reflection</small>
+          </span>
+        </summary>
+        <div class="study-guide-content">
       <section class="scenario-band foundation-band">
         <div>
           <span class="scenario-tag">Beginner ramp</span>
@@ -261,6 +274,8 @@
           <button id="reflectionActionButton" type="button" data-today-action="timer">Start Timer</button>
         </article>
       </section>
+        </div>
+      </details>
 
       <section id="kanaSection" class="app-section" aria-label="Kana practice">
         <div class="practice-grid">

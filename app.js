@@ -313,6 +313,11 @@ const els = {
   phraseCards: document.querySelector("#phraseCards")
 };
 
+const sidebarProgressDrawer = document.querySelector(".sidebar-progress-drawer");
+if (sidebarProgressDrawer && window.matchMedia("(max-width: 980px)").matches) {
+  sidebarProgressDrawer.open = false;
+}
+
 const romajiMap = [
   ["kya", "きゃ"], ["kyu", "きゅ"], ["kyo", "きょ"],
   ["sha", "しゃ"], ["shu", "しゅ"], ["sho", "しょ"],
@@ -2677,6 +2682,9 @@ function showSection(id, options = {}) {
   });
   document.querySelectorAll("[data-section]").forEach((button) => {
     button.classList.toggle("active", button.dataset.section === id);
+  });
+  document.querySelectorAll(".mode-tabs [data-section]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.section === id));
   });
   if (options.reveal) {
     window.requestAnimationFrame(() => revealActiveSection(activeSection));

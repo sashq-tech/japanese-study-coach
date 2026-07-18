@@ -66,13 +66,19 @@ Resolved in the reading-practice release:
 - Mode-target sections have accessible names and retain a visible keyboard focus indicator.
 - Stale future-hosting copy and the homepage sitemap date were corrected.
 
+Resolved in the front-door consolidation release:
+
+- Mobile progress/JLPT details now start collapsed, while desktop keeps them open in the sidebar.
+- Beginner Ramp, timer, Start Here, calibration, mini-session, Today's Path, and reflection remain intact inside one Guided study plan disclosure.
+- The roadmap Resume action and active Kana workspace now appear before the optional guidance stack.
+- Practice-section buttons expose one current `aria-pressed` state and retain direct focus routing.
+
 Severity-ranked follow-up:
 
-1. **High - front-door density:** the active Kana workspace remains far below several onboarding, timer, calibration, mini-session, Today, and reflection surfaces on a small screen. Next pass should consolidate repeated guidance and keep only the current step plus one next action open by default. This needs a deliberate information-architecture pass, not a small patch.
-2. **Medium - selected-control semantics:** Practice tools, N5 modes, timer lengths, kana choices, worksheet filters, and calibration choices rely mainly on visual `.active` state. Add consistent `aria-pressed` or tab/segmented-control semantics group by group.
-3. **Medium - Contact form validation:** invalid submission uses a shared status message but does not mark or focus the first invalid field. Add field-level `aria-invalid`, descriptions, and focus without changing the truthful mailto workflow.
-4. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
-5. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
+1. **Medium - remaining selected-control semantics:** the central Practice tools mode switch now reports `aria-pressed`, but N5 modes, timer lengths, kana choices, worksheet filters, and calibration choices still rely mainly on visual `.active` state. Add semantics group by group in bounded passes.
+2. **Medium - Contact form validation:** invalid submission uses a shared status message but does not mark or focus the first invalid field. Add field-level `aria-invalid`, descriptions, and focus without changing the truthful mailto workflow.
+3. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
+4. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
 
 ### Staged Reading Scenarios
 
