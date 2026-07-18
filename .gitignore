@@ -1,0 +1,15 @@
+# Local project notes and Obsidian metadata
+Japan Ready Coach/
+**/.obsidian/
+
+# Browser and test artifacts
+.playwright-cli/
+.test-artifacts/
+playwright-report/
+test-results/
+output/
+
+# Local logs and operating-system files
+*.log
+.DS_Store
+Thumbs.db
