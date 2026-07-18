@@ -30,12 +30,23 @@ const PROGRESS_STORAGE_KEYS = [
   REVIEW_NOTES_STORAGE_KEY
 ];
 
+function parseStoredJson(key, fallback) {
+  const value = localStorage.getItem(key);
+  if (value === null || value === "") return fallback;
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
 function loadKanaHits() {
-  const savedHits = localStorage.getItem("jrj-kana-hits");
-  if (savedHits) return JSON.parse(savedHits);
-  const previousMastered = JSON.parse(localStorage.getItem("jrj-mastered-kana") || '{"hiragana":[],"katakana":[]}');
+  const savedHits = parseStoredJson("jrj-kana-hits", null);
+  if (savedHits && typeof savedHits === "object" && !Array.isArray(savedHits)) return savedHits;
+  const previousMastered = parseStoredJson("jrj-mastered-kana", { hiragana: [], katakana: [] });
   const hits = { hiragana: {}, katakana: {} };
   Object.keys(previousMastered).forEach((deck) => {
+    if (!Array.isArray(previousMastered[deck]) || !hits[deck]) return;
     previousMastered[deck].forEach((key) => {
       hits[deck][key] = MASTERY_TARGET;
     });
@@ -44,7 +55,8 @@ function loadKanaHits() {
 }
 
 function loadModeCorrect() {
-  const saved = JSON.parse(localStorage.getItem("jrj-n5-mode-correct") || "{}");
+  const parsed = parseStoredJson("jrj-n5-mode-correct", {});
+  const saved = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   return {
     vocab: saved.vocab || 0,
     particles: saved.particles || 0,
@@ -54,7 +66,8 @@ function loadModeCorrect() {
 }
 
 function loadStudyStats() {
-  const saved = JSON.parse(localStorage.getItem("jrj-study-stats") || "{}");
+  const parsed = parseStoredJson("jrj-study-stats", {});
+  const saved = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   return {
     days: saved.days || {},
     sessions: saved.sessions || []
@@ -62,11 +75,12 @@ function loadStudyStats() {
 }
 
 function loadN5ReviewQueue() {
-  return JSON.parse(localStorage.getItem("jrj-n5-review-queue") || "[]");
+  const saved = parseStoredJson("jrj-n5-review-queue", []);
+  return Array.isArray(saved) ? saved : [];
 }
 
 function loadSprintHistory() {
-  const saved = JSON.parse(localStorage.getItem("jrj-n5-sprint-history") || "[]");
+  const saved = parseStoredJson("jrj-n5-sprint-history", []);
   if (!Array.isArray(saved)) return [];
   return saved.slice(0, 20).map((attempt) => ({
     completedAt: Number.isNaN(Date.parse(attempt.completedAt)) ? new Date().toISOString() : attempt.completedAt,
@@ -88,7 +102,8 @@ function freshSessionReflection() {
 }
 
 function loadSessionReflection() {
-  const saved = JSON.parse(localStorage.getItem("jrj-session-reflection") || "{}");
+  const parsed = parseStoredJson("jrj-session-reflection", {});
+  const saved = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
   if (saved.date !== todayKey()) return freshSessionReflection();
   return {
     ...freshSessionReflection(),
@@ -99,7 +114,8 @@ function loadSessionReflection() {
 }
 
 function loadMiniSessionSummary() {
-  return JSON.parse(localStorage.getItem("jrj-mini-session-summary") || "{}");
+  const saved = parseStoredJson("jrj-mini-session-summary", {});
+  return saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
 }
 
 const state = {
@@ -150,6 +166,13 @@ const state = {
     answered: false,
     current: null,
     latest: loadMiniSessionSummary()
+  },
+  reading: {
+    scenarioIndex: 0,
+    questionIndex: 0,
+    answered: false,
+    complete: false,
+    completed: new Set()
   }
 };
 
@@ -270,6 +293,17 @@ const els = {
   grammarList: document.querySelector("#grammarList"),
   starterPhraseList: document.querySelector("#starterPhraseList"),
   kanjiLaterMessage: document.querySelector("#kanjiLaterMessage"),
+  readingSetProgress: document.querySelector("#readingSetProgress"),
+  readingScenarioList: document.querySelector("#readingScenarioList"),
+  readingScenarioMeta: document.querySelector("#readingScenarioMeta"),
+  readingScenarioTitle: document.querySelector("#readingScenarioTitle"),
+  readingPassage: document.querySelector("#readingPassage"),
+  readingClues: document.querySelector("#readingClues"),
+  readingQuestionMeta: document.querySelector("#readingQuestionMeta"),
+  readingQuestionText: document.querySelector("#readingQuestionText"),
+  readingChoices: document.querySelector("#readingChoices"),
+  readingFeedback: document.querySelector("#readingFeedback"),
+  nextReadingButton: document.querySelector("#nextReadingButton"),
   reviewNotesInput: document.querySelector("#reviewNotesInput"),
   notesStatus: document.querySelector("#notesStatus"),
   missionList: document.querySelector("#missionList"),
@@ -1212,13 +1246,16 @@ function renderSessionReflection() {
 }
 
 function renderLevels() {
-  els.levelList.innerHTML = n5Content.levels.map((level) => `
-    <button class="level-button ${level.status}" type="button">
+  els.levelList.innerHTML = n5Content.levels.map((level) => {
+    const isActive = level.status === "active";
+    return `
+    <button class="level-button ${level.status}" type="button" ${isActive ? 'data-level-target="kanaSection"' : 'disabled aria-disabled="true"'}>
       <span>${level.label}</span>
-      <strong>${level.status === "active" ? "Start here" : "Locked for later"}</strong>
+      <strong>${isActive ? "Start here" : "Locked for later"}</strong>
       <em>${level.description}</em>
     </button>
-  `).join("");
+  `;
+  }).join("");
 }
 
 function sample(list, count) {
@@ -2495,6 +2532,133 @@ function renderScenario() {
   renderMissions();
 }
 
+function currentReadingScenario() {
+  return readingScenarios[state.reading.scenarioIndex];
+}
+
+function renderReadingScenarioList() {
+  els.readingScenarioList.innerHTML = readingScenarios.map((scenario, index) => {
+    const isActive = index === state.reading.scenarioIndex && !state.reading.complete;
+    const isComplete = state.reading.completed.has(scenario.id);
+    return `
+      <button type="button" data-reading-scenario="${index}" ${isActive ? 'aria-current="step"' : ""}>
+        <span>Scene ${index + 1}${isComplete ? " - complete" : ""}</span>
+        <strong lang="ja">${scenario.title}</strong>
+      </button>
+    `;
+  }).join("");
+}
+
+function renderReadingQuestion() {
+  const scenario = currentReadingScenario();
+  const question = scenario.questions[state.reading.questionIndex];
+  els.readingQuestionMeta.textContent = `Question ${state.reading.questionIndex + 1} of ${scenario.questions.length}`;
+  els.readingQuestionText.textContent = question.prompt;
+  els.readingChoices.innerHTML = question.choices.map((choice) => `
+    <button type="button" data-reading-choice="${choice}">${choice}</button>
+  `).join("");
+  els.readingFeedback.textContent = "";
+  els.readingFeedback.className = "feedback";
+  els.nextReadingButton.disabled = true;
+  els.nextReadingButton.textContent = state.reading.questionIndex + 1 < scenario.questions.length
+    ? "Next Question"
+    : state.reading.scenarioIndex + 1 < readingScenarios.length
+      ? "Next Scene"
+      : "Finish Set";
+}
+
+function renderReadingCompletion() {
+  els.readingScenarioMeta.textContent = "Reading set complete";
+  els.readingScenarioTitle.textContent = "よくできました";
+  els.readingPassage.lang = "en";
+  els.readingPassage.textContent = "You finished five small hiragana scenes and ten comprehension checks.";
+  els.readingClues.closest("details").hidden = true;
+  els.readingQuestionMeta.textContent = "Session summary";
+  els.readingQuestionText.textContent = "Choose a scene to practice again, or restart the set.";
+  els.readingChoices.innerHTML = "";
+  els.readingFeedback.textContent = "Results stay in this browser session only. No account or server is used.";
+  els.readingFeedback.className = "feedback success";
+  els.nextReadingButton.textContent = "Restart Reading Set";
+  els.nextReadingButton.disabled = false;
+  renderReadingScenarioList();
+}
+
+function renderReadingScenario() {
+  els.readingSetProgress.textContent = `${state.reading.completed.size} / ${readingScenarios.length} complete`;
+  if (state.reading.complete) {
+    renderReadingCompletion();
+    return;
+  }
+  const scenario = currentReadingScenario();
+  els.readingScenarioMeta.textContent = `Scenario ${state.reading.scenarioIndex + 1} of ${readingScenarios.length}`;
+  els.readingScenarioTitle.textContent = scenario.title;
+  els.readingPassage.lang = "ja";
+  els.readingPassage.textContent = scenario.passage;
+  els.readingClues.closest("details").hidden = false;
+  els.readingClues.innerHTML = scenario.clues.map(([word, meaning]) => `
+    <span><b lang="ja">${word}</b>${meaning}</span>
+  `).join("");
+  renderReadingScenarioList();
+  renderReadingQuestion();
+}
+
+function chooseReadingScenario(index) {
+  state.reading.scenarioIndex = index;
+  state.reading.questionIndex = 0;
+  state.reading.answered = false;
+  state.reading.complete = false;
+  renderReadingScenario();
+  els.readingPassage.focus({ preventScroll: true });
+}
+
+function answerReadingQuestion(choice) {
+  if (state.reading.answered || state.reading.complete) return;
+  const question = currentReadingScenario().questions[state.reading.questionIndex];
+  const correct = choice === question.answer;
+  state.reading.answered = true;
+  els.readingChoices.querySelectorAll("button").forEach((button) => {
+    button.disabled = true;
+    if (button.dataset.readingChoice === question.answer) button.classList.add("correct-answer");
+    if (!correct && button.dataset.readingChoice === choice) button.classList.add("wrong-answer");
+  });
+  els.readingFeedback.textContent = `${correct ? "Correct" : `Not quite. The answer is ${question.answer}`}. ${question.explanation}`;
+  els.readingFeedback.className = correct ? "feedback success" : "feedback needs-review";
+  els.nextReadingButton.disabled = false;
+  els.readingFeedback.focus({ preventScroll: true });
+}
+
+function advanceReadingPractice() {
+  if (state.reading.complete) {
+    state.reading = {
+      scenarioIndex: 0,
+      questionIndex: 0,
+      answered: false,
+      complete: false,
+      completed: new Set()
+    };
+    renderReadingScenario();
+    return;
+  }
+  if (!state.reading.answered) return;
+  const scenario = currentReadingScenario();
+  if (state.reading.questionIndex + 1 < scenario.questions.length) {
+    state.reading.questionIndex += 1;
+    state.reading.answered = false;
+    renderReadingQuestion();
+    els.readingQuestionText.focus?.({ preventScroll: true });
+    return;
+  }
+  state.reading.completed.add(scenario.id);
+  state.reading.questionIndex = 0;
+  state.reading.answered = false;
+  if (state.reading.scenarioIndex + 1 < readingScenarios.length) {
+    state.reading.scenarioIndex += 1;
+  } else {
+    state.reading.complete = true;
+  }
+  renderReadingScenario();
+}
+
 function revealActiveSection(section) {
   if (!section) return;
   if (!section.hasAttribute("tabindex")) {
@@ -2576,6 +2740,26 @@ document.querySelectorAll("[data-worksheet-mode]").forEach((button) => {
 document.querySelectorAll("[data-section]").forEach((button) => {
   button.addEventListener("click", () => showSection(button.dataset.section, { reveal: true }));
 });
+
+els.levelList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-level-target]");
+  if (!button) return;
+  showSection(button.dataset.levelTarget, { reveal: true });
+});
+
+els.readingScenarioList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-reading-scenario]");
+  if (!button) return;
+  chooseReadingScenario(Number(button.dataset.readingScenario));
+});
+
+els.readingChoices.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-reading-choice]");
+  if (!button) return;
+  answerReadingQuestion(button.dataset.readingChoice);
+});
+
+els.nextReadingButton.addEventListener("click", advanceReadingPractice);
 
 document.querySelectorAll("[data-n5-mode]").forEach((button) => {
   button.addEventListener("click", () => chooseN5Mode(button.dataset.n5Mode));
@@ -2729,6 +2913,7 @@ renderProgress();
 renderKanaModeButtons();
 renderKanaChart();
 renderKanaWorksheet(activeWorksheetSettings().deck, activeWorksheetSettings().group, activeWorksheetSettings().mode);
+renderReadingScenario();
 renderMiniCards();
 renderCoverageStats();
 renderScenario();

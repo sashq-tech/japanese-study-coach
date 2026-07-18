@@ -8,9 +8,9 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 
 - Live apex domain: `https://japanreadycoach.com/`
 - Public routes verified: `/`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
-- Current launch posture: browser-based public site, localStorage progress, no accounts, no backend, no analytics, and beginner/N5 scope.
+- Current launch posture: browser-based public site, localStorage progress, no accounts, no backend, and beginner/N5 scope.
 - Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and local human review notes save feedback.
-- Next sensible backlog area: keep improving beginner N5 retention/review quality before expanding into larger N4+ content or a more formal human review workflow.
+- Current product focus: a structured N5 path with kana first, short reading practice, and calm progressive disclosure before broader N4+ content.
 
 ## Human Launch Checklist
 
@@ -23,7 +23,7 @@ Recommended public description:
 - IndexNow: key file is `https://japanreadycoach.com/8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6.txt`; manual submit example: `https://www.bing.com/indexnow?url=https://japanreadycoach.com/&key=8f0d6c4e7a2b4c90a1e3f5b7d9c2e4a6`.
 - Cloudflare/domain sanity: keep verifying HTTPS, apex `200` responses, `robots.txt`, `sitemap.xml`, and extensionless trust-page routes. Do not advertise `www` until it resolves or redirects correctly.
 - Directory/community positioning: present the site as a privacy-first Japanese study coach for beginners and Japan move preparation. For WebsiteLaunches or similar directories, avoid implying official JLPT certification, full N5 coverage, accounts, sync, or guaranteed language accuracy.
-- Trust copy before broad promotion: add a real public contact channel when ready, then re-check Privacy/Terms copy for the actual launch posture.
+- Trust copy: public contact is available at `contact@japanreadycoach.com`; re-check Privacy/Terms whenever advertising or storage behavior changes.
 
 ## What It Does
 
@@ -36,6 +36,7 @@ Recommended public description:
 - Tracks weak items locally and schedules short review passes.
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
+- Adds five hiragana-only reading scenes with ten session-only comprehension checks under the collapsed Practice tools area.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
 - Provides a lightweight static Blog section with a starter first-person practical note: Cash, Cards, and Suica in Japan.
 
@@ -65,7 +66,7 @@ Later roadmap:
 - Human review workflow
 - Listening/audio practice
 - N4-N1 progression
-- Mobile/PWA polish after a hosting target exists
+- Continued mobile/PWA polish on the live domain
 
 ## How To Run
 
@@ -85,6 +86,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content
+- `reading-scenarios.js` - five hiragana-only micro-scenarios and comprehension checks
 - `manifest.webmanifest`, `service-worker.js`, `icon.svg` - PWA groundwork for hosted/local-server use
 - `BACKLOG.md` - roadmap and learning progression ideas
 

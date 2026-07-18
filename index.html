@@ -78,6 +78,7 @@
             <button class="active" type="button" data-section="kanaSection">Kana</button>
             <button type="button" data-section="typingSection">Typing</button>
             <button type="button" data-section="n5Section">N5 Basics</button>
+            <button type="button" data-section="readingSection">Reading</button>
             <button type="button" data-section="checkpointSection">Checkpoint</button>
             <button type="button" data-section="scenarioSection">Everyday Japan</button>
           </div>
@@ -261,7 +262,7 @@
         </article>
       </section>
 
-      <section id="kanaSection" class="app-section">
+      <section id="kanaSection" class="app-section" aria-label="Kana practice">
         <div class="practice-grid">
           <article class="quiz-panel">
             <div class="section-heading">
@@ -339,7 +340,43 @@
         </div>
       </section>
 
-      <section id="typingSection" class="app-section hidden">
+      <section id="readingSection" class="app-section hidden" aria-label="Hiragana reading practice">
+        <article class="reading-panel">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">Stage 1 reading practice</span>
+              <h3>Read one small scene at a time.</h3>
+            </div>
+            <strong id="readingSetProgress">0 / 5 complete</strong>
+          </div>
+          <p class="section-copy">These first five scenes use hiragana only. Questions are in English so you can focus on understanding the short Japanese passage. Examples are learning aids, not official JLPT material.</p>
+          <div class="reading-layout">
+            <nav id="readingScenarioList" class="reading-scenario-list" aria-label="Hiragana reading scenarios"></nav>
+            <div class="reading-workspace">
+              <article class="reading-passage-card">
+                <span id="readingScenarioMeta">Scenario 1 of 5</span>
+                <h4 id="readingScenarioTitle" lang="ja">あさのみず</h4>
+                <p id="readingPassage" lang="ja" tabindex="-1"></p>
+                <details class="reading-help">
+                  <summary>Need a word clue?</summary>
+                  <div id="readingClues" class="reading-clues"></div>
+                </details>
+              </article>
+              <section class="reading-question-card" aria-labelledby="readingQuestionText">
+                <span id="readingQuestionMeta">Question 1 of 2</span>
+                <h4 id="readingQuestionText" tabindex="-1">Loading question</h4>
+                <div id="readingChoices" class="choice-grid" aria-label="Reading answer choices"></div>
+                <p id="readingFeedback" class="feedback" aria-live="polite" tabindex="-1"></p>
+                <div class="quiz-actions">
+                  <button id="nextReadingButton" type="button" disabled>Next Question</button>
+                </div>
+              </section>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section id="typingSection" class="app-section hidden" aria-label="Japanese typing practice">
         <div class="practice-grid">
           <article class="typing-panel">
             <span class="panel-label">No-IME typing practice</span>
@@ -380,7 +417,7 @@
         </article>
       </section>
 
-      <section id="n5Section" class="app-section hidden">
+      <section id="n5Section" class="app-section hidden" aria-label="N5 basics practice">
         <section class="coverage-panel" aria-label="N5 content coverage snapshot">
           <div>
             <span class="panel-label">N5 coverage target</span>
@@ -449,7 +486,7 @@
         </div>
       </section>
 
-      <section id="checkpointSection" class="app-section hidden">
+      <section id="checkpointSection" class="app-section hidden" aria-label="N5 checkpoint practice">
         <article class="checkpoint-panel">
           <div class="section-heading">
             <div>
@@ -504,7 +541,7 @@
         </article>
       </section>
 
-      <section id="scenarioSection" class="app-section hidden">
+      <section id="scenarioSection" class="app-section hidden" aria-label="Everyday Japan practice">
         <div class="scenario-note">
           <span class="panel-label">Later practice</span>
           <p>These Japan-life missions are still here, but they belong after the N5 foundation starts to feel familiar.</p>
@@ -532,7 +569,7 @@
         <article>
           <span class="panel-label">Privacy</span>
           <h3>No account. No server. No tracking.</h3>
-          <p>Progress, study timers, review items, and notes stay in this browser's local storage. Export a backup before switching browsers or devices. A future hosted version should keep this privacy-first model unless a sync feature is clearly introduced.</p>
+          <p>Progress, study timers, review items, and notes stay in this browser's local storage. Export a backup before switching browsers or devices. This site keeps that privacy-first model unless a sync feature is clearly introduced.</p>
         </article>
         <article>
           <span class="panel-label">Learning scope</span>
@@ -595,6 +632,7 @@
 
   <script src="n5-content.js"></script>
   <script src="lessons.js"></script>
+  <script src="reading-scenarios.js"></script>
   <script src="name-helper.js"></script>
   <script src="app.js"></script>
 </body>

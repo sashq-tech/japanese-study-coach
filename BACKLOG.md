@@ -56,6 +56,31 @@ Current status: no active post-launch known issues are tracked here after the in
 
 Recommended next area: continue strengthening beginner N5 retention and review flow before adding broader N4+ content or larger human review workflows.
 
+### 2026-07-18 Deep Audit
+
+Resolved in the reading-practice release:
+
+- Malformed local progress JSON now falls back safely instead of stopping app startup.
+- The collapsed Practice tools row stays contained and horizontally scrollable at 390px after adding Reading.
+- N4-N1 ladder controls are now disabled while locked; the active N5 control opens Kana practice.
+- Mode-target sections have accessible names and retain a visible keyboard focus indicator.
+- Stale future-hosting copy and the homepage sitemap date were corrected.
+
+Severity-ranked follow-up:
+
+1. **High - front-door density:** the active Kana workspace remains far below several onboarding, timer, calibration, mini-session, Today, and reflection surfaces on a small screen. Next pass should consolidate repeated guidance and keep only the current step plus one next action open by default. This needs a deliberate information-architecture pass, not a small patch.
+2. **Medium - selected-control semantics:** Practice tools, N5 modes, timer lengths, kana choices, worksheet filters, and calibration choices rely mainly on visual `.active` state. Add consistent `aria-pressed` or tab/segmented-control semantics group by group.
+3. **Medium - Contact form validation:** invalid submission uses a shared status message but does not mark or focus the first invalid field. Add field-level `aria-invalid`, descriptions, and focus without changing the truthful mailto workflow.
+4. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
+5. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
+
+### Staged Reading Scenarios
+
+- Current app includes five hiragana-only micro-scenarios with two English comprehension checks each.
+- Reading is a focused door inside collapsed Practice tools and does not add another landing-page panel.
+- Results are session-only; no account, backend, or permanent reading score is implied.
+- Next slice: review the five passages for naturalness, then add a second set using hiragana plus carefully introduced katakana without changing the calm entry path.
+
 ### Returning Learner Continuity
 
 - Current app includes a compact Start Here nudge that routes to mini-session, kana, review, or N5 basics.
