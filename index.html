@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=44">
+  <link rel="stylesheet" href="styles.css?v=46">
 </head>
 <body>
   <div class="app-shell">
@@ -78,7 +78,7 @@
           <h2>Start with kana, then follow the ladder.</h2>
         </div>
         <details class="mode-drawer">
-          <summary>Practice tools</summary>
+          <summary>Practice Extras</summary>
           <div class="mode-tabs" role="group" aria-label="Practice sections">
             <button class="active" type="button" data-section="kanaSection" aria-controls="kanaSection" aria-pressed="true">Kana</button>
             <button type="button" data-section="typingSection" aria-controls="typingSection" aria-pressed="false">Typing</button>
@@ -116,16 +116,19 @@
             <span>Step 2</span>
             <strong>840 basic vocabulary words</strong>
             <p>Grow in small practical groups instead of one giant list.</p>
+            <small>Planned target. The current app does not cover all 840 words yet.</small>
           </li>
           <li data-roadmap-step="3">
             <span>Step 3</span>
             <strong>100 grammar example sentences</strong>
             <p>Learn particles and patterns through short examples and checks.</p>
+            <small>Planned target. The current app does not include all 100 sentences yet.</small>
           </li>
           <li data-roadmap-step="4">
             <span>Step 4</span>
             <strong>100 basic kanji</strong>
             <p>Add kanji after kana and starter N5 patterns feel familiar.</p>
+            <small>Planned target. The current app does not include the 100-kanji path yet.</small>
           </li>
         </ol>
         <p class="roadmap-later">Later N4-N1 can mirror this ladder: vocabulary, grammar, kanji, reading, review, and a checkpoint before moving on.</p>
@@ -278,6 +281,46 @@
       </details>
 
       <section id="kanaSection" class="app-section" aria-label="Kana practice">
+        <article class="kana-lesson-panel" aria-labelledby="kanaLessonTitle">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">Stage 1 guided lessons</span>
+              <h3 id="kanaLessonTitle" tabindex="-1">Start with five Hiragana cards.</h3>
+            </div>
+            <strong id="kanaLessonSetStatus">Starter row 1 of 10</strong>
+          </div>
+          <p class="section-copy">Each row is a five-card lesson. Get every card right once to complete the row, then use Continue. This starter set covers the vowel, K, S, T, and N rows in Hiragana and Katakana; it is not the full kana chart.</p>
+          <div class="kana-lesson-decks segmented-control" role="group" aria-label="Kana lesson script">
+            <button class="active" type="button" data-kana-lesson-deck="hiragana" aria-pressed="true">Hiragana</button>
+            <button type="button" data-kana-lesson-deck="katakana" aria-pressed="false">Katakana</button>
+          </div>
+          <nav id="kanaLessonRows" class="kana-lesson-rows" aria-label="Kana row lessons"></nav>
+          <div class="kana-lesson-workspace">
+            <div class="kana-lesson-progress">
+              <div>
+                <span id="kanaLessonMeta">Hiragana - Vowel row</span>
+                <strong id="kanaLessonProgressLabel">0 / 5 cards complete</strong>
+              </div>
+              <div class="meter" aria-hidden="true"><span id="kanaLessonProgressBar"></span></div>
+            </div>
+            <div class="kana-lesson-card">
+              <span id="kanaLessonCardMeta">Card 1 of 5</span>
+              <strong id="kanaLessonKana" lang="ja">あ</strong>
+              <p id="kanaLessonPrompt">Choose the matching sound.</p>
+            </div>
+            <div id="kanaLessonChoices" class="choice-grid" aria-label="Kana lesson answer choices"></div>
+            <p id="kanaLessonFeedback" class="feedback" aria-live="polite"></p>
+            <button id="kanaLessonContinue" class="kana-lesson-continue" type="button" disabled>Continue</button>
+          </div>
+        </article>
+
+        <details id="kanaExtrasDrawer" class="kana-extras-drawer">
+          <summary>
+            <span>
+              <strong>More Kana Tools</strong>
+              <small>Full mastery deck, reverse quiz, chart, and printable worksheets</small>
+            </span>
+          </summary>
         <div class="practice-grid">
           <article class="quiz-panel">
             <div class="section-heading">
@@ -353,6 +396,7 @@
             </article>
           </div>
         </div>
+        </details>
       </section>
 
       <section id="readingSection" class="app-section hidden" aria-label="Hiragana reading practice">
@@ -649,6 +693,7 @@
   <script src="lessons.js"></script>
   <script src="reading-scenarios.js"></script>
   <script src="name-helper.js"></script>
-  <script src="app.js?v=44"></script>
+  <script src="kana-lessons.js"></script>
+  <script src="app.js?v=46"></script>
 </body>
 </html>

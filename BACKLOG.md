@@ -149,6 +149,14 @@ Severity-ranked follow-up:
 - Beginner-facing N5 content remains kana/katakana-first. Kanji is still held for the later side quest.
 - Later: have reviewer feedback check phrase naturalness and add listening-style prompts once audio or speech support is planned.
 
+### Structured Kana Lessons
+
+- Current app guides a learner through five-card vowel, K, S, T, and N row lessons in Hiragana, then Katakana.
+- Each completed row has a visible completion state and one Continue action; the roadmap resume card returns to the first unfinished row.
+- Guided row completion is not presented as full kana mastery. The existing three-correct full deck, reverse quiz, chart, and worksheets remain under More Kana Tools.
+- Row lesson progress and the selected row stay local, survive reload, and are included in export/import/reset handling.
+- Next slice: add the remaining H, M, Y, R, W, and final nasal kana only after the starter sequence has been reviewed for pacing and accuracy.
+
 ### Kana Trainer
 
 - Hiragana chart with stroke-order hints later.
@@ -212,6 +220,7 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
+- Service-worker v46 removes a duplicate root precache request that could block a fresh Chrome installation, and precaches the new kana lesson helper.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.

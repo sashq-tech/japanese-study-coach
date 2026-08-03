@@ -308,8 +308,10 @@ button {
 }
 
 .mode-drawer summary {
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   min-height: 40px;
   margin-left: auto;
   padding: 8px 12px;
@@ -327,7 +329,7 @@ button {
 }
 
 .mode-drawer summary::after {
-  content: " +";
+  content: "+";
 }
 
 .mode-drawer[open] summary {
@@ -335,7 +337,7 @@ button {
 }
 
 .mode-drawer[open] summary::after {
-  content: " -";
+  content: "-";
 }
 
 .mode-drawer .mode-tabs {
@@ -555,6 +557,12 @@ button {
 .roadmap-steps strong {
   font-size: 1.05rem;
   line-height: 1.22;
+}
+
+.roadmap-steps small {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 .roadmap-later {
@@ -1041,6 +1049,204 @@ button {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
   gap: 20px;
+}
+
+.kana-lesson-panel {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.kana-lesson-panel .section-heading > strong {
+  align-self: start;
+  padding: 8px 11px;
+  color: var(--green);
+  background: var(--mist);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+}
+
+.kana-lesson-decks {
+  justify-content: flex-start;
+}
+
+.kana-lesson-rows {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kana-lesson-rows button {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  min-height: 112px;
+  padding: 10px;
+  text-align: left;
+  color: var(--ink);
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.kana-lesson-rows button.active {
+  background: #fff8f4;
+  border-color: #d99b8c;
+  box-shadow: inset 0 0 0 1px #d99b8c;
+}
+
+.kana-lesson-rows button[data-complete="true"] {
+  background: var(--mist);
+  border-color: #a9c8bf;
+}
+
+.kana-lesson-rows button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.kana-lesson-rows span,
+.kana-lesson-rows em {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.kana-lesson-rows strong {
+  font-size: 0.95rem;
+}
+
+.kana-lesson-rows small {
+  overflow-wrap: anywhere;
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.kana-lesson-workspace {
+  display: grid;
+  gap: 14px;
+  max-width: 720px;
+}
+
+.kana-lesson-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.kana-lesson-progress > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kana-lesson-progress span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.kana-lesson-card {
+  display: grid;
+  place-items: center;
+  min-height: 210px;
+  padding: 20px;
+  text-align: center;
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.kana-lesson-card span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.kana-lesson-card strong {
+  font-size: 5rem;
+  line-height: 1;
+}
+
+.kana-lesson-card p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.kana-lesson-continue {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 16px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.kana-lesson-continue:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.kana-lesson-panel button:focus-visible,
+.kana-extras-drawer > summary:focus-visible {
+  outline: 3px solid rgba(36, 88, 77, 0.32);
+  outline-offset: 3px;
+}
+
+.kana-extras-drawer {
+  margin-top: 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.kana-extras-drawer > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  cursor: pointer;
+  list-style: none;
+  background: #f4f6f3;
+  border-radius: 8px;
+}
+
+.kana-extras-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.kana-extras-drawer > summary::after {
+  content: "+";
+  color: var(--red-dark);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.kana-extras-drawer[open] > summary::after {
+  content: "-";
+}
+
+.kana-extras-drawer > summary span {
+  display: grid;
+  gap: 3px;
+}
+
+.kana-extras-drawer > summary small {
+  color: var(--muted);
+}
+
+.kana-extras-drawer > .practice-grid {
+  padding: 18px;
 }
 
 .kana-support-stack {
@@ -2962,6 +3168,39 @@ textarea {
     width: 100%;
   }
 
+  .kana-lesson-panel {
+    padding: 16px;
+  }
+
+  .kana-lesson-rows {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kana-lesson-rows button {
+    min-height: 96px;
+  }
+
+  .kana-lesson-progress > div:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .kana-lesson-card strong {
+    font-size: 4.4rem;
+  }
+
+  .kana-lesson-continue {
+    width: 100%;
+  }
+
+  .kana-extras-drawer > summary {
+    align-items: flex-start;
+  }
+
+  .kana-extras-drawer > .practice-grid {
+    padding: 12px;
+  }
+
   .reading-layout {
     grid-template-columns: 1fr;
   }
@@ -3046,6 +3285,7 @@ textarea {
   body.printing-worksheet .top-bar,
   body.printing-worksheet .scoreboard,
   body.printing-worksheet .roadmap-panel,
+  body.printing-worksheet .kana-lesson-panel,
   body.printing-worksheet .study-guide-drawer,
   body.printing-worksheet .scenario-band,
   body.printing-worksheet .start-here-panel,
@@ -3075,6 +3315,7 @@ textarea {
   body.printing-worksheet .practice-grid,
   body.printing-worksheet .kana-support-stack,
   body.printing-worksheet #kanaSection,
+  body.printing-worksheet .kana-extras-drawer,
   body.printing-worksheet .worksheet-panel {
     display: block !important;
     max-width: none;
@@ -3083,6 +3324,14 @@ textarea {
     background: #fff;
     border: 0;
     box-shadow: none;
+  }
+
+  body.printing-worksheet .kana-extras-drawer > summary {
+    display: none !important;
+  }
+
+  body.printing-worksheet .kana-extras-drawer > .practice-grid {
+    display: block !important;
   }
 
   body.printing-worksheet .kana-worksheet {

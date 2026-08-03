@@ -28,12 +28,13 @@ Recommended public description:
 ## What It Does
 
 - Starts gently with hiragana and katakana recognition before introducing heavier content.
+- Guides learners through ten starter kana-row lessons: five cards at a time, five Hiragana rows followed by five Katakana rows, with one explicit Continue action between rows.
 - Provides a compact Start Here nudge for guided mini-session, kana, review, or N5 basics.
 - Uses a Start Calibration panel to recommend Hiragana, Katakana, or N5 Basics from local progress.
 - Teaches a tiny focus intro, then offers a guided five-question mini-session.
 - Shows a local-only Resume Snapshot for returning learners.
 - Routes into Today's Study Path for due review, kana, N5 practice, checkpoint sprint, and study timer logging.
-- Keeps the roadmap and active Kana workspace prominent while timer, calibration, mini-session, Today, and reflection tools remain available inside one Guided study plan disclosure.
+- Keeps the roadmap and active Kana workspace prominent while full-deck mastery, reverse quiz, charts, worksheets, timer, calibration, mini-session, Today, and reflection tools remain available through progressive disclosure.
 - Collapses progress and JLPT levels on small screens while keeping them open by default in the desktop sidebar.
 - Tracks weak items locally and schedules short review passes.
 - Includes browser-only progress export/import and a deliberate local reset control.
@@ -46,7 +47,7 @@ Recommended public description:
 
 There is no account, backend, analytics, or external API.
 
-Progress is stored in browser `localStorage`, including scores, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and local human review notes. Clearing browser storage will remove progress unless a backup has been exported.
+Progress is stored in browser `localStorage`, including scores, kana-row lesson completion, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and local human review notes. Clearing browser storage will remove progress unless a backup has been exported.
 
 ## Learning Scope
 
@@ -86,6 +87,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `robots.txt`, `sitemap.xml` - crawler policy and apex-domain sitemap for `https://japanreadycoach.com/`
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
+- `kana-lessons.js` - five-card starter-row sequence, unlocking, and progress normalization
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content
 - `reading-scenarios.js` - five hiragana-only micro-scenarios and comprehension checks
@@ -100,6 +102,7 @@ Run these from the project folder:
 node --check app.js
 node --check n5-content.js
 node --check service-worker.js
+node scripts/check-kana-lessons.mjs
 node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest ok')"
 Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
 ```
