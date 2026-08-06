@@ -1078,7 +1078,7 @@ button {
 
 .kana-lesson-rows {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
   gap: 8px;
 }
 
@@ -3343,8 +3343,7 @@ textarea {
   }
 
   body.printing-worksheet .worksheet-grid {
-    display: grid;
-    gap: 6px;
+    display: block;
     max-height: none;
     overflow: visible;
   }
@@ -3366,7 +3365,7 @@ textarea {
     break-inside: avoid;
     grid-template-columns: 0.8in 1fr;
     gap: 0.08in;
-    margin-bottom: 0.06in;
+    margin-bottom: 0.04in;
   }
 
   body.printing-worksheet .worksheet-prompt,

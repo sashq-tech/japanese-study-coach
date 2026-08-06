@@ -67,11 +67,13 @@ function loadKanaRowSelection(progress) {
   const saved = parseStoredJson(KANA_ROW_SELECTION_STORAGE_KEY, {});
   const validDeck = JapanReadyKanaLessons.DECK_ORDER.includes(saved.deck);
   const validRow = JapanReadyKanaLessons.STARTER_ROWS.some((row) => row.id === saved.rowId);
-  if (validDeck && validRow && JapanReadyKanaLessons.isUnlocked(progress, saved.deck, saved.rowId, n5Content.kanaDecks)) {
+  if (validDeck && validRow
+    && JapanReadyKanaLessons.isUnlocked(progress, saved.deck, saved.rowId, n5Content.kanaDecks)
+    && !JapanReadyKanaLessons.rowStatus(progress, saved.deck, saved.rowId, n5Content.kanaDecks).complete) {
     return { deck: saved.deck, rowId: saved.rowId };
   }
   return JapanReadyKanaLessons.nextIncomplete(progress, n5Content.kanaDecks)
-    || { deck: "katakana", rowId: "n" };
+    || { deck: "katakana", rowId: "final-n" };
 }
 
 function loadModeCorrect() {
@@ -607,7 +609,7 @@ function getRoadmapResumeState() {
       step: 1,
       meta: "Current focus - Step 1 row lesson",
       title: `${deckLabel} ${rowTask.row.label}`,
-      summary: `${rowTask.status.done}/5 cards complete in this row. Finish each card once, then continue to the next row.`,
+      summary: `${rowTask.status.done}/${rowTask.status.total} cards complete in this row. Finish each card once, then continue to the next row.`,
       action: `kana-lesson:${rowTask.deck}:${rowTask.rowId}`,
       actionLabel: rowTask.status.done ? "Resume Row" : "Start Row"
     };
@@ -1617,7 +1619,7 @@ function renderKanaLessonDeckButtons() {
     .forEach((button) => {
       const locked = button.dataset.kanaLessonDeck === "katakana" && !katakanaUnlocked;
       button.disabled = locked;
-      button.title = locked ? "Complete the five Hiragana starter rows first." : "";
+      button.title = locked ? "Complete the Hiragana foundation rows first." : "";
     });
 }
 
@@ -1628,7 +1630,7 @@ function renderKanaLessonRows() {
     const status = JapanReadyKanaLessons.rowStatus(state.kanaRowProgress, state.kanaLesson.deck, row.id, n5Content.kanaDecks);
     const unlocked = JapanReadyKanaLessons.isUnlocked(state.kanaRowProgress, state.kanaLesson.deck, row.id, n5Content.kanaDecks);
     const active = row.id === state.kanaLesson.rowId;
-    const statusLabel = status.complete ? "Complete" : active ? `${status.done}/5 now` : unlocked ? `${status.done}/5` : "Locked";
+    const statusLabel = status.complete ? "Complete" : active ? `${status.done}/${status.total} now` : unlocked ? `${status.done}/${status.total}` : "Locked";
     return `
       <button type="button" data-kana-lesson-row="${row.id}" ${unlocked ? "" : "disabled"}
         aria-pressed="${active}" ${active ? 'aria-current="step"' : ""} class="${active ? "active" : ""} ${status.complete ? 'data-complete="true"' : ""}>
@@ -1662,10 +1664,10 @@ function renderKanaLesson() {
   const current = items.find((item) => !completedKeys.has(JapanReadyKanaLessons.cardKey(state.kanaLesson.deck, item))) || null;
   state.kanaLesson.current = current;
 
-  els.kanaLessonSetStatus.textContent = `Starter row ${sequenceIndex + 1} of 10`;
+  els.kanaLessonSetStatus.textContent = `Foundation lesson ${sequenceIndex + 1} of ${JapanReadyKanaLessons.lessonSequence().length}`;
   els.kanaLessonTitle.textContent = `${kanaLessonDeckLabel(state.kanaLesson.deck)} ${row.label}`;
   els.kanaLessonMeta.textContent = `${kanaLessonDeckLabel(state.kanaLesson.deck)} - ${row.label}`;
-  els.kanaLessonProgressLabel.textContent = `${status.done} / 5 cards complete`;
+  els.kanaLessonProgressLabel.textContent = `${status.done} / ${status.total} cards complete`;
   els.kanaLessonProgressBar.style.width = `${status.percent}%`;
   els.kanaLessonContinue.textContent = kanaLessonContinueLabel();
   els.kanaLessonContinue.disabled = !status.complete;
@@ -1676,16 +1678,20 @@ function renderKanaLesson() {
     els.kanaLessonCardMeta.textContent = "Row complete";
     els.kanaLessonKana.textContent = "Done";
     els.kanaLessonKana.setAttribute("lang", "en");
-    els.kanaLessonPrompt.textContent = "All five cards are complete. Continue when you are ready.";
+    els.kanaLessonPrompt.textContent = `All ${status.total} ${status.total === 1 ? "card is" : "cards are"} complete. Continue when you are ready.`;
     els.kanaLessonChoices.innerHTML = "";
     els.kanaLessonFeedback.textContent = `${kanaLessonDeckLabel(state.kanaLesson.deck)} ${row.label} complete.`;
     els.kanaLessonFeedback.className = "feedback success";
     return;
   }
 
-  const wrong = sample(items.filter((item) => item.kana !== current.kana), 3);
+  const rowIndex = JapanReadyKanaLessons.STARTER_ROWS.findIndex((item) => item.id === row.id);
+  const introducedItems = JapanReadyKanaLessons.STARTER_ROWS
+    .slice(0, rowIndex + 1)
+    .flatMap((item) => JapanReadyKanaLessons.itemsFor(state.kanaLesson.deck, item.id, n5Content.kanaDecks));
+  const wrong = sample(introducedItems.filter((item) => item.kana !== current.kana), 3);
   const choices = sample([current, ...wrong], 4);
-  els.kanaLessonCardMeta.textContent = `Card ${status.done + 1} of 5`;
+  els.kanaLessonCardMeta.textContent = `Card ${status.done + 1} of ${status.total}`;
   els.kanaLessonKana.textContent = current.kana;
   els.kanaLessonKana.setAttribute("lang", "ja");
   els.kanaLessonPrompt.textContent = "Choose the matching sound.";

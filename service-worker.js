@@ -1,4 +1,4 @@
-const CACHE_NAME = "japan-ready-coach-v46";
+const CACHE_NAME = "japan-ready-coach-v47";
 const APP_SHELL = [
   "/",
   "/about",
@@ -13,13 +13,13 @@ const APP_SHELL = [
   "/terms",
   "/contact",
   "./ads.txt",
-  "./styles.css?v=46",
+  "./styles.css?v=47",
   "./n5-content.js",
   "./lessons.js",
   "./reading-scenarios.js",
   "./name-helper.js",
   "./kana-lessons.js",
-  "./app.js?v=46",
+  "./app.js?v=47",
   "./manifest.webmanifest",
   "./icon.svg",
   "./robots.txt",

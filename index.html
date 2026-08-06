@@ -21,7 +21,32 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=46">
+  <link rel="stylesheet" href="styles.css?v=47">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://japanreadycoach.com/#website",
+        "name": "Japan Ready Coach",
+        "url": "https://japanreadycoach.com/",
+        "description": "A privacy-first Japanese study coach with a structured beginner path: kana first, then N5 vocabulary, grammar examples, and basic kanji."
+      },
+      {
+        "@type": "WebApplication",
+        "name": "Japan Ready Coach",
+        "url": "https://japanreadycoach.com/",
+        "description": "A privacy-first Japanese study coach with a structured beginner path: kana first, then N5 vocabulary, grammar examples, and basic kanji.",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and local storage support.",
+        "isAccessibleForFree": true,
+        "isPartOf": { "@id": "https://japanreadycoach.com/#website" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div class="app-shell">
@@ -285,11 +310,11 @@
           <div class="section-heading">
             <div>
               <span class="panel-label">Stage 1 guided lessons</span>
-              <h3 id="kanaLessonTitle" tabindex="-1">Start with five Hiragana cards.</h3>
+              <h3 id="kanaLessonTitle" tabindex="-1">Start with the Hiragana vowel row.</h3>
             </div>
-            <strong id="kanaLessonSetStatus">Starter row 1 of 10</strong>
+            <strong id="kanaLessonSetStatus">Foundation lesson 1 of 22</strong>
           </div>
-          <p class="section-copy">Each row is a five-card lesson. Get every card right once to complete the row, then use Continue. This starter set covers the vowel, K, S, T, and N rows in Hiragana and Katakana; it is not the full kana chart.</p>
+          <p class="section-copy">Work through one basic kana row at a time. Most lessons have five cards; Y, W, and final N are shorter because those rows contain fewer basic kana. Get every card right once, then use Continue. The 22 lessons introduce the 46 basic sounds in both Hiragana and Katakana; full three-correct mastery and extra practice remain under More Kana Tools.</p>
           <div class="kana-lesson-decks segmented-control" role="group" aria-label="Kana lesson script">
             <button class="active" type="button" data-kana-lesson-deck="hiragana" aria-pressed="true">Hiragana</button>
             <button type="button" data-kana-lesson-deck="katakana" aria-pressed="false">Katakana</button>
@@ -694,6 +719,6 @@
   <script src="reading-scenarios.js"></script>
   <script src="name-helper.js"></script>
   <script src="kana-lessons.js"></script>
-  <script src="app.js?v=46"></script>
+  <script src="app.js?v=47"></script>
 </body>
 </html>

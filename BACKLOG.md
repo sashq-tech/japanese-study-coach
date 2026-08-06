@@ -81,7 +81,7 @@ Resolved in the accessibility and Contact polish release:
 Severity-ranked follow-up:
 
 1. **Medium - PWA real-device acceptance:** repeat install, update, reload, and offline checks in Chrome/Safari on a phone or tablet. Automated checks confirm cache assets and version markers, but do not replace a real installed-PWA upgrade test.
-2. **Low - richer structured data:** consider homepage `WebApplication`/`WebSite` and article `BlogPosting` JSON-LD only after validating that all fields match visible, maintained content.
+2. **Resolved 2026-08-06 - bounded structured data:** added factual `WebSite`/`WebApplication`, trust-page, and `BlogPosting` JSON-LD without author, review, course-completion, or JLPT-alignment claims.
 
 ### Staged Reading Scenarios
 
@@ -151,11 +151,11 @@ Severity-ranked follow-up:
 
 ### Structured Kana Lessons
 
-- Current app guides a learner through five-card vowel, K, S, T, and N row lessons in Hiragana, then Katakana.
+- Current app guides a learner through all 11 basic kana rows in Hiragana, then Katakana: vowels, K, S, T, N, H, M, Y, R, W, and final N. Short rows keep their natural three-, two-, or one-card length.
 - Each completed row has a visible completion state and one Continue action; the roadmap resume card returns to the first unfinished row.
 - Guided row completion is not presented as full kana mastery. The existing three-correct full deck, reverse quiz, chart, and worksheets remain under More Kana Tools.
 - Row lesson progress and the selected row stay local, survive reload, and are included in export/import/reset handling.
-- Next slice: add the remaining H, M, Y, R, W, and final nasal kana only after the starter sequence has been reviewed for pacing and accuracy.
+- Next slice: human-review the expanded sequence for pronunciation, pacing, and phone/tablet comfort before adding voiced sounds or combination kana.
 
 ### Kana Trainer
 
@@ -220,7 +220,7 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v46 removes a duplicate root precache request that could block a fresh Chrome installation, and precaches the new kana lesson helper.
+- Service-worker v47 precaches the expanded kana foundation and the bounded homepage/trust-page structured-data update.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.

@@ -4,7 +4,13 @@
     { id: "k", label: "K row", shortLabel: "K row", group: "k", romaji: ["ka", "ki", "ku", "ke", "ko"] },
     { id: "s", label: "S row", shortLabel: "S row", group: "s", romaji: ["sa", "shi", "su", "se", "so"] },
     { id: "t", label: "T row", shortLabel: "T row", group: "t", romaji: ["ta", "chi", "tsu", "te", "to"] },
-    { id: "n", label: "N row", shortLabel: "N row", group: "n", romaji: ["na", "ni", "nu", "ne", "no"] }
+    { id: "n", label: "N row", shortLabel: "N row", group: "n", romaji: ["na", "ni", "nu", "ne", "no"] },
+    { id: "h", label: "H row", shortLabel: "H row", group: "h", romaji: ["ha", "hi", "fu", "he", "ho"] },
+    { id: "m", label: "M row", shortLabel: "M row", group: "m", romaji: ["ma", "mi", "mu", "me", "mo"] },
+    { id: "y", label: "Y row", shortLabel: "Y row", group: "y", romaji: ["ya", "yu", "yo"] },
+    { id: "r", label: "R row", shortLabel: "R row", group: "r", romaji: ["ra", "ri", "ru", "re", "ro"] },
+    { id: "w", label: "W row", shortLabel: "W row", group: "w", romaji: ["wa", "wo"] },
+    { id: "final-n", label: "Final N", shortLabel: "Final N", group: "n", romaji: ["n"] }
   ];
   const DECK_ORDER = ["hiragana", "katakana"];
 
@@ -63,7 +69,7 @@
     return {
       total: items.length,
       done,
-      complete: items.length === 5 && done === items.length,
+      complete: items.length > 0 && done === items.length,
       percent: items.length ? Math.round((done / items.length) * 100) : 0
     };
   }
