@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=47">
+  <link rel="stylesheet" href="styles.css?v=49">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -513,6 +513,39 @@
           <dl id="coverageStats" class="coverage-stats"></dl>
         </section>
 
+        <article id="vocabularyCourse" class="vocab-course-panel" aria-labelledby="vocabCourseTitle">
+          <div class="section-heading">
+            <div>
+              <span class="panel-label">Guided vocabulary foundation</span>
+              <h3 id="vocabCourseTitle">Your first 50 words</h3>
+              <p class="section-copy">Study five practical ten-word units. Review the words first, then answer every word correctly. Missed words return before the unit finishes.</p>
+            </div>
+            <strong id="vocabCourseStatus">0 / 50 words</strong>
+          </div>
+          <div class="vocab-course-progress">
+            <div class="meter" aria-hidden="true"><span id="vocabCourseBar"></span></div>
+            <span id="vocabCourseCount">Unit 1 of 5</span>
+          </div>
+          <div id="vocabUnitList" class="vocab-unit-list" role="group" aria-label="Vocabulary units"></div>
+
+          <section id="vocabTeachPanel" class="vocab-teach-panel" aria-labelledby="vocabUnitTitle">
+            <span id="vocabUnitMeta">Unit 1 - Study first</span>
+            <h4 id="vocabUnitTitle" tabindex="-1">People, names, and Japan</h4>
+            <p id="vocabUnitDescription"></p>
+            <div id="vocabStudyList" class="vocab-study-list"></div>
+            <button id="startVocabUnitButton" type="button">Start 10-Word Check</button>
+          </section>
+
+          <section id="vocabQuizPanel" class="vocab-quiz-panel hidden" aria-labelledby="vocabQuestionText">
+            <span id="vocabQuestionMeta">Question 1</span>
+            <strong id="vocabQuestionText" lang="ja" tabindex="-1"></strong>
+            <p id="vocabQuestionRomaji"></p>
+            <div id="vocabChoices" class="choice-grid" aria-label="Vocabulary answer choices"></div>
+            <p id="vocabFeedback" class="feedback" aria-live="polite" tabindex="-1"></p>
+            <button id="vocabContinueButton" type="button" disabled>Next Word</button>
+          </section>
+        </article>
+
         <article class="n5-practice-panel">
           <div class="section-heading">
             <div>
@@ -654,8 +687,8 @@
         </article>
         <article>
           <span class="panel-label">Privacy</span>
-          <h3>No account. No server. No tracking.</h3>
-          <p>Progress, study timers, review items, and notes stay in this browser's local storage. Export a backup before switching browsers or devices. This site keeps that privacy-first model unless a sync feature is clearly introduced.</p>
+          <h3>No account. No server-side learner profile.</h3>
+          <p>Progress, study timers, review items, and notes stay in this browser's local storage. Export a backup before switching browsers or devices. Cloudflare may process basic delivery, security, and aggregate traffic data.</p>
         </article>
         <article>
           <span class="panel-label">Learning scope</span>
@@ -678,7 +711,7 @@
           <span class="panel-label">Local data</span>
           <p class="review-copy">Everything is stored in this browser only: scores, kana mastery, weak review, study time, mini-session history, and notes.</p>
           <ul class="local-data-list">
-            <li>No account, server, analytics, or cloud sync.</li>
+            <li>No account, app backend, or cloud sync. Study progress stays local.</li>
             <li>Export a backup before switching browsers or clearing cache.</li>
             <li>Reset only when you want a clean local start.</li>
           </ul>
@@ -721,6 +754,7 @@
   <script src="reading-scenarios.js"></script>
   <script src="name-helper.js"></script>
   <script src="kana-lessons.js"></script>
-  <script src="app.js?v=48"></script>
+  <script src="vocabulary-lessons.js"></script>
+  <script src="app.js?v=49"></script>
 </body>
 </html>

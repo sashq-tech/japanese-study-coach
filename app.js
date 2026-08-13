@@ -11,6 +11,8 @@ const BACKUP_APP_NAMES = ["Japan Ready Coach", "Japanese Study Coach", "Japan Re
 const REVIEW_NOTES_STORAGE_KEY = "jrj-wife-notes";
 const KANA_ROW_PROGRESS_STORAGE_KEY = "jrj-kana-row-progress";
 const KANA_ROW_SELECTION_STORAGE_KEY = "jrj-kana-row-selection";
+const VOCAB_PROGRESS_STORAGE_KEY = "jrj-vocab-course-progress";
+const VOCAB_SELECTION_STORAGE_KEY = "jrj-vocab-course-selection";
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -21,6 +23,8 @@ const PROGRESS_STORAGE_KEYS = [
   "jrj-kana-mode",
   KANA_ROW_PROGRESS_STORAGE_KEY,
   KANA_ROW_SELECTION_STORAGE_KEY,
+  VOCAB_PROGRESS_STORAGE_KEY,
+  VOCAB_SELECTION_STORAGE_KEY,
   "jrj-onboarding-focus",
   "jrj-n5-mode-correct",
   "jrj-last-quiz-key",
@@ -74,6 +78,23 @@ function loadKanaRowSelection(progress) {
   }
   return JapanReadyKanaLessons.nextIncomplete(progress, n5Content.kanaDecks)
     || { deck: "katakana", rowId: "final-n" };
+}
+
+function loadVocabularyProgress() {
+  return JapanReadyVocabularyLessons.normalizeProgress(
+    parseStoredJson(VOCAB_PROGRESS_STORAGE_KEY, {}),
+    n5Content.n5Vocabulary
+  );
+}
+
+function loadVocabularySelection(progress) {
+  const saved = localStorage.getItem(VOCAB_SELECTION_STORAGE_KEY) || "";
+  const valid = JapanReadyVocabularyLessons.UNITS.some((unit) => unit.id === saved)
+    && JapanReadyVocabularyLessons.isUnlocked(progress, saved, n5Content.n5Vocabulary);
+  return valid
+    ? saved
+    : JapanReadyVocabularyLessons.nextIncomplete(progress, n5Content.n5Vocabulary)?.id
+      || JapanReadyVocabularyLessons.UNITS.at(-1).id;
 }
 
 function loadModeCorrect() {
@@ -143,6 +164,8 @@ function loadMiniSessionSummary() {
 const initialKanaHits = loadKanaHits();
 const initialKanaRowProgress = loadKanaRowProgress(initialKanaHits);
 const initialKanaRowSelection = loadKanaRowSelection(initialKanaRowProgress);
+const initialVocabularyProgress = loadVocabularyProgress();
+const initialVocabularySelection = loadVocabularySelection(initialVocabularyProgress);
 
 const state = {
   deck: "hiragana",
@@ -162,6 +185,17 @@ const state = {
     current: null,
     answered: false,
     renderToken: 0
+  },
+  vocabularyProgress: initialVocabularyProgress,
+  vocabularyCourse: {
+    unitId: initialVocabularySelection,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
   },
   lessonIndex: 0,
   correct: Number(localStorage.getItem("jrj-correct") || 0),
@@ -291,6 +325,23 @@ const els = {
   nameConvertButton: document.querySelector("#nameConvertButton"),
   nameResult: document.querySelector("#nameResult"),
   coverageStats: document.querySelector("#coverageStats"),
+  vocabCourseStatus: document.querySelector("#vocabCourseStatus"),
+  vocabCourseBar: document.querySelector("#vocabCourseBar"),
+  vocabCourseCount: document.querySelector("#vocabCourseCount"),
+  vocabUnitList: document.querySelector("#vocabUnitList"),
+  vocabUnitMeta: document.querySelector("#vocabUnitMeta"),
+  vocabUnitTitle: document.querySelector("#vocabUnitTitle"),
+  vocabUnitDescription: document.querySelector("#vocabUnitDescription"),
+  vocabTeachPanel: document.querySelector("#vocabTeachPanel"),
+  vocabStudyList: document.querySelector("#vocabStudyList"),
+  startVocabUnitButton: document.querySelector("#startVocabUnitButton"),
+  vocabQuizPanel: document.querySelector("#vocabQuizPanel"),
+  vocabQuestionMeta: document.querySelector("#vocabQuestionMeta"),
+  vocabQuestionText: document.querySelector("#vocabQuestionText"),
+  vocabQuestionRomaji: document.querySelector("#vocabQuestionRomaji"),
+  vocabChoices: document.querySelector("#vocabChoices"),
+  vocabFeedback: document.querySelector("#vocabFeedback"),
+  vocabContinueButton: document.querySelector("#vocabContinueButton"),
   n5PracticeTitle: document.querySelector("#n5PracticeTitle"),
   n5QuestionMeta: document.querySelector("#n5QuestionMeta"),
   n5QuestionText: document.querySelector("#n5QuestionText"),
@@ -435,6 +486,8 @@ function saveProgress() {
     deck: state.kanaLesson.deck,
     rowId: state.kanaLesson.rowId
   }));
+  localStorage.setItem(VOCAB_PROGRESS_STORAGE_KEY, JSON.stringify(state.vocabularyProgress));
+  localStorage.setItem(VOCAB_SELECTION_STORAGE_KEY, state.vocabularyCourse.unitId);
   localStorage.setItem("jrj-onboarding-focus", state.onboardingFocus);
   localStorage.setItem("jrj-n5-mode-correct", JSON.stringify(state.n5ModeCorrect));
   localStorage.setItem("jrj-last-quiz-key", state.lastQuizKey);
@@ -659,14 +712,24 @@ function getRoadmapResumeState() {
     };
   }
 
-  if ((state.n5ModeCorrect.vocab || 0) < N5_MODE_TARGETS.vocab) {
+  const vocabularyUnit = JapanReadyVocabularyLessons.nextIncomplete(
+    state.vocabularyProgress,
+    n5Content.n5Vocabulary
+  );
+  if (vocabularyUnit) {
+    const vocabularyStatus = JapanReadyVocabularyLessons.unitStatus(
+      state.vocabularyProgress,
+      vocabularyUnit.id,
+      n5Content.n5Vocabulary
+    );
+    const vocabularyDone = state.vocabularyProgress.completed.length;
     return {
       step: 2,
-      meta: "Current focus - Step 2",
-      title: "Build basic vocabulary",
-      summary: `${state.n5ModeCorrect.vocab || 0}/${N5_MODE_TARGETS.vocab} starter vocabulary checks complete here. The larger roadmap target is about 840 words.`,
-      action: "n5:vocab",
-      actionLabel: "Practice Vocab"
+      meta: `Current focus - Step 2, Unit ${JapanReadyVocabularyLessons.UNITS.indexOf(vocabularyUnit) + 1}`,
+      title: vocabularyUnit.title,
+      summary: `${vocabularyDone}/50 unique starter words complete; ${vocabularyStatus.done}/10 complete in this unit. This is the first block toward the larger vocabulary roadmap.`,
+      action: `vocabulary-course:${vocabularyUnit.id}`,
+      actionLabel: vocabularyStatus.done ? "Resume Unit" : "Start Unit"
     };
   }
 
@@ -2548,6 +2611,17 @@ function resetProgress() {
   state.kanaHits = { hiragana: {}, katakana: {} };
   state.kanaRowProgress = JapanReadyKanaLessons.normalizeProgress({}, n5Content.kanaDecks);
   state.kanaLesson = { deck: "hiragana", rowId: "vowels", current: null, answered: false, renderToken: 0 };
+  state.vocabularyProgress = JapanReadyVocabularyLessons.normalizeProgress({}, n5Content.n5Vocabulary);
+  state.vocabularyCourse = {
+    unitId: JapanReadyVocabularyLessons.UNITS[0].id,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
+  };
   state.kanaMode = "recognition";
   state.onboardingFocus = "";
   state.n5ModeCorrect = { vocab: 0, particles: 0, grammar: 0, sentences: 0 };
@@ -2580,6 +2654,7 @@ function resetProgress() {
   setStudyDuration(15);
   renderKanaModeButtons();
   renderKanaLesson();
+  renderVocabularyCourse();
   startQuiz();
 }
 
@@ -2794,6 +2869,198 @@ function renderCoverageStats() {
   `).join("");
 }
 
+function currentVocabularyUnit() {
+  return JapanReadyVocabularyLessons.UNITS.find((unit) => unit.id === state.vocabularyCourse.unitId)
+    || JapanReadyVocabularyLessons.UNITS[0];
+}
+
+function currentVocabularyWord() {
+  const key = state.vocabularyCourse.queue[0];
+  return JapanReadyVocabularyLessons.allWords(n5Content.n5Vocabulary)
+    .find((word) => JapanReadyVocabularyLessons.wordKey(word) === key) || null;
+}
+
+function shuffledVocabularyChoices(word, unit) {
+  const choices = JapanReadyVocabularyLessons.wordsFor(unit.id, n5Content.n5Vocabulary)
+    .filter((candidate) => candidate.english !== word.english)
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
+    .map((candidate) => candidate.english);
+  return [...choices, word.english].sort(() => Math.random() - 0.5);
+}
+
+function renderVocabularyCourse(options = {}) {
+  const unit = currentVocabularyUnit();
+  const units = JapanReadyVocabularyLessons.UNITS;
+  const unitIndex = units.findIndex((candidate) => candidate.id === unit.id);
+  const allDone = state.vocabularyProgress.completed.length;
+  const unitStatus = JapanReadyVocabularyLessons.unitStatus(state.vocabularyProgress, unit.id, n5Content.n5Vocabulary);
+
+  els.vocabCourseStatus.textContent = `${allDone} / 50 words`;
+  els.vocabCourseBar.style.width = `${Math.round((allDone / 50) * 100)}%`;
+  els.vocabCourseCount.textContent = `Unit ${unitIndex + 1} of ${units.length} - ${unitStatus.done}/10 complete`;
+  els.vocabUnitList.innerHTML = units.map((candidate, index) => {
+    const status = JapanReadyVocabularyLessons.unitStatus(state.vocabularyProgress, candidate.id, n5Content.n5Vocabulary);
+    const unlocked = JapanReadyVocabularyLessons.isUnlocked(state.vocabularyProgress, candidate.id, n5Content.n5Vocabulary);
+    const active = candidate.id === unit.id;
+    return `
+      <button type="button" data-vocab-unit="${candidate.id}" ${unlocked ? "" : "disabled"} aria-pressed="${active}">
+        <span>Unit ${index + 1}</span>
+        <strong>${candidate.title}</strong>
+        <small>${unlocked ? `${status.done}/10 words` : "Locked"}</small>
+      </button>
+    `;
+  }).join("");
+
+  if (state.vocabularyCourse.phase === "teach") {
+    els.vocabTeachPanel.classList.remove("hidden");
+    els.vocabQuizPanel.classList.add("hidden");
+    els.vocabUnitMeta.textContent = `Unit ${unitIndex + 1} - Study before the check`;
+    els.vocabUnitTitle.textContent = unit.title;
+    els.vocabUnitDescription.textContent = unit.description;
+    els.vocabStudyList.innerHTML = JapanReadyVocabularyLessons.wordsFor(unit.id, n5Content.n5Vocabulary).map((word) => {
+      const complete = state.vocabularyProgress.completed.includes(JapanReadyVocabularyLessons.wordKey(word));
+      return `
+        <div${complete ? ' data-complete="true"' : ""}>
+          <strong lang="ja">${word.japanese}</strong>
+          <span>${word.romaji}</span>
+          <p>${word.english}</p>
+        </div>
+      `;
+    }).join("");
+    els.startVocabUnitButton.textContent = unitStatus.complete ? "Review This 10-Word Unit" : `Start ${10 - unitStatus.done}-Word Check`;
+    if (options.focus) els.vocabUnitTitle.focus({ preventScroll: true });
+    return;
+  }
+
+  els.vocabTeachPanel.classList.add("hidden");
+  els.vocabQuizPanel.classList.remove("hidden");
+
+  if (state.vocabularyCourse.phase === "complete") {
+    const nextUnit = units[unitIndex + 1] || null;
+    els.vocabQuestionMeta.textContent = `Unit ${unitIndex + 1} complete`;
+    els.vocabQuestionText.textContent = unitIndex + 1 === units.length ? "50-word starter block complete" : `${unit.title} complete`;
+    els.vocabQuestionRomaji.textContent = `${unitStatus.done}/10 unique words complete. ${state.vocabularyCourse.missed.size} word${state.vocabularyCourse.missed.size === 1 ? "" : "s"} needed another try this session.`;
+    els.vocabChoices.innerHTML = "";
+    els.vocabFeedback.textContent = nextUnit
+      ? "The next ten-word unit is now available."
+      : "This is the first 50-word block, not the full planned N5 vocabulary path.";
+    els.vocabFeedback.className = "feedback success";
+    els.vocabContinueButton.disabled = !nextUnit;
+    els.vocabContinueButton.textContent = nextUnit ? `Continue to Unit ${unitIndex + 2}` : "50-Word Block Complete";
+    if (options.focus) els.vocabQuestionText.focus({ preventScroll: true });
+    return;
+  }
+
+  const word = currentVocabularyWord();
+  if (!word) {
+    state.vocabularyCourse.phase = "complete";
+    renderVocabularyCourse(options);
+    return;
+  }
+  const completedInUnit = unitStatus.done;
+  els.vocabQuestionMeta.textContent = `Unit ${unitIndex + 1} - ${completedInUnit}/10 complete - ${state.vocabularyCourse.queue.length} in this check`;
+  els.vocabQuestionText.textContent = word.japanese;
+  els.vocabQuestionRomaji.textContent = word.romaji;
+  els.vocabChoices.innerHTML = shuffledVocabularyChoices(word, unit).map((choice) => `
+    <button type="button" data-vocab-answer="${escapeHtml(choice)}">${choice}</button>
+  `).join("");
+  els.vocabFeedback.textContent = "";
+  els.vocabFeedback.className = "feedback";
+  els.vocabContinueButton.disabled = true;
+  els.vocabContinueButton.textContent = "Next Word";
+  state.vocabularyCourse.answered = false;
+  if (options.focus) els.vocabQuestionText.focus({ preventScroll: true });
+}
+
+function selectVocabularyUnit(unitId, options = {}) {
+  if (!JapanReadyVocabularyLessons.isUnlocked(state.vocabularyProgress, unitId, n5Content.n5Vocabulary)) return;
+  state.vocabularyCourse = {
+    ...state.vocabularyCourse,
+    unitId,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
+  };
+  saveProgress();
+  renderVocabularyCourse(options);
+}
+
+function startVocabularyUnit() {
+  const unit = currentVocabularyUnit();
+  const remaining = JapanReadyVocabularyLessons.remainingWords(state.vocabularyProgress, unit.id, n5Content.n5Vocabulary);
+  const words = remaining.length ? remaining : JapanReadyVocabularyLessons.wordsFor(unit.id, n5Content.n5Vocabulary);
+  state.vocabularyCourse.phase = "quiz";
+  state.vocabularyCourse.queue = words.map(JapanReadyVocabularyLessons.wordKey);
+  state.vocabularyCourse.answered = false;
+  state.vocabularyCourse.lastCorrect = false;
+  state.vocabularyCourse.correct = 0;
+  state.vocabularyCourse.attempts = 0;
+  state.vocabularyCourse.missed = new Set();
+  renderVocabularyCourse({ focus: true });
+}
+
+function checkVocabularyAnswer(answer) {
+  if (state.vocabularyCourse.answered || state.vocabularyCourse.phase !== "quiz") return;
+  const word = currentVocabularyWord();
+  if (!word) return;
+  const correct = answer === word.english;
+  state.vocabularyCourse.answered = true;
+  state.vocabularyCourse.lastCorrect = correct;
+  state.vocabularyCourse.attempts += 1;
+  els.vocabChoices.querySelectorAll("button").forEach((button) => {
+    button.disabled = true;
+    if (button.dataset.vocabAnswer === word.english) button.classList.add("correct");
+    if (!correct && button.dataset.vocabAnswer === answer) button.classList.add("incorrect");
+  });
+  if (correct) {
+    state.vocabularyProgress = JapanReadyVocabularyLessons.markComplete(state.vocabularyProgress, word, n5Content.n5Vocabulary);
+    state.vocabularyCourse.correct += 1;
+    state.correct += 1;
+    state.streak += 1;
+    state.n5ModeCorrect.vocab = Math.max(state.n5ModeCorrect.vocab || 0, Math.min(state.vocabularyProgress.completed.length, N5_MODE_TARGETS.vocab));
+    els.vocabFeedback.textContent = `Correct. ${word.japanese} (${word.romaji}) means ${word.english}.`;
+    els.vocabFeedback.className = "feedback success";
+  } else {
+    state.vocabularyCourse.missed.add(JapanReadyVocabularyLessons.wordKey(word));
+    state.review += 1;
+    state.streak = 0;
+    els.vocabFeedback.textContent = `Not yet. ${word.japanese} (${word.romaji}) means ${word.english}. This word will return before the unit finishes.`;
+    els.vocabFeedback.className = "feedback needs-review";
+  }
+  recordPracticeEvent("n5", "guided vocabulary", correct);
+  saveProgress();
+  renderProgress();
+  els.vocabContinueButton.disabled = false;
+  els.vocabContinueButton.textContent = state.vocabularyCourse.queue.length === 1 && correct ? "Finish Unit" : "Next Word";
+  els.vocabFeedback.focus({ preventScroll: true });
+}
+
+function continueVocabularyCourse() {
+  const unit = currentVocabularyUnit();
+  const unitIndex = JapanReadyVocabularyLessons.UNITS.findIndex((candidate) => candidate.id === unit.id);
+  if (state.vocabularyCourse.phase === "complete") {
+    const nextUnit = JapanReadyVocabularyLessons.UNITS[unitIndex + 1];
+    if (nextUnit) selectVocabularyUnit(nextUnit.id, { focus: true });
+    return;
+  }
+  if (!state.vocabularyCourse.answered) return;
+  const currentKey = state.vocabularyCourse.queue.shift();
+  if (!state.vocabularyCourse.lastCorrect) state.vocabularyCourse.queue.push(currentKey);
+  if (!state.vocabularyCourse.queue.length) {
+    state.vocabularyCourse.phase = "complete";
+    saveProgress();
+    renderProgress();
+    renderVocabularyCourse({ focus: true });
+    return;
+  }
+  renderVocabularyCourse({ focus: true });
+}
+
 function renderMissions() {
   els.missionList.innerHTML = lessons.map((lesson, index) => `
     <button class="mission-button ${index === state.lessonIndex ? "active" : ""}" type="button" data-index="${index}">
@@ -2999,6 +3266,15 @@ function runTodayAction(action, options = {}) {
     if (row) selectKanaLesson(deck, row.id, { focus: !options.reveal });
     return;
   }
+  if (action.startsWith("vocabulary-course:")) {
+    showSection("n5Section", options);
+    const unitId = action.split(":")[1];
+    selectVocabularyUnit(unitId, { focus: !options.reveal });
+    window.requestAnimationFrame(() => {
+      document.querySelector("#vocabularyCourse")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return;
+  }
   if (action.startsWith("n5:")) {
     showSection("n5Section", options);
     chooseN5Mode(action.split(":")[1]);
@@ -3145,6 +3421,19 @@ els.n5Choices.addEventListener("click", (event) => {
   checkN5Answer(button.dataset.n5Answer);
 });
 
+els.vocabUnitList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-vocab-unit]");
+  if (!button || button.disabled) return;
+  selectVocabularyUnit(button.dataset.vocabUnit, { focus: true });
+});
+els.startVocabUnitButton.addEventListener("click", startVocabularyUnit);
+els.vocabChoices.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-vocab-answer]");
+  if (!button) return;
+  checkVocabularyAnswer(button.dataset.vocabAnswer);
+});
+els.vocabContinueButton.addEventListener("click", continueVocabularyCourse);
+
 els.sprintChoices.addEventListener("click", (event) => {
   const button = event.target.closest("[data-sprint-answer]");
   if (!button) return;
@@ -3236,6 +3525,7 @@ renderKanaWorksheet(activeWorksheetSettings().deck, activeWorksheetSettings().gr
 renderReadingScenario();
 renderMiniCards();
 renderCoverageStats();
+renderVocabularyCourse();
 renderScenario();
 startN5Question();
 startQuiz();

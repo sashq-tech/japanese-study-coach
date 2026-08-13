@@ -52,12 +52,12 @@ AdSense rejected Japan Ready Coach for low-value content. This supersedes the ea
 
 - Evidence at rejection: the sitemap exposed 12 indexable routes, but only the JavaScript-heavy homepage was a learning page. Six blog posts were substantial; the 22 guided kana lessons and worksheets were difficult for a reviewer or crawler to understand from a collapsed app surface.
 - No manual AdSense units are present in source, so ad density is not the identified recovery target.
-- Current local candidate adds `/learn`, a crawlable Beginner Kana Study Path tied to the real 22-row lesson sequence and printable worksheets. It also replaces the premature N4-readiness checkpoint language with an honest starter-foundation check.
+- Published recovery slice adds `/learn`, a crawlable Beginner Kana Study Path tied to the real 22-row lesson sequence and printable worksheets. It also replaces the premature N4-readiness checkpoint language with an honest starter-foundation check.
 - The generic activity percentage is labeled Study momentum instead of N5 Foundation because it measures quiz activity and study days, not curriculum coverage.
 - Do not resubmit from this documentation change alone. First publish and human-review the learning guide, then deepen the actual guided curriculum.
-- Next high-value curriculum slice: 50 deliberately ordered beginner vocabulary words in five ten-word units, with unique item progress, review, and a visible finish line. Do not present the existing random N5 quiz as the planned 840-word course.
+- The app now includes 50 deliberately ordered beginner vocabulary words in five ten-word units, with teach-before-check flow, unique item progress, missed-word retry, sequential unlocking, and a visible finish line. This is explicitly the first 50-word block, not the planned 840-word course.
 - After vocabulary: build a similarly bounded grammar/example-sentence sequence before claiming a complete N5 path.
-- Before the recovery candidate is published, recheck the live Cloudflare response against the Privacy and homepage analytics/tracking wording. One audit observed an injected Cloudflare beacon; a later raw response did not reproduce it, so this needs a decisive browser/network check rather than a guessed disclosure.
+- A live browser check observed Cloudflare's injected analytics beacon. Homepage and Privacy copy now distinguish local-only study progress from Cloudflare delivery, security, and aggregate traffic processing.
 - Publication and AdSense resubmission remain separate decisions. No account-side action belongs in this recovery pass.
 
 ### Post-Launch Stabilization
@@ -234,13 +234,13 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v48 precaches the expanded kana foundation, versioned app update, and crawlable beginner kana guide.
+- Service-worker v49 precaches the expanded kana foundation, crawlable beginner kana guide, and guided 50-word vocabulary course.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.
 
 ## Next Implementation Candidates
 
-1. Human-review and publish the crawlable Beginner Kana Study Path candidate when approved.
-2. Build a guided 50-word vocabulary foundation in five ten-word units with unique progress and review.
-3. Reassess public learner depth and trust after those slices; resubmission to AdSense remains a separate human decision.
+1. Human-review the new kana guide and guided 50-word vocabulary block on a real phone/tablet.
+2. Build the next bounded curriculum layer: a teach-before-check grammar and example-sentence sequence.
+3. Reassess public learner depth and trust after these slices; resubmission to AdSense remains a separate human decision.

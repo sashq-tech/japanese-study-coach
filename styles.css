@@ -1271,6 +1271,7 @@ button {
 .name-helper-panel,
 .worksheet-panel,
 .coverage-panel,
+.vocab-course-panel,
 .checkpoint-panel,
 .sprint-panel,
 .n5-practice-panel,
@@ -1287,6 +1288,7 @@ button {
 .name-helper-panel,
 .worksheet-panel,
 .coverage-panel,
+.vocab-course-panel,
 .checkpoint-panel,
 .sprint-panel,
 .n5-practice-panel,
@@ -1718,6 +1720,169 @@ button {
 
 .n5-practice-panel {
   margin-bottom: 20px;
+}
+
+.vocab-course-panel {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 20px;
+  scroll-margin-top: 24px;
+}
+
+.vocab-course-panel .section-heading > strong {
+  align-self: start;
+  padding: 8px 11px;
+  color: var(--green);
+  background: var(--mist);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  white-space: nowrap;
+}
+
+.vocab-course-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.vocab-course-progress > span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.vocab-unit-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.vocab-unit-list button {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  min-height: 104px;
+  padding: 10px;
+  color: var(--ink);
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: left;
+}
+
+.vocab-unit-list button[aria-pressed="true"] {
+  background: #fff8f4;
+  border-color: #d99b8c;
+  box-shadow: inset 0 0 0 1px #d99b8c;
+}
+
+.vocab-unit-list button:disabled {
+  cursor: default;
+  opacity: 0.52;
+}
+
+.vocab-unit-list span,
+.vocab-unit-list small,
+.vocab-teach-panel > span,
+.vocab-quiz-panel > span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.vocab-unit-list strong {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.vocab-teach-panel,
+.vocab-quiz-panel {
+  display: grid;
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.vocab-teach-panel.hidden,
+.vocab-quiz-panel.hidden {
+  display: none;
+}
+
+.vocab-teach-panel h4 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.vocab-teach-panel > p,
+.vocab-quiz-panel > p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.vocab-study-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.vocab-study-list > div {
+  display: grid;
+  grid-template-columns: minmax(70px, auto) minmax(80px, 0.7fr) minmax(0, 1.3fr);
+  gap: 8px;
+  align-items: baseline;
+  min-width: 0;
+  padding: 10px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.vocab-study-list > div[data-complete="true"] {
+  background: var(--mist);
+}
+
+.vocab-study-list strong {
+  font-size: 1.2rem;
+}
+
+.vocab-study-list span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.vocab-study-list p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+}
+
+.vocab-teach-panel > button,
+.vocab-quiz-panel > button {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 16px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.vocab-quiz-panel > button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.vocab-quiz-panel > strong {
+  font-size: 3rem;
+  line-height: 1.1;
+}
+
+.vocab-course-panel button:focus-visible,
+.vocab-course-panel [tabindex="-1"]:focus-visible {
+  outline: 3px solid #1d5f50;
+  outline-offset: 3px;
 }
 
 .review-queue-panel {
@@ -2994,6 +3159,10 @@ textarea {
     grid-template-columns: 1fr;
   }
 
+  .vocab-unit-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .app-shell,
   .sidebar,
   .lesson-area,
@@ -3251,6 +3420,18 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .vocab-study-list {
+    grid-template-columns: 1fr;
+  }
+
+  .vocab-study-list > div {
+    grid-template-columns: minmax(64px, auto) minmax(76px, 0.7fr) minmax(0, 1.3fr);
+  }
+
+  .vocab-course-panel {
+    scroll-margin-top: 260px;
+  }
+
   .name-helper-row {
     grid-template-columns: 1fr;
   }
@@ -3293,6 +3474,7 @@ textarea {
   body.printing-worksheet .today-panel,
   body.printing-worksheet .typing-panel,
   body.printing-worksheet .coverage-panel,
+  body.printing-worksheet .vocab-course-panel,
   body.printing-worksheet .checkpoint-panel,
   body.printing-worksheet .sprint-panel,
   body.printing-worksheet .n5-practice-panel,
