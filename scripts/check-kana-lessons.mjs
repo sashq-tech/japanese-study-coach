@@ -77,7 +77,7 @@ if (lessons.rowStatus(hMerged, "hiragana", "h", decks).done !== 1) throw new Err
 const indexSource = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const appSource = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const workerSource = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (indexSource.indexOf("kana-lessons.js") > indexSource.indexOf("app.js?v=47")) {
+if (indexSource.indexOf("kana-lessons.js") > indexSource.indexOf("app.js?v=48")) {
   throw new Error("Kana lesson helper must load before the app bundle.");
 }
 for (const key of ["jrj-kana-row-progress", "jrj-kana-row-selection"]) {
@@ -89,8 +89,9 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v47") throw new Error("Expected service worker v47.");
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v48") throw new Error("Expected service worker v48.");
 if (!workerContext.__shell.APP_SHELL.includes("./kana-lessons.js")) throw new Error("Kana lesson helper is not precached.");
+if (!workerContext.__shell.APP_SHELL.includes("/learn")) throw new Error("Beginner kana study path is not precached.");
 const resolvedShell = workerContext.__shell.APP_SHELL.map((url) => new URL(url, "https://japanreadycoach.com/service-worker.js").href);
 if (new Set(resolvedShell).size !== resolvedShell.length) throw new Error("Service worker shell contains duplicate resolved requests.");
 

@@ -46,6 +46,20 @@ The current app is useful as an early version, but the next version should feel 
 - Public trust-page navigation uses extensionless production routes: `/about`, `/privacy`, `/terms`, and `/contact`.
 - Later: add or document `www` only after it resolves or redirects.
 
+### AdSense Low-Value Recovery - 2026-08-13
+
+AdSense rejected Japan Ready Coach for low-value content. This supersedes the earlier measurement hold. The recovery goal is deeper, clearly discoverable learner value, not more ads or filler.
+
+- Evidence at rejection: the sitemap exposed 12 indexable routes, but only the JavaScript-heavy homepage was a learning page. Six blog posts were substantial; the 22 guided kana lessons and worksheets were difficult for a reviewer or crawler to understand from a collapsed app surface.
+- No manual AdSense units are present in source, so ad density is not the identified recovery target.
+- Current local candidate adds `/learn`, a crawlable Beginner Kana Study Path tied to the real 22-row lesson sequence and printable worksheets. It also replaces the premature N4-readiness checkpoint language with an honest starter-foundation check.
+- The generic activity percentage is labeled Study momentum instead of N5 Foundation because it measures quiz activity and study days, not curriculum coverage.
+- Do not resubmit from this documentation change alone. First publish and human-review the learning guide, then deepen the actual guided curriculum.
+- Next high-value curriculum slice: 50 deliberately ordered beginner vocabulary words in five ten-word units, with unique item progress, review, and a visible finish line. Do not present the existing random N5 quiz as the planned 840-word course.
+- After vocabulary: build a similarly bounded grammar/example-sentence sequence before claiming a complete N5 path.
+- Before the recovery candidate is published, recheck the live Cloudflare response against the Privacy and homepage analytics/tracking wording. One audit observed an injected Cloudflare beacon; a later raw response did not reproduce it, so this needs a decisive browser/network check rather than a guessed disclosure.
+- Publication and AdSense resubmission remain separate decisions. No account-side action belongs in this recovery pass.
+
 ### Post-Launch Stabilization
 
 Current status: no active post-launch known issues are tracked here after the initial soft-launch fixes.
@@ -190,8 +204,8 @@ Severity-ranked follow-up:
 
 ### N5 Checkpoint / Level Gate
 
-- Add a milestone that marks the user ready for N4 prep after foundational N5 tasks are complete.
-- Keep practice sections open, but use checkpoint completion to unlock progress badges and readiness labels.
+- Keep the current checkpoint as a starter-foundation review until the promised vocabulary, grammar, reading, and kanji depth exists.
+- Do not mark a learner ready for N4 preparation from the current shallow quiz thresholds.
 - Gate on multiple skills, not one stressful exam: kana decks, starter vocabulary, particles, grammar, reading, and practical phrases.
 - Let retakes feel normal and route missed areas into review.
 - Current app includes a 12-question mixed N5 sprint with an 80% pass target.
@@ -220,12 +234,13 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v47 precaches the expanded kana foundation and the bounded homepage/trust-page structured-data update.
+- Service-worker v48 precaches the expanded kana foundation, versioned app update, and crawlable beginner kana guide.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.
 
 ## Next Implementation Candidates
 
-1. Add weekly goals and streak rewards for the Today path.
-2. Add the About Me draft and real public contact channel before broad public promotion.
+1. Human-review and publish the crawlable Beginner Kana Study Path candidate when approved.
+2. Build a guided 50-word vocabulary foundation in five ten-word units with unique progress and review.
+3. Reassess public learner depth and trust after those slices; resubmission to AdSense remains a separate human decision.

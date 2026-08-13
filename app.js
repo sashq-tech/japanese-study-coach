@@ -1570,7 +1570,7 @@ function renderCheckpointProgress() {
   const criteria = getCheckpointCriteria();
   const completeCount = criteria.filter((item) => item.complete).length;
   const percent = Math.round((completeCount / criteria.length) * 100);
-  els.checkpointStatus.textContent = completeCount === criteria.length ? "N4 prep unlocked" : "Not ready yet";
+  els.checkpointStatus.textContent = completeCount === criteria.length ? "Starter check complete" : "Still in progress";
   els.checkpointStatus.className = completeCount === criteria.length ? "checkpoint-ready" : "";
   els.checkpointBar.style.width = `${percent}%`;
   els.checkpointScore.textContent = `${completeCount} / ${criteria.length} complete`;
@@ -2444,7 +2444,7 @@ function finishSprint() {
   els.sprintQuestionMeta.textContent = "Sprint complete";
   els.sprintQuestionText.textContent = `${percent}%`;
   els.sprintQuestionHint.textContent = percent >= SPRINT_PASS_PERCENT
-    ? "Checkpoint sprint passed. This counts toward N4 prep readiness."
+    ? "Starter sprint passed. Review the current coverage before treating any N5 area as complete."
     : "Retake the sprint after reviewing the missed areas.";
   els.sprintFeedback.textContent = `${state.sprint.correct} correct out of ${state.sprint.questions.length}. Best score: ${state.sprintBest}%.`;
   els.sprintFeedback.className = percent >= SPRINT_PASS_PERCENT ? "feedback success" : "feedback needs-review";

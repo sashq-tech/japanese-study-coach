@@ -7,7 +7,7 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 ## Production Status
 
 - Live apex domain: `https://japanreadycoach.com/`
-- Public routes verified: `/`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
+- Public routes verified: `/`, `/learn`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
 - Current launch posture: browser-based public site, localStorage progress, no accounts, no backend, and beginner/N5 scope.
 - Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and local human review notes save feedback.
 - Current product focus: a structured N5 path with kana first, short reading practice, and calm progressive disclosure before broader N4+ content.
@@ -29,6 +29,7 @@ Recommended public description:
 
 - Starts gently with hiragana and katakana recognition before introducing heavier content.
 - Guides learners through 22 kana-foundation lessons: the 11 basic rows in Hiragana followed by the same 11 in Katakana, with natural row sizes and one explicit Continue action between rows.
+- Provides a crawlable Beginner Kana Study Path that explains the 22-lesson order, a two-week starter plan, readiness checks, and how to use printable practice.
 - Provides a compact Start Here nudge for guided mini-session, kana, review, or N5 basics.
 - Uses a Start Calibration panel to recommend Hiragana, Katakana, or N5 Basics from local progress.
 - Teaches a tiny focus intro, then offers a guided five-question mini-session.
@@ -80,6 +81,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 ## File Map
 
 - `index.html` - app structure and static trust/scope copy, deployed at `/`
+- `learn.html` - crawlable beginner kana guide, deployed at `/learn`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `blog.html` - static blog index, linked publicly as `/blog`
 - `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
@@ -103,6 +105,7 @@ node --check app.js
 node --check n5-content.js
 node --check service-worker.js
 node scripts/check-kana-lessons.mjs
+node scripts/check-learning-guide.mjs
 node scripts/check-structured-data.mjs
 node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest ok')"
 Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'
