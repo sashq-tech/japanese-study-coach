@@ -13,6 +13,8 @@ const KANA_ROW_PROGRESS_STORAGE_KEY = "jrj-kana-row-progress";
 const KANA_ROW_SELECTION_STORAGE_KEY = "jrj-kana-row-selection";
 const VOCAB_PROGRESS_STORAGE_KEY = "jrj-vocab-course-progress";
 const VOCAB_SELECTION_STORAGE_KEY = "jrj-vocab-course-selection";
+const GRAMMAR_PROGRESS_STORAGE_KEY = "jrj-grammar-course-progress";
+const GRAMMAR_SELECTION_STORAGE_KEY = "jrj-grammar-course-selection";
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -25,6 +27,8 @@ const PROGRESS_STORAGE_KEYS = [
   KANA_ROW_SELECTION_STORAGE_KEY,
   VOCAB_PROGRESS_STORAGE_KEY,
   VOCAB_SELECTION_STORAGE_KEY,
+  GRAMMAR_PROGRESS_STORAGE_KEY,
+  GRAMMAR_SELECTION_STORAGE_KEY,
   "jrj-onboarding-focus",
   "jrj-n5-mode-correct",
   "jrj-last-quiz-key",
@@ -97,6 +101,22 @@ function loadVocabularySelection(progress) {
       || JapanReadyVocabularyLessons.UNITS.at(-1).id;
 }
 
+function loadGrammarProgress() {
+  return JapanReadyGrammarLessons.normalizeProgress(
+    parseStoredJson(GRAMMAR_PROGRESS_STORAGE_KEY, {})
+  );
+}
+
+function loadGrammarSelection(progress) {
+  const saved = localStorage.getItem(GRAMMAR_SELECTION_STORAGE_KEY) || "";
+  const valid = JapanReadyGrammarLessons.UNITS.some((unit) => unit.id === saved)
+    && JapanReadyGrammarLessons.isUnlocked(progress, saved);
+  return valid
+    ? saved
+    : JapanReadyGrammarLessons.nextIncomplete(progress)?.id
+      || JapanReadyGrammarLessons.UNITS.at(-1).id;
+}
+
 function loadModeCorrect() {
   const parsed = parseStoredJson("jrj-n5-mode-correct", {});
   const saved = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
@@ -166,6 +186,8 @@ const initialKanaRowProgress = loadKanaRowProgress(initialKanaHits);
 const initialKanaRowSelection = loadKanaRowSelection(initialKanaRowProgress);
 const initialVocabularyProgress = loadVocabularyProgress();
 const initialVocabularySelection = loadVocabularySelection(initialVocabularyProgress);
+const initialGrammarProgress = loadGrammarProgress();
+const initialGrammarSelection = loadGrammarSelection(initialGrammarProgress);
 
 const state = {
   deck: "hiragana",
@@ -193,6 +215,18 @@ const state = {
     queue: [],
     answered: false,
     lastCorrect: false,
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
+  },
+  grammarProgress: initialGrammarProgress,
+  grammarCourse: {
+    unitId: initialGrammarSelection,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    selectedTokens: [],
     correct: 0,
     attempts: 0,
     missed: new Set()
@@ -342,6 +376,32 @@ const els = {
   vocabChoices: document.querySelector("#vocabChoices"),
   vocabFeedback: document.querySelector("#vocabFeedback"),
   vocabContinueButton: document.querySelector("#vocabContinueButton"),
+  grammarCourse: document.querySelector("#grammarCourse"),
+  grammarCourseStatus: document.querySelector("#grammarCourseStatus"),
+  grammarCourseBar: document.querySelector("#grammarCourseBar"),
+  grammarCourseCount: document.querySelector("#grammarCourseCount"),
+  grammarUnitList: document.querySelector("#grammarUnitList"),
+  grammarTeachPanel: document.querySelector("#grammarTeachPanel"),
+  grammarUnitMeta: document.querySelector("#grammarUnitMeta"),
+  grammarUnitTitle: document.querySelector("#grammarUnitTitle"),
+  grammarUnitDescription: document.querySelector("#grammarUnitDescription"),
+  grammarUnitNote: document.querySelector("#grammarUnitNote"),
+  grammarExamples: document.querySelector("#grammarExamples"),
+  grammarHelperWords: document.querySelector("#grammarHelperWords"),
+  startGrammarUnitButton: document.querySelector("#startGrammarUnitButton"),
+  grammarQuizPanel: document.querySelector("#grammarQuizPanel"),
+  grammarQuestionMeta: document.querySelector("#grammarQuestionMeta"),
+  grammarQuestionPrompt: document.querySelector("#grammarQuestionPrompt"),
+  grammarQuestionJapanese: document.querySelector("#grammarQuestionJapanese"),
+  grammarQuestionRomaji: document.querySelector("#grammarQuestionRomaji"),
+  grammarChoices: document.querySelector("#grammarChoices"),
+  grammarAssembly: document.querySelector("#grammarAssembly"),
+  grammarAssemblyAnswer: document.querySelector("#grammarAssemblyAnswer"),
+  grammarTokenBank: document.querySelector("#grammarTokenBank"),
+  resetGrammarAssemblyButton: document.querySelector("#resetGrammarAssemblyButton"),
+  checkGrammarAssemblyButton: document.querySelector("#checkGrammarAssemblyButton"),
+  grammarFeedback: document.querySelector("#grammarFeedback"),
+  grammarContinueButton: document.querySelector("#grammarContinueButton"),
   n5PracticeTitle: document.querySelector("#n5PracticeTitle"),
   n5QuestionMeta: document.querySelector("#n5QuestionMeta"),
   n5QuestionText: document.querySelector("#n5QuestionText"),
@@ -488,6 +548,8 @@ function saveProgress() {
   }));
   localStorage.setItem(VOCAB_PROGRESS_STORAGE_KEY, JSON.stringify(state.vocabularyProgress));
   localStorage.setItem(VOCAB_SELECTION_STORAGE_KEY, state.vocabularyCourse.unitId);
+  localStorage.setItem(GRAMMAR_PROGRESS_STORAGE_KEY, JSON.stringify(state.grammarProgress));
+  localStorage.setItem(GRAMMAR_SELECTION_STORAGE_KEY, state.grammarCourse.unitId);
   localStorage.setItem("jrj-onboarding-focus", state.onboardingFocus);
   localStorage.setItem("jrj-n5-mode-correct", JSON.stringify(state.n5ModeCorrect));
   localStorage.setItem("jrj-last-quiz-key", state.lastQuizKey);
@@ -654,6 +716,48 @@ function getNextKanaRowTask() {
   return { ...next, row, status };
 }
 
+function getStructuredN5Task() {
+  const vocabularyUnit = JapanReadyVocabularyLessons.nextIncomplete(
+    state.vocabularyProgress,
+    n5Content.n5Vocabulary
+  );
+  if (vocabularyUnit) {
+    const status = JapanReadyVocabularyLessons.unitStatus(
+      state.vocabularyProgress,
+      vocabularyUnit.id,
+      n5Content.n5Vocabulary
+    );
+    return {
+      step: 2,
+      kind: "vocabulary",
+      unit: vocabularyUnit,
+      unitNumber: JapanReadyVocabularyLessons.UNITS.indexOf(vocabularyUnit) + 1,
+      done: state.vocabularyProgress.completed.length,
+      total: 50,
+      unitDone: status.done,
+      unitTotal: status.total,
+      action: `vocabulary-course:${vocabularyUnit.id}`
+    };
+  }
+
+  const grammarUnit = JapanReadyGrammarLessons.nextIncomplete(state.grammarProgress);
+  if (grammarUnit) {
+    const status = JapanReadyGrammarLessons.unitStatus(state.grammarProgress, grammarUnit.id);
+    return {
+      step: 3,
+      kind: "grammar",
+      unit: grammarUnit,
+      unitNumber: JapanReadyGrammarLessons.UNITS.indexOf(grammarUnit) + 1,
+      done: state.grammarProgress.completed.length,
+      total: JapanReadyGrammarLessons.allQuestions().length,
+      unitDone: status.done,
+      unitTotal: status.total,
+      action: `grammar-course:${grammarUnit.id}`
+    };
+  }
+  return null;
+}
+
 function getRoadmapResumeState() {
   const rowTask = getNextKanaRowTask();
   if (rowTask) {
@@ -712,43 +816,26 @@ function getRoadmapResumeState() {
     };
   }
 
-  const vocabularyUnit = JapanReadyVocabularyLessons.nextIncomplete(
-    state.vocabularyProgress,
-    n5Content.n5Vocabulary
-  );
-  if (vocabularyUnit) {
-    const vocabularyStatus = JapanReadyVocabularyLessons.unitStatus(
-      state.vocabularyProgress,
-      vocabularyUnit.id,
-      n5Content.n5Vocabulary
-    );
-    const vocabularyDone = state.vocabularyProgress.completed.length;
+  const structuredTask = getStructuredN5Task();
+  if (structuredTask?.kind === "vocabulary") {
     return {
       step: 2,
-      meta: `Current focus - Step 2, Unit ${JapanReadyVocabularyLessons.UNITS.indexOf(vocabularyUnit) + 1}`,
-      title: vocabularyUnit.title,
-      summary: `${vocabularyDone}/50 unique starter words complete; ${vocabularyStatus.done}/10 complete in this unit. This is the first block toward the larger vocabulary roadmap.`,
-      action: `vocabulary-course:${vocabularyUnit.id}`,
-      actionLabel: vocabularyStatus.done ? "Resume Unit" : "Start Unit"
+      meta: `Current focus - Step 2, Unit ${structuredTask.unitNumber}`,
+      title: structuredTask.unit.title,
+      summary: `${structuredTask.done}/50 unique starter words complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this unit. This is the first block toward the larger vocabulary roadmap.`,
+      action: structuredTask.action,
+      actionLabel: structuredTask.unitDone ? "Resume Unit" : "Start Unit"
     };
   }
 
-  const grammarModes = ["particles", "grammar", "sentences"];
-  const grammarTask = grammarModes
-    .map((mode) => ({
-      mode,
-      count: state.n5ModeCorrect[mode] || 0,
-      target: N5_MODE_TARGETS[mode] || 1
-    }))
-    .find((item) => item.count < item.target);
-  if (grammarTask) {
+  if (structuredTask?.kind === "grammar") {
     return {
       step: 3,
-      meta: "Current focus - Step 3",
-      title: `Build ${n5ModeLabel(grammarTask.mode)}`,
-      summary: `${grammarTask.count}/${grammarTask.target} starter checks complete. Treat this as grammar guidance, not official JLPT readiness.`,
-      action: `n5:${grammarTask.mode}`,
-      actionLabel: "Practice Grammar"
+      meta: `Current focus - Step 3, Lesson ${structuredTask.unitNumber}`,
+      title: structuredTask.unit.title,
+      summary: `${structuredTask.done}/${structuredTask.total} guided checks complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this lesson. This is the first grammar block, not the full planned sentence path.`,
+      action: structuredTask.action,
+      actionLabel: structuredTask.unitDone ? "Resume Lesson" : "Start Lesson"
     };
   }
 
@@ -851,6 +938,7 @@ function buildTodayStudyPath() {
   const dueCount = dueReviewItems().length;
   const kanaTask = getNextKanaTask();
   const n5Task = getWeakestN5Mode();
+  const structuredN5Task = getStructuredN5Task();
   const criteria = getCheckpointCriteria();
   const completeCriteria = criteria.filter((item) => item.complete).length;
   const todayMinutes = todayStudyMinutes();
@@ -880,13 +968,15 @@ function buildTodayStudyPath() {
   steps.push({
     key: "n5",
     label: "N5 focus",
-    title: n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "Starter N5 checks complete",
-    detail: n5Task
-      ? `${n5Task.count} / ${n5Task.target} correct. Today sample: ${getTodayFocusExample(n5Task.mode)}`
-      : "Vocabulary, particles, grammar, and sentence checks hit starter targets.",
-    action: n5Task ? `n5:${n5Task.mode}` : "n5",
-    actionLabel: n5Task ? "Practice N5" : "Done",
-    complete: !n5Task
+    title: structuredN5Task ? structuredN5Task.unit.title : "Guided starter blocks complete",
+    detail: structuredN5Task
+      ? `${structuredN5Task.done}/${structuredN5Task.total} complete in the ${structuredN5Task.kind} block; lesson ${structuredN5Task.unitNumber} is next.`
+      : n5Task
+        ? `Guided blocks are clear. Optional ${n5ModeLabel(n5Task.mode)} practice remains available.`
+        : "The first guided vocabulary and grammar blocks are complete.",
+    action: structuredN5Task?.action || "n5",
+    actionLabel: structuredN5Task ? "Continue Path" : "Done",
+    complete: !structuredN5Task
   });
 
   steps.push({
@@ -947,6 +1037,7 @@ function buildStartHereActions() {
   const focusLabel = onboardingOptions().find((option) => option.key === focus)?.label || "Hiragana";
   const kanaTask = getNextKanaTask();
   const n5Task = getWeakestN5Mode();
+  const structuredN5Task = getStructuredN5Task();
   return [
     {
       key: "mini",
@@ -975,9 +1066,11 @@ function buildStartHereActions() {
     {
       key: "n5",
       label: "N5",
-      title: n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "N5 starter checks",
-      detail: n5Task ? `${n5Task.count}/${n5Task.target} toward the starter target.` : "Starter N5 targets are ready for sprint review.",
-      action: n5Task ? `n5:${n5Task.mode}` : "checkpoint",
+      title: structuredN5Task ? structuredN5Task.unit.title : n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "N5 starter checks",
+      detail: structuredN5Task
+        ? `${structuredN5Task.done}/${structuredN5Task.total} complete in the guided ${structuredN5Task.kind} block.`
+        : n5Task ? `${n5Task.count}/${n5Task.target} toward the optional practice target.` : "Starter N5 targets are ready for sprint review.",
+      action: structuredN5Task?.action || (n5Task ? `n5:${n5Task.mode}` : "checkpoint"),
       recommended: !dueCount && !kanaTask
     }
   ];
@@ -2622,6 +2715,18 @@ function resetProgress() {
     attempts: 0,
     missed: new Set()
   };
+  state.grammarProgress = JapanReadyGrammarLessons.normalizeProgress({});
+  state.grammarCourse = {
+    unitId: JapanReadyGrammarLessons.UNITS[0].id,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    selectedTokens: [],
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
+  };
   state.kanaMode = "recognition";
   state.onboardingFocus = "";
   state.n5ModeCorrect = { vocab: 0, particles: 0, grammar: 0, sentences: 0 };
@@ -2655,6 +2760,7 @@ function resetProgress() {
   renderKanaModeButtons();
   renderKanaLesson();
   renderVocabularyCourse();
+  renderGrammarCourse();
   startQuiz();
 }
 
@@ -2857,6 +2963,7 @@ function renderCoverageStats() {
     { label: "Vocabulary", value: n5Content.n5Vocabulary.length, target: "starter seed" },
     { label: "Particles", value: n5Content.particles.length, target: "N5 basics" },
     { label: "Grammar", value: n5Content.grammarPatterns.length, target: "starter nodes" },
+    { label: "Guided grammar", value: JapanReadyGrammarLessons.allQuestions().length, target: "first finite block" },
     { label: "Sentence Qs", value: n5Content.sentencePractice.length, target: "reading checks" },
     { label: "Practice Qs", value: n5Content.particlePractice.length + n5Content.grammarPractice.length + n5Content.sentencePractice.length, target: "plus generated vocab" }
   ];
@@ -3059,6 +3166,260 @@ function continueVocabularyCourse() {
     return;
   }
   renderVocabularyCourse({ focus: true });
+}
+
+function currentGrammarUnit() {
+  return JapanReadyGrammarLessons.UNITS.find((unit) => unit.id === state.grammarCourse.unitId)
+    || JapanReadyGrammarLessons.UNITS[0];
+}
+
+function currentGrammarQuestion() {
+  const id = state.grammarCourse.queue[0];
+  return JapanReadyGrammarLessons.allQuestions().find((question) => question.id === id) || null;
+}
+
+function renderGrammarAssembly(question) {
+  const selected = state.grammarCourse.selectedTokens;
+  els.grammarAssemblyAnswer.innerHTML = selected.length
+    ? selected.map((token, index) => `
+        <button type="button" data-grammar-remove-index="${index}" aria-label="Remove ${escapeHtml(token)} from the sentence">${escapeHtml(token)}</button>
+      `).join("")
+    : '<span>Choose words below.</span>';
+  els.grammarTokenBank.innerHTML = question.tokens.map((token, index) => {
+    const used = selected.includes(token.text);
+    return `
+      <button type="button" data-grammar-token-index="${index}" ${used ? "disabled" : ""}>
+        <strong lang="ja">${token.text}</strong>
+        <span>${token.romaji}</span>
+      </button>
+    `;
+  }).join("");
+  els.resetGrammarAssemblyButton.disabled = !selected.length || state.grammarCourse.answered;
+  els.checkGrammarAssemblyButton.disabled = state.grammarCourse.answered
+    || selected.length !== question.answerTokens.length;
+}
+
+function renderGrammarCourse(options = {}) {
+  const unit = currentGrammarUnit();
+  const units = JapanReadyGrammarLessons.UNITS;
+  const unitIndex = units.findIndex((candidate) => candidate.id === unit.id);
+  const total = JapanReadyGrammarLessons.allQuestions().length;
+  const allDone = state.grammarProgress.completed.length;
+  const unitStatus = JapanReadyGrammarLessons.unitStatus(state.grammarProgress, unit.id);
+
+  els.grammarCourseStatus.textContent = `${allDone} / ${total} checks`;
+  els.grammarCourseBar.style.width = `${Math.round((allDone / total) * 100)}%`;
+  els.grammarCourseCount.textContent = `Lesson ${unitIndex + 1} of ${units.length} - ${unitStatus.done}/${unitStatus.total} complete`;
+  els.grammarUnitList.innerHTML = units.map((candidate, index) => {
+    const status = JapanReadyGrammarLessons.unitStatus(state.grammarProgress, candidate.id);
+    const unlocked = JapanReadyGrammarLessons.isUnlocked(state.grammarProgress, candidate.id);
+    return `
+      <button type="button" data-grammar-unit="${candidate.id}" ${unlocked ? "" : "disabled"} aria-pressed="${candidate.id === unit.id}">
+        <span>Lesson ${index + 1}</span>
+        <strong>${candidate.title}</strong>
+        <small>${unlocked ? `${status.done}/${status.total} checks` : "Locked"}</small>
+      </button>
+    `;
+  }).join("");
+
+  if (state.grammarCourse.phase === "teach") {
+    els.grammarTeachPanel.classList.remove("hidden");
+    els.grammarQuizPanel.classList.add("hidden");
+    els.grammarUnitMeta.textContent = `Lesson ${unitIndex + 1} - Study before the check`;
+    els.grammarUnitTitle.textContent = unit.title;
+    els.grammarUnitDescription.textContent = unit.description;
+    els.grammarUnitNote.textContent = unit.note;
+    els.grammarHelperWords.innerHTML = unit.helperWords.length
+      ? `<strong>Lesson helper:</strong> ${unit.helperWords.map(escapeHtml).join(", ")}. This helper is not counted among the 50 completed vocabulary words.`
+      : "";
+    els.grammarHelperWords.classList.toggle("hidden", !unit.helperWords.length);
+    els.grammarExamples.innerHTML = unit.examples.map((example) => `
+      <div>
+        <strong lang="ja">${example.japanese}</strong>
+        <span>${example.romaji}</span>
+        <p>${example.english}</p>
+      </div>
+    `).join("");
+    els.startGrammarUnitButton.textContent = unitStatus.complete
+      ? `Review This ${unitStatus.total}-Check Lesson`
+      : `Start ${unitStatus.total - unitStatus.done}-Check Lesson`;
+    if (options.focus) els.grammarUnitTitle.focus({ preventScroll: true });
+    return;
+  }
+
+  els.grammarTeachPanel.classList.add("hidden");
+  els.grammarQuizPanel.classList.remove("hidden");
+
+  if (state.grammarCourse.phase === "complete") {
+    const nextUnit = units[unitIndex + 1] || null;
+    els.grammarQuestionMeta.textContent = `Lesson ${unitIndex + 1} complete`;
+    els.grammarQuestionPrompt.textContent = unitIndex + 1 === units.length
+      ? `${total}-check first grammar block complete`
+      : `${unit.title} complete`;
+    els.grammarQuestionJapanese.textContent = "";
+    els.grammarQuestionJapanese.classList.add("hidden");
+    els.grammarQuestionRomaji.textContent = `${unitStatus.done}/${unitStatus.total} unique checks complete. ${state.grammarCourse.missed.size} check${state.grammarCourse.missed.size === 1 ? "" : "s"} needed another try this session.`;
+    els.grammarChoices.innerHTML = "";
+    els.grammarAssembly.classList.add("hidden");
+    els.grammarFeedback.textContent = nextUnit
+      ? "The next sentence lesson is now available."
+      : "You cleared this first guided block. That is a finish line, not a claim of grammar mastery or full N5 coverage.";
+    els.grammarFeedback.className = "feedback success";
+    els.grammarContinueButton.disabled = !nextUnit;
+    els.grammarContinueButton.textContent = nextUnit ? `Continue to Lesson ${unitIndex + 2}` : "First Grammar Block Complete";
+    if (options.focus) els.grammarQuestionPrompt.focus({ preventScroll: true });
+    return;
+  }
+
+  const question = currentGrammarQuestion();
+  if (!question) {
+    state.grammarCourse.phase = "complete";
+    renderGrammarCourse(options);
+    return;
+  }
+  els.grammarQuestionMeta.textContent = `Lesson ${unitIndex + 1} - ${unitStatus.done}/${unitStatus.total} complete - ${state.grammarCourse.queue.length} in this check`;
+  els.grammarQuestionPrompt.textContent = question.prompt;
+  els.grammarQuestionJapanese.textContent = question.japanese || "";
+  els.grammarQuestionJapanese.classList.toggle("hidden", !question.japanese);
+  els.grammarQuestionRomaji.textContent = question.romaji || "";
+  els.grammarFeedback.textContent = "";
+  els.grammarFeedback.className = "feedback";
+  els.grammarContinueButton.disabled = !state.grammarCourse.answered;
+  els.grammarContinueButton.textContent = "Continue";
+
+  if (question.type === "assembly") {
+    els.grammarChoices.innerHTML = "";
+    els.grammarAssembly.classList.remove("hidden");
+    renderGrammarAssembly(question);
+  } else {
+    els.grammarAssembly.classList.add("hidden");
+    els.grammarChoices.innerHTML = question.choices.map((choice) => `
+      <button type="button" data-grammar-answer="${escapeHtml(choice)}" ${state.grammarCourse.answered ? "disabled" : ""}>${choice}</button>
+    `).join("");
+  }
+  if (options.focus) els.grammarQuestionPrompt.focus({ preventScroll: true });
+}
+
+function selectGrammarUnit(unitId, options = {}) {
+  if (!JapanReadyGrammarLessons.isUnlocked(state.grammarProgress, unitId)) return;
+  state.grammarCourse = {
+    unitId,
+    phase: "teach",
+    queue: [],
+    answered: false,
+    lastCorrect: false,
+    selectedTokens: [],
+    correct: 0,
+    attempts: 0,
+    missed: new Set()
+  };
+  saveProgress();
+  renderGrammarCourse(options);
+}
+
+function startGrammarUnit() {
+  const unit = currentGrammarUnit();
+  const remaining = JapanReadyGrammarLessons.remainingQuestions(state.grammarProgress, unit.id);
+  const questions = remaining.length ? remaining : JapanReadyGrammarLessons.questionsFor(unit.id);
+  state.grammarCourse.phase = "quiz";
+  state.grammarCourse.queue = questions.map((question) => question.id);
+  state.grammarCourse.answered = false;
+  state.grammarCourse.lastCorrect = false;
+  state.grammarCourse.selectedTokens = [];
+  state.grammarCourse.correct = 0;
+  state.grammarCourse.attempts = 0;
+  state.grammarCourse.missed = new Set();
+  renderGrammarCourse({ focus: true });
+}
+
+function answerGrammarQuestion(answer) {
+  if (state.grammarCourse.answered || state.grammarCourse.phase !== "quiz") return;
+  const question = currentGrammarQuestion();
+  if (!question) return;
+  const correct = answer === question.answer;
+  state.grammarCourse.answered = true;
+  state.grammarCourse.lastCorrect = correct;
+  state.grammarCourse.attempts += 1;
+  els.grammarChoices.querySelectorAll("button").forEach((button) => {
+    button.disabled = true;
+    if (button.dataset.grammarAnswer === question.answer) button.classList.add("correct-answer");
+    if (!correct && button.dataset.grammarAnswer === answer) button.classList.add("wrong-answer");
+  });
+  if (correct) {
+    state.grammarProgress = JapanReadyGrammarLessons.markComplete(state.grammarProgress, question);
+    state.grammarCourse.correct += 1;
+    state.correct += 1;
+    state.streak += 1;
+    state.n5ModeCorrect[question.mode] = Math.min(
+      N5_MODE_TARGETS[question.mode],
+      (state.n5ModeCorrect[question.mode] || 0) + 1
+    );
+    els.grammarFeedback.textContent = `Correct. ${question.explanation}`;
+    els.grammarFeedback.className = "feedback success";
+  } else {
+    state.grammarCourse.missed.add(question.id);
+    state.review += 1;
+    state.streak = 0;
+    els.grammarFeedback.textContent = `Not yet. ${question.explanation} Correct answer: ${question.answer} (${question.romaji || "shown above"}). This check will return before the lesson finishes.`;
+    els.grammarFeedback.className = "feedback needs-review";
+  }
+  els.grammarContinueButton.disabled = false;
+  saveProgress();
+  renderProgress();
+  els.grammarFeedback.focus({ preventScroll: true });
+}
+
+function addGrammarToken(index) {
+  const question = currentGrammarQuestion();
+  if (!question || question.type !== "assembly" || state.grammarCourse.answered) return;
+  const token = question.tokens[index];
+  if (!token || state.grammarCourse.selectedTokens.includes(token.text)) return;
+  state.grammarCourse.selectedTokens.push(token.text);
+  renderGrammarAssembly(question);
+}
+
+function removeGrammarToken(index) {
+  if (state.grammarCourse.answered) return;
+  state.grammarCourse.selectedTokens.splice(index, 1);
+  renderGrammarAssembly(currentGrammarQuestion());
+}
+
+function resetGrammarAssembly() {
+  if (state.grammarCourse.answered) return;
+  state.grammarCourse.selectedTokens = [];
+  renderGrammarAssembly(currentGrammarQuestion());
+}
+
+function checkGrammarAssembly() {
+  const question = currentGrammarQuestion();
+  if (!question || question.type !== "assembly") return;
+  answerGrammarQuestion(
+    state.grammarCourse.selectedTokens.join("") === question.answerTokens.join("")
+      ? question.answer
+      : state.grammarCourse.selectedTokens.join("")
+  );
+  renderGrammarAssembly(question);
+}
+
+function continueGrammarCourse() {
+  if (state.grammarCourse.phase === "complete") {
+    const units = JapanReadyGrammarLessons.UNITS;
+    const nextUnit = units[units.findIndex((unit) => unit.id === state.grammarCourse.unitId) + 1];
+    if (nextUnit) selectGrammarUnit(nextUnit.id, { focus: true });
+    return;
+  }
+  if (!state.grammarCourse.answered) return;
+  const currentId = state.grammarCourse.queue.shift();
+  if (!state.grammarCourse.lastCorrect) state.grammarCourse.queue.push(currentId);
+  state.grammarCourse.answered = false;
+  state.grammarCourse.lastCorrect = false;
+  state.grammarCourse.selectedTokens = [];
+  if (!state.grammarCourse.queue.length) {
+    state.grammarCourse.phase = "complete";
+    saveProgress();
+    renderProgress();
+  }
+  renderGrammarCourse({ focus: true });
 }
 
 function renderMissions() {
@@ -3275,6 +3636,16 @@ function runTodayAction(action, options = {}) {
     });
     return;
   }
+  if (action.startsWith("grammar-course:")) {
+    showSection("n5Section", options);
+    const unitId = action.split(":")[1];
+    els.grammarCourse.open = true;
+    selectGrammarUnit(unitId, { focus: !options.reveal });
+    window.requestAnimationFrame(() => {
+      els.grammarCourse.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return;
+  }
   if (action.startsWith("n5:")) {
     showSection("n5Section", options);
     chooseN5Mode(action.split(":")[1]);
@@ -3434,6 +3805,31 @@ els.vocabChoices.addEventListener("click", (event) => {
 });
 els.vocabContinueButton.addEventListener("click", continueVocabularyCourse);
 
+els.grammarUnitList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-grammar-unit]");
+  if (!button || button.disabled) return;
+  selectGrammarUnit(button.dataset.grammarUnit, { focus: true });
+});
+els.startGrammarUnitButton.addEventListener("click", startGrammarUnit);
+els.grammarChoices.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-grammar-answer]");
+  if (!button) return;
+  answerGrammarQuestion(button.dataset.grammarAnswer);
+});
+els.grammarTokenBank.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-grammar-token-index]");
+  if (!button || button.disabled) return;
+  addGrammarToken(Number(button.dataset.grammarTokenIndex));
+});
+els.grammarAssemblyAnswer.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-grammar-remove-index]");
+  if (!button) return;
+  removeGrammarToken(Number(button.dataset.grammarRemoveIndex));
+});
+els.resetGrammarAssemblyButton.addEventListener("click", resetGrammarAssembly);
+els.checkGrammarAssemblyButton.addEventListener("click", checkGrammarAssembly);
+els.grammarContinueButton.addEventListener("click", continueGrammarCourse);
+
 els.sprintChoices.addEventListener("click", (event) => {
   const button = event.target.closest("[data-sprint-answer]");
   if (!button) return;
@@ -3526,6 +3922,7 @@ renderReadingScenario();
 renderMiniCards();
 renderCoverageStats();
 renderVocabularyCourse();
+renderGrammarCourse();
 renderScenario();
 startN5Question();
 startQuiz();

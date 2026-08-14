@@ -1272,6 +1272,7 @@ button {
 .worksheet-panel,
 .coverage-panel,
 .vocab-course-panel,
+.grammar-course-panel,
 .checkpoint-panel,
 .sprint-panel,
 .n5-practice-panel,
@@ -1289,6 +1290,7 @@ button {
 .worksheet-panel,
 .coverage-panel,
 .vocab-course-panel,
+.grammar-course-panel,
 .checkpoint-panel,
 .sprint-panel,
 .n5-practice-panel,
@@ -1883,6 +1885,290 @@ button {
 .vocab-course-panel [tabindex="-1"]:focus-visible {
   outline: 3px solid #1d5f50;
   outline-offset: 3px;
+}
+
+.grammar-course-drawer {
+  margin-bottom: 20px;
+  scroll-margin-top: 24px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.grammar-course-drawer > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 14px 18px;
+  list-style: none;
+  cursor: pointer;
+  background: #f4f6f3;
+  border-radius: 8px;
+}
+
+.grammar-course-drawer > summary::-webkit-details-marker {
+  display: none;
+}
+
+.grammar-course-drawer > summary::after {
+  content: "+";
+  color: var(--red-dark);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.grammar-course-drawer[open] > summary::after {
+  content: "-";
+}
+
+.grammar-course-drawer > summary span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.grammar-course-drawer > summary small,
+.grammar-course-drawer > summary em,
+.grammar-unit-list span,
+.grammar-unit-list small,
+.grammar-teach-panel > span,
+.grammar-quiz-panel > span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.grammar-course-drawer > summary strong {
+  overflow-wrap: anywhere;
+  color: var(--red-dark);
+  font-size: 1rem;
+}
+
+.grammar-course-drawer > summary:focus-visible,
+.grammar-course-panel button:focus-visible,
+.grammar-course-panel [tabindex="-1"]:focus-visible {
+  outline: 3px solid #1d5f50;
+  outline-offset: 3px;
+}
+
+.grammar-course-panel {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 0;
+  box-shadow: none;
+}
+
+.grammar-course-progress {
+  display: grid;
+  gap: 8px;
+}
+
+.grammar-course-progress > span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.grammar-unit-list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.grammar-unit-list button {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  min-height: 104px;
+  padding: 10px;
+  color: var(--ink);
+  text-align: left;
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.grammar-unit-list button[aria-pressed="true"] {
+  background: #fff8f4;
+  border-color: #d99b8c;
+  box-shadow: inset 0 0 0 1px #d99b8c;
+}
+
+.grammar-unit-list button:disabled {
+  cursor: default;
+  opacity: 0.52;
+}
+
+.grammar-unit-list strong {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  line-height: 1.25;
+}
+
+.grammar-teach-panel,
+.grammar-quiz-panel {
+  display: grid;
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.grammar-teach-panel.hidden,
+.grammar-quiz-panel.hidden,
+.grammar-assembly.hidden,
+.grammar-helper-words.hidden,
+.grammar-question-hidden {
+  display: none;
+}
+
+.grammar-teach-panel h4,
+.grammar-quiz-panel h4 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.grammar-teach-panel > p,
+.grammar-quiz-panel > p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.grammar-note,
+.grammar-helper-words {
+  padding: 11px 12px;
+  background: var(--mist);
+  border-left: 4px solid var(--green);
+}
+
+.grammar-helper-words {
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.grammar-example-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.grammar-example-list > div {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 12px;
+  background: var(--panel);
+}
+
+.grammar-example-list strong {
+  overflow-wrap: anywhere;
+  font-size: 1.2rem;
+}
+
+.grammar-example-list span {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.grammar-example-list p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.grammar-teach-panel > button,
+.grammar-quiz-panel > button,
+.grammar-assembly-actions button {
+  justify-self: start;
+  min-height: 44px;
+  padding: 10px 16px;
+  color: #fff;
+  background: var(--red);
+  border-radius: 8px;
+  font-weight: 900;
+}
+
+.grammar-quiz-panel > button:disabled,
+.grammar-assembly-actions button:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.grammar-quiz-panel > strong {
+  overflow-wrap: anywhere;
+  font-size: 2rem;
+  line-height: 1.3;
+}
+
+.grammar-assembly {
+  display: grid;
+  gap: 14px;
+}
+
+.grammar-assembly > div {
+  display: grid;
+  gap: 8px;
+}
+
+.grammar-assembly > div > span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.grammar-assembly-answer,
+.grammar-token-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 58px;
+  padding: 10px;
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.grammar-assembly-answer > span {
+  align-self: center;
+  color: var(--muted);
+}
+
+.grammar-assembly-answer button,
+.grammar-token-bank button {
+  min-width: 54px;
+  min-height: 44px;
+  padding: 7px 10px;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.grammar-token-bank button {
+  display: grid;
+  gap: 2px;
+}
+
+.grammar-token-bank button span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.grammar-assembly-actions {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.grammar-assembly-actions .secondary-action {
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
 }
 
 .review-queue-panel {
@@ -3163,6 +3449,10 @@ textarea {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .grammar-unit-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .app-shell,
   .sidebar,
   .lesson-area,
@@ -3432,6 +3722,27 @@ textarea {
     scroll-margin-top: 260px;
   }
 
+  .grammar-course-drawer {
+    scroll-margin-top: 260px;
+  }
+
+  .grammar-course-drawer > summary {
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  .grammar-course-drawer > summary em {
+    white-space: nowrap;
+  }
+
+  .grammar-course-panel {
+    padding: 14px;
+  }
+
+  .grammar-example-list {
+    grid-template-columns: 1fr;
+  }
+
   .name-helper-row {
     grid-template-columns: 1fr;
   }
@@ -3475,6 +3786,7 @@ textarea {
   body.printing-worksheet .typing-panel,
   body.printing-worksheet .coverage-panel,
   body.printing-worksheet .vocab-course-panel,
+  body.printing-worksheet .grammar-course-drawer,
   body.printing-worksheet .checkpoint-panel,
   body.printing-worksheet .sprint-panel,
   body.printing-worksheet .n5-practice-panel,

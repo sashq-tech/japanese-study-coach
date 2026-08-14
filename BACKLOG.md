@@ -56,7 +56,8 @@ AdSense rejected Japan Ready Coach for low-value content. This supersedes the ea
 - The generic activity percentage is labeled Study momentum instead of N5 Foundation because it measures quiz activity and study days, not curriculum coverage.
 - Do not resubmit from this documentation change alone. First publish and human-review the learning guide, then deepen the actual guided curriculum.
 - The app now includes 50 deliberately ordered beginner vocabulary words in five ten-word units, with teach-before-check flow, unique item progress, missed-word retry, sequential unlocking, and a visible finish line. This is explicitly the first 50-word block, not the planned 840-word course.
-- After vocabulary: build a similarly bounded grammar/example-sentence sequence before claiming a complete N5 path.
+- The app now includes a first guided grammar block: five sequential teach-before-check lessons, 18 unique checks across は/です/か, を, に/で, の, and と/も, guided sentence assembly, same-session retry, local progress/backup support, and a visible finish line. It explicitly does not claim grammar mastery, full N5 coverage, or completion of the planned 100-example path.
+- After this first grammar block: human-review the lesson wording and then add a second finite sentence-pattern block before claiming a complete N5 path.
 - A live browser check observed Cloudflare's injected analytics beacon. Homepage and Privacy copy now distinguish local-only study progress from Cloudflare delivery, security, and aggregate traffic processing.
 - Publication and AdSense resubmission remain separate decisions. No account-side action belongs in this recovery pass.
 
@@ -234,13 +235,13 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v49 precaches the expanded kana foundation, crawlable beginner kana guide, and guided 50-word vocabulary course.
+- Service-worker v50 precaches the expanded kana foundation, crawlable beginner kana guide, guided 50-word vocabulary course, and first finite grammar block.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.
 
 ## Next Implementation Candidates
 
-1. Human-review the new kana guide and guided 50-word vocabulary block on a real phone/tablet.
-2. Build the next bounded curriculum layer: a teach-before-check grammar and example-sentence sequence.
+1. Human-review the kana guide, guided 50-word vocabulary block, and first 18-check grammar block on a real phone/tablet.
+2. Build the next bounded curriculum layer: a second finite grammar/example-sentence block or a 10-scenario reading set, based on human review.
 3. Reassess public learner depth and trust after these slices; resubmission to AdSense remains a separate human decision.

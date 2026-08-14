@@ -61,6 +61,7 @@ Current focus:
 - A guided 50-word vocabulary foundation in five ten-word units, with study-before-check lessons and a visible finish line
 - Basic particles
 - Basic grammar patterns
+- A guided first grammar block with five teach-before-check lessons, 18 unique checks, sentence assembly, deliberate retry, and an honest finite finish line
 - Short sentence reading checks
 - Habit-building and retention loops
 
@@ -92,6 +93,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `kana-lessons.js` - basic kana-row sequence, unlocking, and progress normalization
 - `vocabulary-lessons.js` - five guided vocabulary units, sequential unlocking, and unique-word progress normalization
+- `grammar-lessons.js` - five guided sentence-pattern lessons, stable check IDs, sequential unlocking, and local progress normalization
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content
 - `reading-scenarios.js` - five hiragana-only micro-scenarios and comprehension checks
@@ -109,6 +111,7 @@ node --check service-worker.js
 node scripts/check-kana-lessons.mjs
 node scripts/check-learning-guide.mjs
 node scripts/check-vocabulary-lessons.mjs
+node scripts/check-grammar-lessons.mjs
 node scripts/check-structured-data.mjs
 node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest ok')"
 Select-String -LiteralPath ".\n5-content.js" -Pattern '[一-龯]'

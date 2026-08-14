@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=49">
+  <link rel="stylesheet" href="styles.css?v=50">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -546,6 +546,64 @@
           </section>
         </article>
 
+        <details id="grammarCourse" class="grammar-course-drawer">
+          <summary>
+            <span>
+              <small>Guided grammar foundation</small>
+              <strong>Sentence Builder 1: topics, objects, and places</strong>
+            </span>
+            <em id="grammarCourseStatus">0 / 18 checks</em>
+          </summary>
+          <div class="grammar-course-panel" aria-labelledby="grammarCourseTitle">
+            <div class="section-heading">
+              <div>
+                <span class="panel-label">Teach before check</span>
+                <h3 id="grammarCourseTitle">Build five beginner sentence patterns</h3>
+                <p class="section-copy">Study the pattern and examples first. Then clear every check once. A missed check returns before the lesson finishes.</p>
+              </div>
+            </div>
+            <div class="grammar-course-progress">
+              <div class="meter" aria-hidden="true"><span id="grammarCourseBar"></span></div>
+              <span id="grammarCourseCount">Lesson 1 of 5</span>
+            </div>
+            <div id="grammarUnitList" class="grammar-unit-list" role="group" aria-label="Grammar lessons"></div>
+
+            <section id="grammarTeachPanel" class="grammar-teach-panel" aria-labelledby="grammarUnitTitle">
+              <span id="grammarUnitMeta">Lesson 1 - Study before the check</span>
+              <h4 id="grammarUnitTitle" tabindex="-1">Topics and identity</h4>
+              <p id="grammarUnitDescription"></p>
+              <p id="grammarUnitNote" class="grammar-note"></p>
+              <div id="grammarHelperWords" class="grammar-helper-words"></div>
+              <div id="grammarExamples" class="grammar-example-list"></div>
+              <button id="startGrammarUnitButton" type="button">Start Lesson Check</button>
+            </section>
+
+            <section id="grammarQuizPanel" class="grammar-quiz-panel hidden" aria-labelledby="grammarQuestionPrompt">
+              <span id="grammarQuestionMeta">Check 1</span>
+              <h4 id="grammarQuestionPrompt" tabindex="-1">Loading question</h4>
+              <strong id="grammarQuestionJapanese" lang="ja"></strong>
+              <p id="grammarQuestionRomaji"></p>
+              <div id="grammarChoices" class="choice-grid" aria-label="Grammar answer choices"></div>
+              <div id="grammarAssembly" class="grammar-assembly hidden">
+                <div>
+                  <span>Sentence so far</span>
+                  <div id="grammarAssemblyAnswer" class="grammar-assembly-answer" lang="ja" aria-live="polite"></div>
+                </div>
+                <div>
+                  <span>Word bank</span>
+                  <div id="grammarTokenBank" class="grammar-token-bank"></div>
+                </div>
+                <div class="grammar-assembly-actions">
+                  <button id="resetGrammarAssemblyButton" class="secondary-action" type="button">Reset Words</button>
+                  <button id="checkGrammarAssemblyButton" type="button" disabled>Check Sentence</button>
+                </div>
+              </div>
+              <p id="grammarFeedback" class="feedback" aria-live="polite" tabindex="-1"></p>
+              <button id="grammarContinueButton" type="button" disabled>Continue</button>
+            </section>
+          </div>
+        </details>
+
         <article class="n5-practice-panel">
           <div class="section-heading">
             <div>
@@ -755,6 +813,7 @@
   <script src="name-helper.js"></script>
   <script src="kana-lessons.js"></script>
   <script src="vocabulary-lessons.js"></script>
-  <script src="app.js?v=49"></script>
+  <script src="grammar-lessons.js"></script>
+  <script src="app.js?v=50"></script>
 </body>
 </html>
