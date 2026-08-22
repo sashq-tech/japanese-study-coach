@@ -2097,14 +2097,14 @@ function worksheetCells(item, mode) {
 function renderWorksheetAnswerKey(items, mode) {
   if (mode !== "quiz") return "";
   return `
-    <section class="worksheet-answer-key" aria-label="Worksheet answer key">
-      <strong>Answer key</strong>
+    <details class="worksheet-answer-key">
+      <summary>Show answer key after you finish</summary>
       <div>
         ${items.map((item) => `
           <span><b lang="ja">${item.kana}</b> ${item.romaji}</span>
         `).join("")}
       </div>
-    </section>
+    </details>
   `;
 }
 
@@ -2168,6 +2168,11 @@ function setWorksheetMode(mode, settings = activeWorksheetSettings()) {
 function printKanaWorksheet() {
   const { deck, group, mode } = activeWorksheetSettings();
   renderKanaWorksheet(deck, group, mode);
+  const answerKey = els.kanaWorksheet.querySelector(".worksheet-answer-key");
+  if (answerKey && !answerKey.open) {
+    answerKey.open = true;
+    answerKey.dataset.openedForPrint = "true";
+  }
   document.body.classList.add("printing-worksheet");
   if (els.worksheetStatus) {
     els.worksheetStatus.textContent = "Opening browser print. Choose paper or Save as PDF from the print dialog.";
@@ -2175,8 +2180,17 @@ function printKanaWorksheet() {
   }
   window.setTimeout(() => {
     window.print();
-    window.setTimeout(() => document.body.classList.remove("printing-worksheet"), 500);
+    window.setTimeout(clearWorksheetPrintState, 500);
   }, 0);
+}
+
+function clearWorksheetPrintState() {
+  document.body.classList.remove("printing-worksheet");
+  const answerKey = els.kanaWorksheet.querySelector(".worksheet-answer-key[data-opened-for-print='true']");
+  if (answerKey) {
+    answerKey.open = false;
+    delete answerKey.dataset.openedForPrint;
+  }
 }
 
 function chooseDeck(deck) {
@@ -3886,7 +3900,7 @@ els.toggleChartButton.addEventListener("click", () => {
 });
 els.printWorksheetButton.addEventListener("click", printKanaWorksheet);
 window.addEventListener("afterprint", () => {
-  document.body.classList.remove("printing-worksheet");
+  clearWorksheetPrintState();
 });
 document.querySelector("#shufflePhraseButton").addEventListener("click", () => {
   lessons[state.lessonIndex].phrases.sort(() => Math.random() - 0.5);

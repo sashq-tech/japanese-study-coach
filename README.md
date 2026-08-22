@@ -42,6 +42,7 @@ Recommended public description:
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
 - Adds five hiragana-only reading scenes with ten session-only comprehension checks under the collapsed Practice tools area.
 - Adds a crawlable three-pass Hiragana reading guide with a finite 15-minute routine and printable five-scene study log.
+- Keeps Blank Quiz answer keys collapsed during setup and prints them on a dedicated compact reference page.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
 - Provides a lightweight static Blog section with a starter first-person practical note: Cash, Cards, and Suica in Japan.
 
@@ -113,6 +114,7 @@ node --check service-worker.js
 node scripts/check-kana-lessons.mjs
 node scripts/check-learning-guide.mjs
 node scripts/check-reading-guide.mjs
+node scripts/check-worksheet.mjs
 node scripts/check-vocabulary-lessons.mjs
 node scripts/check-grammar-lessons.mjs
 node scripts/check-structured-data.mjs

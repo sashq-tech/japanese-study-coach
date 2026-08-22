@@ -237,7 +237,7 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v51 precaches the expanded kana foundation, crawlable kana and Hiragana reading guides, guided 50-word vocabulary course, and first finite grammar block.
+- Service-worker v52 precaches the expanded kana foundation, crawlable kana and Hiragana reading guides, guided 50-word vocabulary course, and first finite grammar block. Blank Quiz answer keys stay collapsed on screen and print on a dedicated compact reference page.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.

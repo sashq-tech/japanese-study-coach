@@ -56,10 +56,10 @@ for (const file of publicFiles) {
 if ((sitemap.match(/https:\/\/japanreadycoach\.com\/learn/g) || []).length !== 1) {
   throw new Error("Sitemap must contain the learning guide exactly once.");
 }
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v51"')) throw new Error("Expected service worker v51.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v52"')) throw new Error("Expected service worker v52.");
 if (!worker.includes('"/learn"')) throw new Error("Learning guide is not in the service worker shell.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Reading guide is not in the service worker shell.");
-if (!index.includes('src="app.js?v=51"') || !worker.includes('"./app.js?v=51"')) {
+if (!index.includes('src="app.js?v=52"') || !worker.includes('"./app.js?v=52"')) {
   throw new Error("Versioned app bundle is not aligned between the page and service worker.");
 }
 for (const staleClaim of ["N4 prep unlocked", "Earn N4 prep readiness", "counts toward N4 prep readiness"]) {
