@@ -6,6 +6,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const files = [
   "index.html",
   "learn.html",
+  "hiragana-reading-practice.html",
   "about.html",
   "blog.html",
   "privacy.html",

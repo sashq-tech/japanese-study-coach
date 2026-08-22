@@ -53,6 +53,7 @@ AdSense rejected Japan Ready Coach for low-value content. This supersedes the ea
 - Evidence at rejection: the sitemap exposed 12 indexable routes, but only the JavaScript-heavy homepage was a learning page. Six blog posts were substantial; the 22 guided kana lessons and worksheets were difficult for a reviewer or crawler to understand from a collapsed app surface.
 - No manual AdSense units are present in source, so ad density is not the identified recovery target.
 - Published recovery slice adds `/learn`, a crawlable Beginner Kana Study Path tied to the real 22-row lesson sequence and printable worksheets. It also replaces the premature N4-readiness checkpoint language with an honest starter-foundation check.
+- Published recovery content also includes `/hiragana-reading-practice`, a crawlable three-pass method tied to the five real Hiragana scenes, with a finite 15-minute routine and printable study log rather than duplicated app controls.
 - The generic activity percentage is labeled Study momentum instead of N5 Foundation because it measures quiz activity and study days, not curriculum coverage.
 - Do not resubmit from this documentation change alone. First publish and human-review the learning guide, then deepen the actual guided curriculum.
 - The app now includes 50 deliberately ordered beginner vocabulary words in five ten-word units, with teach-before-check flow, unique item progress, missed-word retry, sequential unlocking, and a visible finish line. This is explicitly the first 50-word block, not the planned 840-word course.
@@ -101,6 +102,7 @@ Severity-ranked follow-up:
 ### Staged Reading Scenarios
 
 - Current app includes five hiragana-only micro-scenarios with two English comprehension checks each.
+- The crawlable `/hiragana-reading-practice` guide teaches how to use that finite set without adding another landing-page panel.
 - Reading is a focused door inside collapsed Practice tools and does not add another landing-page panel.
 - Results are session-only; no account, backend, or permanent reading score is implied.
 - Next slice: review the five passages for naturalness, then add a second set using hiragana plus carefully introduced katakana without changing the calm entry path.
@@ -235,7 +237,7 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v50 precaches the expanded kana foundation, crawlable beginner kana guide, guided 50-word vocabulary course, and first finite grammar block.
+- Service-worker v51 precaches the expanded kana foundation, crawlable kana and Hiragana reading guides, guided 50-word vocabulary course, and first finite grammar block.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.

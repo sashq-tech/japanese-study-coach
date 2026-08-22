@@ -3417,6 +3417,77 @@ textarea {
   color: var(--ink) !important;
 }
 
+.study-callout,
+.reading-example {
+  padding: 16px;
+  background: #fff8f4;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+}
+
+.study-callout strong,
+.reading-example strong {
+  color: var(--ink);
+}
+
+.study-callout p,
+.reading-example p {
+  margin-top: 6px;
+}
+
+.reading-example-japanese {
+  color: var(--ink) !important;
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1.45 !important;
+}
+
+.routine-steps,
+.reading-sequence,
+.print-checklist {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 24px;
+}
+
+.routine-steps li,
+.reading-sequence li {
+  padding: 14px 16px;
+  background: #f8fbfa;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.routine-steps p,
+.reading-sequence p {
+  margin-top: 6px;
+}
+
+.print-checklist {
+  padding: 0;
+  list-style: none;
+}
+
+.print-checklist li {
+  position: relative;
+  min-height: 34px;
+  padding: 6px 8px 6px 38px;
+  border-bottom: 1px solid var(--line);
+}
+
+.print-checklist li::before {
+  position: absolute;
+  top: 7px;
+  left: 6px;
+  width: 18px;
+  height: 18px;
+  content: "";
+  border: 2px solid var(--ink);
+  border-radius: 3px;
+}
+
 .static-footer {
   margin-top: 4px;
 }
@@ -3768,6 +3839,33 @@ textarea {
 }
 
 @media print {
+  .article-page .static-nav,
+  .article-page .site-footer {
+    display: none;
+  }
+
+  .article-page {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .article-page .static-hero,
+  .article-page .article-body {
+    box-shadow: none;
+  }
+
+  .article-page .article-body {
+    border: 0;
+  }
+
+  .article-page .routine-steps li,
+  .article-page .reading-sequence li,
+  .article-page .study-callout,
+  .article-page .reading-example {
+    break-inside: avoid;
+  }
+
   body.printing-worksheet {
     background: #fff;
   }

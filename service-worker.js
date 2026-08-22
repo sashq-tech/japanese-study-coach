@@ -1,7 +1,8 @@
-const CACHE_NAME = "japan-ready-coach-v50";
+const CACHE_NAME = "japan-ready-coach-v51";
 const APP_SHELL = [
   "/",
   "/learn",
+  "/hiragana-reading-practice",
   "/about",
   "/blog",
   "/blog/cash-cards-suica",
@@ -14,7 +15,8 @@ const APP_SHELL = [
   "/terms",
   "/contact",
   "./ads.txt",
-  "./styles.css?v=50",
+  "./styles.css",
+  "./styles.css?v=51",
   "./n5-content.js",
   "./lessons.js",
   "./reading-scenarios.js",
@@ -22,7 +24,7 @@ const APP_SHELL = [
   "./kana-lessons.js",
   "./vocabulary-lessons.js",
   "./grammar-lessons.js",
-  "./app.js?v=50",
+  "./app.js?v=51",
   "./manifest.webmanifest",
   "./icon.svg",
   "./robots.txt",

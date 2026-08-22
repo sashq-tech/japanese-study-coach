@@ -64,7 +64,7 @@ if (progress.completed.length !== 50 || lessons.nextIncomplete(progress, vocabul
 const indexSource = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const appSource = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const workerSource = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=50")) {
+if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=51")) {
   throw new Error("Vocabulary lesson helper must load before the app bundle.");
 }
 for (const key of ["jrj-vocab-course-progress", "jrj-vocab-course-selection"]) {
@@ -80,8 +80,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v50") throw new Error("Expected service worker v50.");
-for (const asset of ["./vocabulary-lessons.js", "./app.js?v=50", "./styles.css?v=50"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v51") throw new Error("Expected service worker v51.");
+for (const asset of ["./vocabulary-lessons.js", "./app.js?v=51", "./styles.css?v=51"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached vocabulary asset: ${asset}`);
 }
 

@@ -41,6 +41,7 @@ Recommended public description:
 - Includes browser-only progress export/import and a deliberate local reset control.
 - Keeps later Japan-life scenarios available without making them the first thing a beginner sees.
 - Adds five hiragana-only reading scenes with ten session-only comprehension checks under the collapsed Practice tools area.
+- Adds a crawlable three-pass Hiragana reading guide with a finite 15-minute routine and printable five-scene study log.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
 - Provides a lightweight static Blog section with a starter first-person practical note: Cash, Cards, and Suica in Japan.
 
@@ -84,6 +85,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 
 - `index.html` - app structure and static trust/scope copy, deployed at `/`
 - `learn.html` - crawlable beginner kana guide, deployed at `/learn`
+- `hiragana-reading-practice.html` - crawlable beginner reading routine, deployed at `/hiragana-reading-practice`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `blog.html` - static blog index, linked publicly as `/blog`
 - `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
@@ -110,6 +112,7 @@ node --check n5-content.js
 node --check service-worker.js
 node scripts/check-kana-lessons.mjs
 node scripts/check-learning-guide.mjs
+node scripts/check-reading-guide.mjs
 node scripts/check-vocabulary-lessons.mjs
 node scripts/check-grammar-lessons.mjs
 node scripts/check-structured-data.mjs
