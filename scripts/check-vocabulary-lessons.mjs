@@ -10,6 +10,10 @@ vm.runInNewContext(`${source}; globalThis.__content = n5Content;`, context);
 const vocabulary = context.__content.n5Vocabulary;
 
 if (lessons.UNITS.length !== 5) throw new Error("Expected five guided vocabulary units.");
+if (lessons.METADATA?.reviewStatus !== "needs_review") throw new Error("Vocabulary review status must remain explicit.");
+if (lessons.METADATA?.compatibility?.website !== "active") throw new Error("Vocabulary website compatibility is incomplete.");
+if (lessons.WORDS.length !== 50) throw new Error("Expected 50 stable vocabulary records.");
+if (new Set(lessons.WORDS.map((word) => word.id)).size !== 50) throw new Error("Vocabulary IDs must be unique.");
 const words = lessons.allWords(vocabulary);
 if (words.length !== 50) throw new Error(`Expected 50 guided words, got ${words.length}.`);
 if (new Set(words.map(lessons.wordKey)).size !== 50) throw new Error("Guided vocabulary keys must be unique.");
@@ -55,6 +59,9 @@ const deduped = lessons.markComplete(progress, first, vocabulary);
 if (deduped.completed.length !== progress.completed.length) throw new Error("Repeated correct answers must not inflate progress.");
 const malformed = lessons.normalizeProgress({ completed: [lessons.wordKey(first), lessons.wordKey(first), "vocab-not-real", 4] }, vocabulary);
 if (malformed.completed.length !== 1) throw new Error("Malformed or duplicate vocabulary progress was not normalized.");
+const migrated = lessons.normalizeProgress({ completed: [`vocab-${first.romaji}`] }, vocabulary);
+if (migrated.completed[0] !== lessons.wordKey(first)) throw new Error("Legacy romaji progress did not migrate to the stable word ID.");
+if (lessons.wordKey(first) !== "vocab-word-watashi") throw new Error("Stable vocabulary progress key changed unexpectedly.");
 
 for (const unit of lessons.UNITS.slice(1)) {
   for (const word of lessons.wordsFor(unit.id, vocabulary)) {
@@ -68,11 +75,14 @@ if (progress.completed.length !== 50 || lessons.nextIncomplete(progress, vocabul
 const indexSource = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const appSource = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const workerSource = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=57")) {
+if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=58")) {
   throw new Error("Vocabulary lesson helper must load before the app bundle.");
 }
 for (const key of ["jrj-vocab-course-progress", "jrj-vocab-course-selection"]) {
   if (!appSource.includes(key)) throw new Error(`Missing local progress/backup key: ${key}`);
+}
+for (const marker of ["function availableVocabularyWords()", "const vocabulary = availableVocabularyWords()", "availableVocabularyWords().map((item)"]) {
+  if (!appSource.includes(marker)) throw new Error(`Unguided vocabulary can still leak into practice: ${marker}`);
 }
 for (const marker of ["Your first 50 words", "Study five practical ten-word units", "not the full planned N5 vocabulary path"]) {
   if (!indexSource.includes(marker) && !appSource.includes(marker)) throw new Error(`Missing honest vocabulary-course marker: ${marker}`);
@@ -87,8 +97,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v57") throw new Error("Expected service worker v57.");
-for (const asset of ["./vocabulary-lessons.js", "./app.js?v=57", "./styles.css?v=57"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v58") throw new Error("Expected service worker v58.");
+for (const asset of ["./vocabulary-lessons.js", "./app.js?v=58", "./styles.css?v=58"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached vocabulary asset: ${asset}`);
 }
 

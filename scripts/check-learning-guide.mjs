@@ -58,11 +58,11 @@ for (const file of publicFiles) {
 if ((sitemap.match(/https:\/\/japanreadycoach\.com\/learn/g) || []).length !== 1) {
   throw new Error("Sitemap must contain the learning guide exactly once.");
 }
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v57"')) throw new Error("Expected service worker v57.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v58"')) throw new Error("Expected service worker v58.");
 if (!worker.includes('"/learn"')) throw new Error("Learning guide is not in the service worker shell.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Reading guide is not in the service worker shell.");
 if (!worker.includes('"/beginner-japanese-vocabulary"')) throw new Error("Vocabulary guide is not in the service worker shell.");
-if (!index.includes('src="app.js?v=57"') || !worker.includes('"./app.js?v=57"')) {
+if (!index.includes('src="app.js?v=58"') || !worker.includes('"./app.js?v=58"')) {
   throw new Error("Versioned app bundle is not aligned between the page and service worker.");
 }
 for (const marker of [

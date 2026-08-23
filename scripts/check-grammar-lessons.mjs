@@ -5,11 +5,40 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const lessons = require("../grammar-lessons.js");
 
+if (!lessons.METADATA || typeof lessons.METADATA !== "object") {
+  throw new Error("Grammar content metadata is required.");
+}
+if (lessons.METADATA.contentId !== "jrc-grammar-foundation-1") {
+  throw new Error("Grammar content ID changed unexpectedly.");
+}
+if (!Number.isInteger(lessons.METADATA.schemaVersion) || lessons.METADATA.schemaVersion < 1) {
+  throw new Error("Grammar schema version must be a positive integer.");
+}
+if (!Number.isInteger(lessons.METADATA.contentVersion) || lessons.METADATA.contentVersion < 1) {
+  throw new Error("Grammar content version must be a positive integer.");
+}
+if (!["needs_review", "reviewed", "approved", "needs_rewrite"].includes(lessons.METADATA.reviewStatus)) {
+  throw new Error("Grammar review status is not recognized.");
+}
+if (lessons.METADATA.source?.attribution !== "Japan Ready Coach") throw new Error("Grammar source metadata is incomplete.");
+if (lessons.METADATA.compatibility?.website !== "active") throw new Error("Grammar website compatibility is incomplete.");
+
 if (lessons.UNITS.length !== 5) throw new Error("Expected five guided grammar lessons.");
 const questions = lessons.allQuestions();
 if (questions.length !== 18) throw new Error(`Expected 18 grammar checks, found ${questions.length}.`);
 if (new Set(questions.map((question) => question.id)).size !== questions.length) {
   throw new Error("Grammar check IDs must be unique.");
+}
+
+const examples = lessons.UNITS.flatMap((unit) => unit.examples);
+if (examples.length !== 15) throw new Error(`Expected 15 teaching examples, found ${examples.length}.`);
+if (new Set(examples.map((example) => example.id)).size !== examples.length) {
+  throw new Error("Grammar teaching example IDs must be unique.");
+}
+for (const example of examples) {
+  if (!/^grammar-example-[a-z0-9]+(?:-[a-z0-9]+)*$/.test(example.id || "")) {
+    throw new Error(`Invalid grammar teaching example ID: ${example.id || "missing"}.`);
+  }
 }
 
 for (const unit of lessons.UNITS) {
@@ -64,7 +93,7 @@ if (lessons.remainingQuestions({ completed: [questions[0].id] }, lessons.UNITS[0
 const index = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const worker = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=57")) {
+if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=58")) {
   throw new Error("Grammar lesson helper must load before the app bundle.");
 }
 for (const marker of [
@@ -87,8 +116,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${worker}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v57") throw new Error("Expected service worker v57.");
-for (const asset of ["./grammar-lessons.js", "./app.js?v=57", "./styles.css?v=57"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v58") throw new Error("Expected service worker v58.");
+for (const asset of ["./grammar-lessons.js", "./app.js?v=58", "./styles.css?v=58"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached grammar asset: ${asset}`);
 }
 

@@ -1,4 +1,13 @@
 (function attachGrammarLessons(globalScope) {
+  const METADATA = Object.freeze({
+    contentId: "jrc-grammar-foundation-1",
+    schemaVersion: 1,
+    contentVersion: 1,
+    source: { type: "original", attribution: "Japan Ready Coach" },
+    reviewStatus: "needs_review",
+    compatibility: { website: "active", android: "candidate" }
+  });
+
   const UNITS = [
     {
       id: "topics-identity",
@@ -7,9 +16,9 @@
       note: "When は marks the topic, it is written ha but pronounced wa. Japanese often leaves out a subject that is already understood.",
       helperWords: ["これ (kore) - this"],
       examples: [
-        { japanese: "わたしはがくせいです。", romaji: "Watashi wa gakusei desu.", english: "I am a student." },
-        { japanese: "これはほんです。", romaji: "Kore wa hon desu.", english: "This is a book." },
-        { japanese: "これはかばんですか。", romaji: "Kore wa kaban desu ka.", english: "Is this a bag?" }
+        { id: "grammar-example-topics-student", japanese: "わたしはがくせいです。", romaji: "Watashi wa gakusei desu.", english: "I am a student." },
+        { id: "grammar-example-topics-book", japanese: "これはほんです。", romaji: "Kore wa hon desu.", english: "This is a book." },
+        { id: "grammar-example-topics-bag-question", japanese: "これはかばんですか。", romaji: "Kore wa kaban desu ka.", english: "Is this a bag?" }
       ],
       questions: [
         {
@@ -76,9 +85,9 @@
       note: "The particle を is pronounced o. The verbs here are polite ます-form chunks; this lesson is not a full conjugation lesson.",
       helperWords: [],
       examples: [
-        { japanese: "みずをのみます。", romaji: "Mizu o nomimasu.", english: "I drink water." },
-        { japanese: "パンをかいます。", romaji: "Pan o kaimasu.", english: "I buy bread." },
-        { japanese: "にほんごをはなします。", romaji: "Nihongo o hanashimasu.", english: "I speak Japanese." }
+        { id: "grammar-example-objects-drink-water", japanese: "みずをのみます。", romaji: "Mizu o nomimasu.", english: "I drink water." },
+        { id: "grammar-example-objects-buy-bread", japanese: "パンをかいます。", romaji: "Pan o kaimasu.", english: "I buy bread." },
+        { id: "grammar-example-objects-speak-japanese", japanese: "にほんごをはなします。", romaji: "Nihongo o hanashimasu.", english: "I speak Japanese." }
       ],
       questions: [
         {
@@ -138,9 +147,9 @@
       note: "The verb helps decide the particle: go to a place with に; buy, eat, or speak at a place with で.",
       helperWords: [],
       examples: [
-        { japanese: "えきにいきます。", romaji: "Eki ni ikimasu.", english: "I go to the station." },
-        { japanese: "えきでパンをかいます。", romaji: "Eki de pan o kaimasu.", english: "I buy bread at the station." },
-        { japanese: "バスでえきにいきます。", romaji: "Basu de eki ni ikimasu.", english: "I go to the station by bus." }
+        { id: "grammar-example-places-go-station", japanese: "えきにいきます。", romaji: "Eki ni ikimasu.", english: "I go to the station." },
+        { id: "grammar-example-places-buy-at-station", japanese: "えきでパンをかいます。", romaji: "Eki de pan o kaimasu.", english: "I buy bread at the station." },
+        { id: "grammar-example-places-bus-to-station", japanese: "バスでえきにいきます。", romaji: "Basu de eki ni ikimasu.", english: "I go to the station by bus." }
       ],
       questions: [
         {
@@ -202,9 +211,9 @@
       note: "The relationship depends on context. In these first examples, の means my, a friend's, or Japanese-language.",
       helperWords: [],
       examples: [
-        { japanese: "これはわたしのかばんです。", romaji: "Kore wa watashi no kaban desu.", english: "This is my bag." },
-        { japanese: "これはともだちのかさです。", romaji: "Kore wa tomodachi no kasa desu.", english: "This is a friend's umbrella." },
-        { japanese: "にほんごのほんです。", romaji: "Nihongo no hon desu.", english: "It is a Japanese-language book." }
+        { id: "grammar-example-nouns-my-bag", japanese: "これはわたしのかばんです。", romaji: "Kore wa watashi no kaban desu.", english: "This is my bag." },
+        { id: "grammar-example-nouns-friend-umbrella", japanese: "これはともだちのかさです。", romaji: "Kore wa tomodachi no kasa desu.", english: "This is a friend's umbrella." },
+        { id: "grammar-example-nouns-japanese-book", japanese: "にほんごのほんです。", romaji: "Nihongo no hon desu.", english: "It is a Japanese-language book." }
       ],
       questions: [
         {
@@ -254,9 +263,9 @@
       note: "These are controlled beginner examples. と has other uses that are outside this first block.",
       helperWords: [],
       examples: [
-        { japanese: "ともだちとえきにいきます。", romaji: "Tomodachi to eki ni ikimasu.", english: "I go to the station with a friend." },
-        { japanese: "わたしもいきます。", romaji: "Watashi mo ikimasu.", english: "I am going too." },
-        { japanese: "おちゃとパンをかいます。", romaji: "Ocha to pan o kaimasu.", english: "I buy tea and bread." }
+        { id: "grammar-example-with-friend-to-station", japanese: "ともだちとえきにいきます。", romaji: "Tomodachi to eki ni ikimasu.", english: "I go to the station with a friend." },
+        { id: "grammar-example-also-going", japanese: "わたしもいきます。", romaji: "Watashi mo ikimasu.", english: "I am going too." },
+        { id: "grammar-example-list-tea-bread", japanese: "おちゃとパンをかいます。", romaji: "Ocha to pan o kaimasu.", english: "I buy tea and bread." }
       ],
       questions: [
         {
@@ -352,6 +361,7 @@
   }
 
   const helper = {
+    METADATA,
     UNITS,
     allQuestions,
     questionsFor,

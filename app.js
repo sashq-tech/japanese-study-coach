@@ -14,6 +14,7 @@ const VOCAB_PROGRESS_STORAGE_KEY = "jrj-vocab-course-progress";
 const VOCAB_SELECTION_STORAGE_KEY = "jrj-vocab-course-selection";
 const GRAMMAR_PROGRESS_STORAGE_KEY = "jrj-grammar-course-progress";
 const GRAMMAR_SELECTION_STORAGE_KEY = "jrj-grammar-course-selection";
+const READING_PROGRESS_STORAGE_KEY = "jrj-reading-progress";
 const PROGRESS_STORAGE_KEYS = [
   "jrj-correct",
   "jrj-review",
@@ -28,6 +29,7 @@ const PROGRESS_STORAGE_KEYS = [
   VOCAB_SELECTION_STORAGE_KEY,
   GRAMMAR_PROGRESS_STORAGE_KEY,
   GRAMMAR_SELECTION_STORAGE_KEY,
+  READING_PROGRESS_STORAGE_KEY,
   "jrj-onboarding-focus",
   "jrj-n5-mode-correct",
   "jrj-last-quiz-key",
@@ -117,6 +119,15 @@ function loadGrammarSelection(progress) {
       || JapanReadyGrammarLessons.UNITS.at(-1).id;
 }
 
+function loadReadingProgress() {
+  const saved = parseStoredJson(READING_PROGRESS_STORAGE_KEY, {});
+  const allowed = new Set(readingScenarios.map((scenario) => scenario.id));
+  const completed = Array.isArray(saved?.completed)
+    ? [...new Set(saved.completed.filter((id) => allowed.has(id)))]
+    : [];
+  return { completed };
+}
+
 function loadModeCorrect() {
   const parsed = parseStoredJson("jrj-n5-mode-correct", {});
   const saved = parsed && typeof parsed === "object" && !Array.isArray(parsed) ? parsed : {};
@@ -188,6 +199,7 @@ const initialVocabularyProgress = loadVocabularyProgress();
 const initialVocabularySelection = loadVocabularySelection(initialVocabularyProgress);
 const initialGrammarProgress = loadGrammarProgress();
 const initialGrammarSelection = loadGrammarSelection(initialGrammarProgress);
+const initialReadingProgress = loadReadingProgress();
 
 const state = {
   deck: "hiragana",
@@ -273,7 +285,8 @@ const state = {
     questionIndex: 0,
     answered: false,
     complete: false,
-    completed: new Set()
+    scenarioCorrect: 0,
+    completed: new Set(initialReadingProgress.completed)
   }
 };
 
@@ -548,6 +561,7 @@ function saveProgress() {
   localStorage.setItem(VOCAB_SELECTION_STORAGE_KEY, state.vocabularyCourse.unitId);
   localStorage.setItem(GRAMMAR_PROGRESS_STORAGE_KEY, JSON.stringify(state.grammarProgress));
   localStorage.setItem(GRAMMAR_SELECTION_STORAGE_KEY, state.grammarCourse.unitId);
+  localStorage.setItem(READING_PROGRESS_STORAGE_KEY, JSON.stringify({ completed: [...state.reading.completed] }));
   localStorage.setItem("jrj-onboarding-focus", state.onboardingFocus);
   localStorage.setItem("jrj-n5-mode-correct", JSON.stringify(state.n5ModeCorrect));
   localStorage.setItem("jrj-last-quiz-key", state.lastQuizKey);
@@ -731,6 +745,18 @@ function getStructuredN5Task() {
       action: `grammar-course:${grammarUnit.id}`
     };
   }
+
+  if (state.reading.completed.size < readingScenarios.length) {
+    const nextScenarioIndex = readingScenarios.findIndex((scenario) => !state.reading.completed.has(scenario.id));
+    return {
+      step: 4,
+      kind: "reading",
+      done: state.reading.completed.size,
+      total: readingScenarios.length,
+      scenarioIndex: Math.max(nextScenarioIndex, 0),
+      action: "reading-course"
+    };
+  }
   return null;
 }
 
@@ -815,11 +841,23 @@ function getRoadmapResumeState() {
     };
   }
 
+  if (structuredTask?.kind === "reading") {
+    const scenario = readingScenarios[structuredTask.scenarioIndex];
+    return {
+      step: 4,
+      meta: `Current focus - Step 4, Scene ${structuredTask.scenarioIndex + 1}`,
+      title: "Hiragana reading for understanding",
+      summary: `${structuredTask.done}/${structuredTask.total} scenes passed. Read ${scenario.title}, then answer both questions correctly to complete it.`,
+      action: structuredTask.action,
+      actionLabel: structuredTask.done ? "Resume Reading" : "Start Reading"
+    };
+  }
+
   return {
-    step: 4,
-    meta: "Next focus - Step 4",
+    step: 5,
+    meta: "Next focus - Step 5",
     title: "Kanji is next on the roadmap",
-    summary: "The 100-kanji path is planned. Use the checkpoint while kanji stays a later layer.",
+    summary: "The first reviewed kanji lessons are the next content layer. Use the checkpoint while that course is prepared.",
     action: "checkpoint",
     actionLabel: "Open Checkpoint"
   };
@@ -859,14 +897,15 @@ function dailyPick(list, salt) {
 }
 
 function getN5ModeDepth(mode) {
+  const guidedVocabulary = availableVocabularyWords();
   const modeCounts = {
-    vocab: n5Content.n5Vocabulary.length,
+    vocab: guidedVocabulary.length,
     particles: n5Content.particlePractice.length,
     grammar: n5Content.grammarPractice.length,
     sentences: n5Content.sentencePractice.length
   };
   const supportingCounts = {
-    vocab: `${new Set(n5Content.n5Vocabulary.map((item) => item.category)).size} categories`,
+    vocab: `${new Set(guidedVocabulary.map((item) => item.category)).size} guided categories`,
     particles: `${n5Content.particles.length} particles`,
     grammar: `${n5Content.grammarPatterns.length} patterns`,
     sentences: `${n5Content.starterPhrases.length} starter phrases`
@@ -881,7 +920,7 @@ function getN5ModeDepth(mode) {
 
 function getTodayFocusExample(mode) {
   if (mode === "vocab") {
-    const item = dailyPick(n5Content.n5Vocabulary, mode);
+    const item = dailyPick(availableVocabularyWords(), mode);
     return item ? `${item.japanese} (${item.romaji}) - ${item.english}` : "";
   }
   if (mode === "particles") {
@@ -944,9 +983,13 @@ function buildTodayStudyPath() {
   steps.push({
     key: "n5",
     label: "N5 focus",
-    title: structuredN5Task ? structuredN5Task.unit.title : "Guided starter blocks complete",
+    title: structuredN5Task?.kind === "reading"
+      ? "Hiragana reading"
+      : structuredN5Task?.unit?.title || "Guided starter blocks complete",
     detail: structuredN5Task
-      ? `${structuredN5Task.done}/${structuredN5Task.total} complete in the ${structuredN5Task.kind} block; lesson ${structuredN5Task.unitNumber} is next.`
+      ? structuredN5Task.kind === "reading"
+        ? `${structuredN5Task.done}/${structuredN5Task.total} scenes passed; the next reading check is ready.`
+        : `${structuredN5Task.done}/${structuredN5Task.total} complete in the ${structuredN5Task.kind} block; lesson ${structuredN5Task.unitNumber} is next.`
       : n5Task
         ? `Guided blocks are clear. Optional ${n5ModeLabel(n5Task.mode)} practice remains available.`
         : "The first guided vocabulary and grammar blocks are complete.",
@@ -1014,6 +1057,9 @@ function buildStartHereActions() {
   const kanaTask = getNextKanaTask();
   const n5Task = getWeakestN5Mode();
   const structuredN5Task = getStructuredN5Task();
+  const structuredTitle = structuredN5Task?.kind === "reading"
+    ? "Hiragana reading"
+    : structuredN5Task?.unit?.title || "N5 starter checks";
   return [
     {
       key: "mini",
@@ -1042,7 +1088,7 @@ function buildStartHereActions() {
     {
       key: "n5",
       label: "N5",
-      title: structuredN5Task ? structuredN5Task.unit.title : n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "N5 starter checks",
+      title: structuredN5Task ? structuredTitle : n5Task ? `Build ${n5ModeLabel(n5Task.mode)}` : "N5 starter checks",
       detail: structuredN5Task
         ? `${structuredN5Task.done}/${structuredN5Task.total} complete in the guided ${structuredN5Task.kind} block.`
         : n5Task ? `${n5Task.count}/${n5Task.target} toward the optional practice target.` : "Starter N5 targets are ready for sprint review.",
@@ -2229,8 +2275,9 @@ function checkKanaAnswer(answer) {
 }
 
 function makeVocabQuestion() {
-  const item = sample(n5Content.n5Vocabulary, 1)[0];
-  const wrong = sample(n5Content.n5Vocabulary.filter((candidate) => candidate.english !== item.english), 3);
+  const vocabulary = availableVocabularyWords();
+  const item = sample(vocabulary, 1)[0];
+  const wrong = sample(vocabulary.filter((candidate) => candidate.english !== item.english), 3);
   return {
     mode: "vocab",
     meta: `${item.category} vocabulary`,
@@ -2920,7 +2967,7 @@ function renderMiniCards() {
     </button>
   `;
   }).join("");
-  els.vocabList.innerHTML = n5Content.n5Vocabulary.map((item) => `
+  els.vocabList.innerHTML = availableVocabularyWords().map((item) => `
     <section>
       <strong lang="ja">${item.japanese}</strong>
       <span>${item.romaji}</span>
@@ -2977,6 +3024,16 @@ function renderCoverageStats() {
 function currentVocabularyUnit() {
   return JapanReadyVocabularyLessons.UNITS.find((unit) => unit.id === state.vocabularyCourse.unitId)
     || JapanReadyVocabularyLessons.UNITS[0];
+}
+
+function availableVocabularyWords() {
+  return JapanReadyVocabularyLessons.UNITS
+    .filter((unit) => JapanReadyVocabularyLessons.isUnlocked(
+      state.vocabularyProgress,
+      unit.id,
+      n5Content.n5Vocabulary
+    ))
+    .flatMap((unit) => JapanReadyVocabularyLessons.wordsFor(unit.id, n5Content.n5Vocabulary));
 }
 
 function currentVocabularyWord() {
@@ -3127,6 +3184,9 @@ function checkVocabularyAnswer(answer) {
   });
   if (correct) {
     state.vocabularyProgress = JapanReadyVocabularyLessons.markComplete(state.vocabularyProgress, word, n5Content.n5Vocabulary);
+    if (JapanReadyVocabularyLessons.unitStatus(state.vocabularyProgress, currentVocabularyUnit().id, n5Content.n5Vocabulary).complete) {
+      renderMiniCards();
+    }
     state.vocabularyCourse.correct += 1;
     state.correct += 1;
     state.streak += 1;
@@ -3493,7 +3553,7 @@ function renderReadingCompletion() {
   els.readingQuestionMeta.textContent = "Session summary";
   els.readingQuestionText.textContent = "Choose a scene to practice again, or restart the set.";
   els.readingChoices.innerHTML = "";
-  els.readingFeedback.textContent = "Results stay in this browser session only. No account or server is used.";
+  els.readingFeedback.textContent = "Completion is saved in this browser and included in local backups. No account or server is used.";
   els.readingFeedback.className = "feedback success";
   els.nextReadingButton.textContent = "Restart Reading Set";
   els.nextReadingButton.disabled = false;
@@ -3524,6 +3584,7 @@ function chooseReadingScenario(index) {
   state.reading.questionIndex = 0;
   state.reading.answered = false;
   state.reading.complete = false;
+  state.reading.scenarioCorrect = 0;
   renderReadingScenario();
   els.readingPassage.focus({ preventScroll: true });
 }
@@ -3532,6 +3593,7 @@ function answerReadingQuestion(choice) {
   if (state.reading.answered || state.reading.complete) return;
   const question = currentReadingScenario().questions[state.reading.questionIndex];
   const correct = choice === question.answer;
+  if (correct) state.reading.scenarioCorrect += 1;
   state.reading.answered = true;
   els.readingChoices.querySelectorAll("button").forEach((button) => {
     button.disabled = true;
@@ -3551,8 +3613,10 @@ function advanceReadingPractice() {
       questionIndex: 0,
       answered: false,
       complete: false,
+      scenarioCorrect: 0,
       completed: new Set()
     };
+    saveProgress();
     renderReadingScenario();
     return;
   }
@@ -3565,14 +3629,25 @@ function advanceReadingPractice() {
     els.readingQuestionText.focus?.({ preventScroll: true });
     return;
   }
-  state.reading.completed.add(scenario.id);
+  const passed = state.reading.scenarioCorrect === scenario.questions.length;
+  if (passed) state.reading.completed.add(scenario.id);
   state.reading.questionIndex = 0;
   state.reading.answered = false;
+  state.reading.scenarioCorrect = 0;
+  if (!passed) {
+    saveProgress();
+    renderReadingScenario();
+    els.readingFeedback.textContent = "Try this scene again. Both answers must be correct to complete it.";
+    els.readingFeedback.className = "feedback needs-review";
+    return;
+  }
   if (state.reading.scenarioIndex + 1 < readingScenarios.length) {
     state.reading.scenarioIndex += 1;
   } else {
     state.reading.complete = true;
   }
+  saveProgress();
+  renderRoadmapResume();
   renderReadingScenario();
 }
 
@@ -3663,6 +3738,12 @@ function runTodayAction(action, options = {}) {
     if (!state.sprint.active && state.sprintBest < SPRINT_PASS_PERCENT) {
       startSprint();
     }
+    return;
+  }
+  if (action === "reading-course") {
+    const nextScenarioIndex = readingScenarios.findIndex((scenario) => !state.reading.completed.has(scenario.id));
+    chooseReadingScenario(Math.max(nextScenarioIndex, 0));
+    showSection("readingSection", options);
     return;
   }
   if (action === "timer") {
