@@ -723,7 +723,7 @@ function getStructuredN5Task() {
       unit: vocabularyUnit,
       unitNumber: JapanReadyVocabularyLessons.UNITS.indexOf(vocabularyUnit) + 1,
       done: state.vocabularyProgress.completed.length,
-      total: 50,
+      total: guidedVocabularyTotal(),
       unitDone: status.done,
       unitTotal: status.total,
       action: `vocabulary-course:${vocabularyUnit.id}`
@@ -824,7 +824,7 @@ function getRoadmapResumeState() {
       step: 2,
       meta: `Current focus - Step 2, Unit ${structuredTask.unitNumber}`,
       title: structuredTask.unit.title,
-      summary: `${structuredTask.done}/50 unique starter words complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this unit. This is the first block toward the larger vocabulary roadmap.`,
+      summary: `${structuredTask.done}/${structuredTask.total} guided words complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this unit. This is one bounded block toward the larger vocabulary roadmap.`,
       action: structuredTask.action,
       actionLabel: structuredTask.unitDone ? "Resume Unit" : "Start Unit"
     };
@@ -835,7 +835,7 @@ function getRoadmapResumeState() {
       step: 3,
       meta: `Current focus - Step 3, Lesson ${structuredTask.unitNumber}`,
       title: structuredTask.unit.title,
-      summary: `${structuredTask.done}/${structuredTask.total} guided checks complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this lesson. This is the first grammar block, not the full planned sentence path.`,
+      summary: `${structuredTask.done}/${structuredTask.total} guided checks complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this lesson. This remains a bounded grammar block, not the full planned sentence path.`,
       action: structuredTask.action,
       actionLabel: structuredTask.unitDone ? "Resume Lesson" : "Start Lesson"
     };
@@ -3036,6 +3036,10 @@ function availableVocabularyWords() {
     .flatMap((unit) => JapanReadyVocabularyLessons.wordsFor(unit.id, n5Content.n5Vocabulary));
 }
 
+function guidedVocabularyTotal() {
+  return JapanReadyVocabularyLessons.allWords(n5Content.n5Vocabulary).length;
+}
+
 function currentVocabularyWord() {
   const key = state.vocabularyCourse.queue[0];
   return JapanReadyVocabularyLessons.allWords(n5Content.n5Vocabulary)
@@ -3058,8 +3062,9 @@ function renderVocabularyCourse(options = {}) {
   const allDone = state.vocabularyProgress.completed.length;
   const unitStatus = JapanReadyVocabularyLessons.unitStatus(state.vocabularyProgress, unit.id, n5Content.n5Vocabulary);
 
-  els.vocabCourseStatus.textContent = `${allDone} / 50 words`;
-  els.vocabCourseBar.style.width = `${Math.round((allDone / 50) * 100)}%`;
+  const totalWords = guidedVocabularyTotal();
+  els.vocabCourseStatus.textContent = `${allDone} / ${totalWords} words`;
+  els.vocabCourseBar.style.width = `${Math.round((allDone / totalWords) * 100)}%`;
   els.vocabCourseCount.textContent = `Unit ${unitIndex + 1} of ${units.length} - ${unitStatus.done}/10 complete`;
   els.vocabUnitList.innerHTML = units.map((candidate, index) => {
     const status = JapanReadyVocabularyLessons.unitStatus(state.vocabularyProgress, candidate.id, n5Content.n5Vocabulary);
@@ -3104,15 +3109,15 @@ function renderVocabularyCourse(options = {}) {
   if (state.vocabularyCourse.phase === "complete") {
     const nextUnit = units[unitIndex + 1] || null;
     els.vocabQuestionMeta.textContent = `Unit ${unitIndex + 1} complete`;
-    els.vocabQuestionText.textContent = unitIndex + 1 === units.length ? "50-word starter block complete" : `${unit.title} complete`;
+    els.vocabQuestionText.textContent = unitIndex + 1 === units.length ? `${totalWords}-word guided block complete` : `${unit.title} complete`;
     els.vocabQuestionRomaji.textContent = `${unitStatus.done}/10 unique words complete. ${state.vocabularyCourse.missed.size} word${state.vocabularyCourse.missed.size === 1 ? "" : "s"} needed another try this session.`;
     els.vocabChoices.innerHTML = "";
     els.vocabFeedback.textContent = nextUnit
       ? "The next ten-word unit is now available."
-      : "This is the first 50-word block, not the full planned N5 vocabulary path.";
+      : `This ${totalWords}-word guided block is not the full planned N5 vocabulary path.`;
     els.vocabFeedback.className = "feedback success";
     els.vocabContinueButton.disabled = !nextUnit;
-    els.vocabContinueButton.textContent = nextUnit ? `Continue to Unit ${unitIndex + 2}` : "50-Word Block Complete";
+    els.vocabContinueButton.textContent = nextUnit ? `Continue to Unit ${unitIndex + 2}` : `${totalWords}-Word Block Complete`;
     if (options.focus) els.vocabQuestionText.focus({ preventScroll: true });
     return;
   }
@@ -3243,11 +3248,11 @@ function renderGrammarAssembly(question) {
   const selected = state.grammarCourse.selectedTokens;
   els.grammarAssemblyAnswer.innerHTML = selected.length
     ? selected.map((token, index) => `
-        <button type="button" data-grammar-remove-index="${index}" aria-label="Remove ${escapeHtml(token)} from the sentence">${escapeHtml(token)}</button>
+        <button type="button" data-grammar-remove-index="${index}" aria-label="Remove ${escapeHtml(token.text)} from the sentence">${escapeHtml(token.text)}</button>
       `).join("")
     : '<span>Choose words below.</span>';
   els.grammarTokenBank.innerHTML = question.tokens.map((token, index) => {
-    const used = selected.includes(token.text);
+    const used = selected.some((selectedToken) => selectedToken.index === index);
     return `
       <button type="button" data-grammar-token-index="${index}" ${used ? "disabled" : ""}>
         <strong lang="ja">${token.text}</strong>
@@ -3291,7 +3296,7 @@ function renderGrammarCourse(options = {}) {
     els.grammarUnitDescription.textContent = unit.description;
     els.grammarUnitNote.textContent = unit.note;
     els.grammarHelperWords.innerHTML = unit.helperWords.length
-      ? `<strong>Lesson helper:</strong> ${unit.helperWords.map(escapeHtml).join(", ")}. This helper is not counted among the 50 completed vocabulary words.`
+      ? `<strong>Lesson helper:</strong> ${unit.helperWords.map(escapeHtml).join(", ")}. Helper words are not counted as completed vocabulary.`
       : "";
     els.grammarHelperWords.classList.toggle("hidden", !unit.helperWords.length);
     els.grammarExamples.innerHTML = unit.examples.map((example) => `
@@ -3315,7 +3320,7 @@ function renderGrammarCourse(options = {}) {
     const nextUnit = units[unitIndex + 1] || null;
     els.grammarQuestionMeta.textContent = `Lesson ${unitIndex + 1} complete`;
     els.grammarQuestionPrompt.textContent = unitIndex + 1 === units.length
-      ? `${total}-check first grammar block complete`
+      ? `${total}-check guided grammar block complete`
       : `${unit.title} complete`;
     els.grammarQuestionJapanese.textContent = "";
     els.grammarQuestionJapanese.classList.add("hidden");
@@ -3324,10 +3329,10 @@ function renderGrammarCourse(options = {}) {
     els.grammarAssembly.classList.add("hidden");
     els.grammarFeedback.textContent = nextUnit
       ? "The next sentence lesson is now available."
-      : "You cleared this first guided block. That is a finish line, not a claim of grammar mastery or full N5 coverage.";
+      : "You cleared the current guided block. That is a finish line, not a claim of grammar mastery or full N5 coverage.";
     els.grammarFeedback.className = "feedback success";
     els.grammarContinueButton.disabled = !nextUnit;
-    els.grammarContinueButton.textContent = nextUnit ? `Continue to Lesson ${unitIndex + 2}` : "First Grammar Block Complete";
+    els.grammarContinueButton.textContent = nextUnit ? `Continue to Lesson ${unitIndex + 2}` : "Guided Grammar Block Complete";
     if (options.focus) els.grammarQuestionPrompt.focus({ preventScroll: true });
     return;
   }
@@ -3434,8 +3439,8 @@ function addGrammarToken(index) {
   const question = currentGrammarQuestion();
   if (!question || question.type !== "assembly" || state.grammarCourse.answered) return;
   const token = question.tokens[index];
-  if (!token || state.grammarCourse.selectedTokens.includes(token.text)) return;
-  state.grammarCourse.selectedTokens.push(token.text);
+  if (!token || state.grammarCourse.selectedTokens.some((selectedToken) => selectedToken.index === index)) return;
+  state.grammarCourse.selectedTokens.push({ index, text: token.text });
   renderGrammarAssembly(question);
 }
 
@@ -3455,9 +3460,9 @@ function checkGrammarAssembly() {
   const question = currentGrammarQuestion();
   if (!question || question.type !== "assembly") return;
   answerGrammarQuestion(
-    state.grammarCourse.selectedTokens.join("") === question.answerTokens.join("")
+    state.grammarCourse.selectedTokens.map((token) => token.text).join("") === question.answerTokens.join("")
       ? question.answer
-      : state.grammarCourse.selectedTokens.join("")
+      : state.grammarCourse.selectedTokens.map((token) => token.text).join("")
   );
   renderGrammarAssembly(question);
 }

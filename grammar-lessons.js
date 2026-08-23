@@ -2,10 +2,11 @@
   const METADATA = Object.freeze({
     contentId: "jrc-grammar-foundation-1",
     schemaVersion: 1,
-    contentVersion: 1,
+    contentVersion: 2,
     source: { type: "original", attribution: "Japan Ready Coach" },
     reviewStatus: "needs_review",
-    compatibility: { website: "active", android: "candidate" }
+    compatibility: { website: "active", android: "candidate" },
+    scope: { taughtExamples: 30, plannedExamples: 100, completeJlptAlignment: false }
   });
 
   const UNITS = [
@@ -306,6 +307,300 @@
           answer: "おちゃとパンをかいます。",
           romaji: "Ocha to pan o kaimasu.",
           explanation: "と joins the two items, then を marks the whole list as what is bought."
+        }
+      ]
+    },
+    {
+      id: "existence-things-people",
+      title: "Things and people that are there",
+      description: "Use が with あります for things and います for people or animals.",
+      note: "あります and います both express existence. Use あります for non-living things and います for living things in these beginner examples.",
+      helperWords: ["あります (arimasu) - there is / have, for things", "います (imasu) - there is / have, for people or animals"],
+      examples: [
+        { id: "grammar-example-existence-water", japanese: "みずがあります。", romaji: "Mizu ga arimasu.", english: "There is water." },
+        { id: "grammar-example-existence-friend", japanese: "ともだちがいます。", romaji: "Tomodachi ga imasu.", english: "There is a friend." },
+        { id: "grammar-example-existence-phone", japanese: "でんわがあります。", romaji: "Denwa ga arimasu.", english: "There is a telephone." }
+      ],
+      questions: [
+        {
+          id: "existence-fill-ga",
+          type: "choice",
+          mode: "particles",
+          prompt: "Choose the particle that marks what exists.",
+          japanese: "みず ___ あります。",
+          romaji: "Mizu ___ arimasu.",
+          choices: ["は", "が", "を", "で"],
+          answer: "が",
+          explanation: "が marks みず as the thing that exists."
+        },
+        {
+          id: "existence-choose-living",
+          type: "choice",
+          mode: "grammar",
+          prompt: "Choose the existence verb used for a person.",
+          japanese: "ともだちが ___。",
+          romaji: "Tomodachi ga ___.",
+          choices: ["あります", "います", "です", "かいます"],
+          answer: "います",
+          explanation: "A friend is a person, so use います rather than あります."
+        },
+        {
+          id: "existence-build-bag",
+          type: "assembly",
+          mode: "grammar",
+          prompt: "Build: There is a bag.",
+          tokens: [
+            { text: "あります", romaji: "arimasu" },
+            { text: "かばん", romaji: "kaban" },
+            { text: "が", romaji: "ga" }
+          ],
+          answerTokens: ["かばん", "が", "あります"],
+          answer: "かばんがあります。",
+          romaji: "Kaban ga arimasu.",
+          explanation: "Mark the non-living thing with が, then use あります."
+        },
+        {
+          id: "existence-translate-phone",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "でんわがあります。",
+          romaji: "Denwa ga arimasu.",
+          choices: ["There is a telephone.", "I buy a telephone.", "The telephone is a friend."],
+          answer: "There is a telephone.",
+          explanation: "でんわ is a non-living thing, so でんわがあります means there is a telephone."
+        }
+      ]
+    },
+    {
+      id: "locations-positions",
+      title: "Locations and positions",
+      description: "Use に with あります or います to say where a thing or person is.",
+      note: "Position words connect to a reference noun with の: かばんのなか means inside the bag.",
+      helperWords: ["うえ (ue) - on / above", "した (shita) - under / below", "なか (naka) - inside"],
+      examples: [
+        { id: "grammar-example-location-book-inside-bag", japanese: "ほんはかばんのなかにあります。", romaji: "Hon wa kaban no naka ni arimasu.", english: "The book is inside the bag." },
+        { id: "grammar-example-location-phone-on-bag", japanese: "でんわはかばんのうえにあります。", romaji: "Denwa wa kaban no ue ni arimasu.", english: "The telephone is on the bag." },
+        { id: "grammar-example-location-friend-at-station", japanese: "ともだちはえきにいます。", romaji: "Tomodachi wa eki ni imasu.", english: "The friend is at the station." }
+      ],
+      questions: [
+        {
+          id: "locations-fill-no",
+          type: "choice",
+          mode: "particles",
+          prompt: "Choose the particle that connects the bag to its inside.",
+          japanese: "ほんはかばん ___ なかにあります。",
+          romaji: "Hon wa kaban ___ naka ni arimasu.",
+          choices: ["は", "が", "の", "を"],
+          answer: "の",
+          explanation: "かばんのなか means inside the bag."
+        },
+        {
+          id: "locations-fill-ni",
+          type: "choice",
+          mode: "particles",
+          prompt: "Choose the particle that marks the telephone's location.",
+          japanese: "でんわはかばんのうえ ___ あります。",
+          romaji: "Denwa wa kaban no ue ___ arimasu.",
+          choices: ["を", "に", "で", "と"],
+          answer: "に",
+          explanation: "に marks the place where the telephone exists."
+        },
+        {
+          id: "locations-build-shoes-under-bag",
+          type: "assembly",
+          mode: "grammar",
+          prompt: "Build: The shoes are under the bag.",
+          tokens: [
+            { text: "あります", romaji: "arimasu" },
+            { text: "した", romaji: "shita" },
+            { text: "くつ", romaji: "kutsu" },
+            { text: "に", romaji: "ni" },
+            { text: "かばん", romaji: "kaban" },
+            { text: "は", romaji: "wa" },
+            { text: "の", romaji: "no" }
+          ],
+          answerTokens: ["くつ", "は", "かばん", "の", "した", "に", "あります"],
+          answer: "くつはかばんのしたにあります。",
+          romaji: "Kutsu wa kaban no shita ni arimasu.",
+          explanation: "かばんのした gives the position, に marks it as the location, and あります is used for shoes."
+        },
+        {
+          id: "locations-translate-friend",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "ともだちはえきにいます。",
+          romaji: "Tomodachi wa eki ni imasu.",
+          choices: ["The friend is at the station.", "The friend goes by train.", "There is a station in the bag."],
+          answer: "The friend is at the station.",
+          explanation: "えきに marks the location, and います is used because the friend is a person."
+        }
+      ]
+    },
+    {
+      id: "question-words",
+      title: "Asking where, what, and who",
+      description: "Use どこ for where, なに for what, and だれ for who.",
+      note: "Question words stay in the part of the sentence where the answer would normally appear, and か finishes the polite question.",
+      helperWords: ["どこ (doko) - where", "なに (nani) - what", "だれ (dare) - who"],
+      examples: [
+        { id: "grammar-example-question-where-station", japanese: "えきはどこですか。", romaji: "Eki wa doko desu ka.", english: "Where is the station?" },
+        { id: "grammar-example-question-what-buy", japanese: "なにをかいますか。", romaji: "Nani o kaimasu ka.", english: "What will you buy?" },
+        { id: "grammar-example-question-who-there", japanese: "だれがいますか。", romaji: "Dare ga imasu ka.", english: "Who is there?" }
+      ],
+      questions: [
+        {
+          id: "questions-translate-where",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "えきはどこですか。",
+          romaji: "Eki wa doko desu ka.",
+          choices: ["Where is the station?", "Who is at the station?", "What is a station?"],
+          answer: "Where is the station?",
+          explanation: "どこ asks where, and か marks the sentence as a question."
+        },
+        {
+          id: "questions-fill-what",
+          type: "choice",
+          mode: "grammar",
+          prompt: "Choose the question word meaning what.",
+          japanese: "___ をかいますか。",
+          romaji: "___ o kaimasu ka.",
+          choices: ["どこ", "なに", "だれ", "ともだち"],
+          answer: "なに",
+          explanation: "なに means what and is followed by を because it is what will be bought."
+        },
+        {
+          id: "questions-build-where-toilet",
+          type: "assembly",
+          mode: "grammar",
+          prompt: "Build: Where is the toilet?",
+          tokens: [
+            { text: "です", romaji: "desu" },
+            { text: "どこ", romaji: "doko" },
+            { text: "トイレ", romaji: "toire" },
+            { text: "か", romaji: "ka" },
+            { text: "は", romaji: "wa" }
+          ],
+          answerTokens: ["トイレ", "は", "どこ", "です", "か"],
+          answer: "トイレはどこですか。",
+          romaji: "Toire wa doko desu ka.",
+          explanation: "Set トイレ as the topic, ask its location with どこです, and finish with か."
+        },
+        {
+          id: "questions-translate-who",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "だれがいますか。",
+          romaji: "Dare ga imasu ka.",
+          choices: ["Who is there?", "Where is the friend?", "What will you buy?"],
+          answer: "Who is there?",
+          explanation: "だれ asks who, が marks the person whose existence is being asked about, and います is used for people."
+        }
+      ]
+    },
+    {
+      id: "polite-negatives",
+      title: "Polite negative sentences",
+      description: "Use じゃありません to make a polite negative noun sentence and ません to make a polite negative action.",
+      note: "These are polite non-past negatives. This lesson does not yet teach past tense or a full verb-conjugation system.",
+      helperWords: ["じゃありません (ja arimasen) - is not", "ません (masen) - polite negative action ending"],
+      examples: [
+        { id: "grammar-example-negative-not-book", japanese: "これはほんじゃありません。", romaji: "Kore wa hon ja arimasen.", english: "This is not a book." },
+        { id: "grammar-example-negative-not-buy-bread", japanese: "パンをかいません。", romaji: "Pan o kaimasen.", english: "I do not buy bread." },
+        { id: "grammar-example-negative-not-speak-japanese", japanese: "にほんごをはなしません。", romaji: "Nihongo o hanashimasen.", english: "I do not speak Japanese." }
+      ],
+      questions: [
+        {
+          id: "negatives-translate-not-book",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "これはほんじゃありません。",
+          romaji: "Kore wa hon ja arimasen.",
+          choices: ["This is not a book.", "This book is mine.", "There is a book."],
+          answer: "This is not a book.",
+          explanation: "ほんじゃありません politely says that it is not a book."
+        },
+        {
+          id: "negatives-fill-drink",
+          type: "choice",
+          mode: "grammar",
+          prompt: "Choose the polite negative action ending.",
+          japanese: "みずをのみ ___。",
+          romaji: "Mizu o nomi ___.",
+          choices: ["ます", "ません", "です", "あります"],
+          answer: "ません",
+          explanation: "のみません is the polite negative form used here: do not drink."
+        },
+        {
+          id: "negatives-build-not-go-station",
+          type: "assembly",
+          mode: "grammar",
+          prompt: "Build: I do not go to the station.",
+          tokens: [
+            { text: "えき", romaji: "eki" },
+            { text: "いきません", romaji: "ikimasen" },
+            { text: "に", romaji: "ni" }
+          ],
+          answerTokens: ["えき", "に", "いきません"],
+          answer: "えきにいきません。",
+          romaji: "Eki ni ikimasen.",
+          explanation: "えきに marks the destination, and いきません politely makes the action negative."
+        }
+      ]
+    },
+    {
+      id: "simple-requests",
+      title: "Simple item requests",
+      description: "Use a noun with をください to make a simple polite request for an item.",
+      note: "This pattern asks for a thing. It is not a general rule for turning every verb into a request.",
+      helperWords: ["ください (kudasai) - please give me"],
+      examples: [
+        { id: "grammar-example-request-water", japanese: "みずをください。", romaji: "Mizu o kudasai.", english: "Water, please." },
+        { id: "grammar-example-request-bread", japanese: "パンをください。", romaji: "Pan o kudasai.", english: "Bread, please." },
+        { id: "grammar-example-request-ticket", japanese: "きっぷをください。", romaji: "Kippu o kudasai.", english: "A ticket, please." }
+      ],
+      questions: [
+        {
+          id: "requests-fill-o",
+          type: "choice",
+          mode: "particles",
+          prompt: "Choose the particle for the requested item.",
+          japanese: "おちゃ ___ ください。",
+          romaji: "Ocha ___ kudasai.",
+          choices: ["は", "が", "を", "に"],
+          answer: "を",
+          explanation: "を marks おちゃ as the item being requested."
+        },
+        {
+          id: "requests-translate-ticket",
+          type: "choice",
+          mode: "sentences",
+          prompt: "What does this sentence mean?",
+          japanese: "きっぷをください。",
+          romaji: "Kippu o kudasai.",
+          choices: ["A ticket, please.", "Where is the ticket?", "I do not buy a ticket."],
+          answer: "A ticket, please.",
+          explanation: "きっぷ is the requested item, and をください makes the simple polite request."
+        },
+        {
+          id: "requests-build-coffee",
+          type: "assembly",
+          mode: "grammar",
+          prompt: "Build: Coffee, please.",
+          tokens: [
+            { text: "ください", romaji: "kudasai" },
+            { text: "コーヒー", romaji: "koohii" },
+            { text: "を", romaji: "o" }
+          ],
+          answerTokens: ["コーヒー", "を", "ください"],
+          answer: "コーヒーをください。",
+          romaji: "Koohii o kudasai.",
+          explanation: "Place the requested item first, mark it with を, and finish with ください."
         }
       ]
     }
