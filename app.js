@@ -3052,7 +3052,10 @@ function renderVocabularyCourse(options = {}) {
       return `
         <div${complete ? ' data-complete="true"' : ""}>
           <strong lang="ja">${word.japanese}</strong>
-          <span>${word.romaji}</span>
+          <span class="vocab-study-pronunciation">
+            <span>Romaji: ${word.romaji}</span>
+            <small>Say it like: ${JapanReadyVocabularyLessons.pronunciationFor(word)}</small>
+          </span>
           <p>${word.english}</p>
         </div>
       `;
@@ -3090,7 +3093,7 @@ function renderVocabularyCourse(options = {}) {
   const completedInUnit = unitStatus.done;
   els.vocabQuestionMeta.textContent = `Unit ${unitIndex + 1} - ${completedInUnit}/10 complete - ${state.vocabularyCourse.queue.length} in this check`;
   els.vocabQuestionText.textContent = word.japanese;
-  els.vocabQuestionRomaji.textContent = word.romaji;
+  els.vocabQuestionRomaji.textContent = `Romaji: ${word.romaji} · Say it like: ${JapanReadyVocabularyLessons.pronunciationFor(word)}`;
   els.vocabChoices.innerHTML = shuffledVocabularyChoices(word, unit).map((choice) => `
     <button type="button" data-vocab-answer="${escapeHtml(choice)}">${choice}</button>
   `).join("");
@@ -3152,13 +3155,13 @@ function checkVocabularyAnswer(answer) {
     state.correct += 1;
     state.streak += 1;
     state.n5ModeCorrect.vocab = Math.max(state.n5ModeCorrect.vocab || 0, Math.min(state.vocabularyProgress.completed.length, N5_MODE_TARGETS.vocab));
-    els.vocabFeedback.textContent = `Correct. ${word.japanese} (${word.romaji}) means ${word.english}.`;
+    els.vocabFeedback.textContent = `Correct. ${word.japanese} (${word.romaji}) means ${word.english}. Say it like ${JapanReadyVocabularyLessons.pronunciationFor(word)}.`;
     els.vocabFeedback.className = "feedback success";
   } else {
     state.vocabularyCourse.missed.add(JapanReadyVocabularyLessons.wordKey(word));
     state.review += 1;
     state.streak = 0;
-    els.vocabFeedback.textContent = `Not yet. ${word.japanese} (${word.romaji}) means ${word.english}. This word will return before the unit finishes.`;
+    els.vocabFeedback.textContent = `Not yet. ${word.japanese} (${word.romaji}) means ${word.english}. Say it like ${JapanReadyVocabularyLessons.pronunciationFor(word)}. This word will return before the unit finishes.`;
     els.vocabFeedback.className = "feedback needs-review";
   }
   recordPracticeEvent("n5", "guided vocabulary", correct);
@@ -3622,6 +3625,12 @@ function showSection(id, options = {}) {
   }
 }
 
+function revealLinkedStudyArea() {
+  if (window.location.hash !== "#vocabularyCourse") return;
+  showSection("n5Section");
+  window.requestAnimationFrame(() => revealActiveSection(document.querySelector("#vocabularyCourse")));
+}
+
 function runTodayAction(action, options = {}) {
   if (action === "mini-session") {
     startMiniSession();
@@ -3956,6 +3965,9 @@ renderReviewQueuePanel();
 setStudyButtons();
 updateTyping();
 renderNameResult();
+revealLinkedStudyArea();
+
+window.addEventListener("hashchange", revealLinkedStudyArea);
 
 if ("serviceWorker" in navigator && ["http:", "https:"].includes(window.location.protocol)) {
   window.addEventListener("load", () => {

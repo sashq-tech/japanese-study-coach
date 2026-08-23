@@ -7,6 +7,7 @@ const publicFiles = [
   "index.html",
   "learn.html",
   "hiragana-reading-practice.html",
+  "beginner-japanese-vocabulary.html",
   "about.html",
   "blog.html",
   "privacy.html",
@@ -56,10 +57,11 @@ for (const file of publicFiles) {
 if ((sitemap.match(/https:\/\/japanreadycoach\.com\/learn/g) || []).length !== 1) {
   throw new Error("Sitemap must contain the learning guide exactly once.");
 }
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v53"')) throw new Error("Expected service worker v53.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v56"')) throw new Error("Expected service worker v56.");
 if (!worker.includes('"/learn"')) throw new Error("Learning guide is not in the service worker shell.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Reading guide is not in the service worker shell.");
-if (!index.includes('src="app.js?v=53"') || !worker.includes('"./app.js?v=53"')) {
+if (!worker.includes('"/beginner-japanese-vocabulary"')) throw new Error("Vocabulary guide is not in the service worker shell.");
+if (!index.includes('src="app.js?v=56"') || !worker.includes('"./app.js?v=56"')) {
   throw new Error("Versioned app bundle is not aligned between the page and service worker.");
 }
 for (const staleClaim of ["N4 prep unlocked", "Earn N4 prep readiness", "counts toward N4 prep readiness"]) {

@@ -32,6 +32,63 @@
     }
   ];
 
+  const PRONUNCIATIONS = {
+    watashi: "wah-tah-shee",
+    hito: "hee-toh",
+    tomodachi: "toh-moh-dah-chee",
+    sensei: "sen-say",
+    gakusei: "gah-koo-say",
+    kazoku: "kah-zoh-koo",
+    namae: "nah-mah-eh",
+    kuni: "koo-nee",
+    nihon: "nee-hohn",
+    nihongo: "nee-hohn-goh",
+    mizu: "mee-zoo",
+    gohan: "goh-hahn",
+    ocha: "oh-chah",
+    koohii: "koh-hee",
+    pan: "pahn",
+    hon: "hohn",
+    denwa: "den-wah",
+    kaban: "kah-bahn",
+    kasa: "kah-sah",
+    kutsu: "koo-tsoo",
+    eki: "eh-kee",
+    toire: "toh-ee-reh",
+    densha: "den-shah",
+    basu: "bah-soo",
+    takushii: "tah-koo-shee",
+    kippu: "keep-poo",
+    michi: "mee-chee",
+    migi: "mee-gee",
+    hidari: "hee-dah-ree",
+    massugu: "mahs-soo-goo",
+    iku: "ee-koo",
+    kuru: "koo-roo",
+    kaeru: "kah-eh-roo",
+    taberu: "tah-beh-roo",
+    nomu: "noh-moo",
+    miru: "mee-roo",
+    kiku: "kee-koo",
+    hanasu: "hah-nah-soo",
+    kau: "kah-oo",
+    suru: "soo-roo",
+    doko: "doh-koh",
+    nani: "nah-nee",
+    ikura: "ee-koo-rah",
+    dou: "doh",
+    hai: "hah-ee",
+    iie: "ee-eh",
+    daijoubu: "dye-joh-boo",
+    chotto: "choht-toh",
+    yukkuri: "yook-koo-ree",
+    wakaru: "wah-kah-roo"
+  };
+
+  function pronunciationFor(word) {
+    return word?.romaji ? PRONUNCIATIONS[word.romaji] || word.romaji : "";
+  }
+
   function wordKey(word) {
     return `vocab-${word.romaji}`;
   }
@@ -91,6 +148,8 @@
 
   const helper = {
     UNITS,
+    PRONUNCIATIONS,
+    pronunciationFor,
     wordKey,
     wordsFor,
     allWords,

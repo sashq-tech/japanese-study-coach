@@ -61,7 +61,7 @@ Current focus:
 
 - Kana-first beginner ramp
 - N5 starter vocabulary
-- A guided 50-word vocabulary foundation in five ten-word units, with study-before-check lessons and a visible finish line
+- A guided 50-word vocabulary foundation in five ten-word units, with study-before-check lessons, romaji plus English-friendly pronunciation approximations, and a visible finish line
 - Basic particles
 - Basic grammar patterns
 - A guided first grammar block with five teach-before-check lessons, 18 unique checks, sentence assembly, deliberate retry, and an honest finite finish line
@@ -88,6 +88,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `index.html` - app structure and static trust/scope copy, deployed at `/`
 - `learn.html` - crawlable beginner kana guide, deployed at `/learn`
 - `hiragana-reading-practice.html` - crawlable beginner reading routine, deployed at `/hiragana-reading-practice`
+- `beginner-japanese-vocabulary.html` - crawlable guide to the shipped five-unit, 50-word course, staged for `/beginner-japanese-vocabulary`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `blog.html` - static blog index, linked publicly as `/blog`
 - `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
@@ -97,6 +98,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `kana-lessons.js` - basic kana-row sequence, unlocking, and progress normalization
 - `vocabulary-lessons.js` - five guided vocabulary units, sequential unlocking, and unique-word progress normalization
+- `scripts/check-vocabulary-guide.mjs` - verifies the crawlable guide against all 50 words in the shipped lesson source
 - `grammar-lessons.js` - five guided sentence-pattern lessons, stable check IDs, sequential unlocking, and local progress normalization
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content
@@ -117,6 +119,7 @@ node scripts/check-learning-guide.mjs
 node scripts/check-reading-guide.mjs
 node scripts/check-worksheet.mjs
 node scripts/check-vocabulary-lessons.mjs
+node scripts/check-vocabulary-guide.mjs
 node scripts/check-grammar-lessons.mjs
 node scripts/check-structured-data.mjs
 node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest ok')"

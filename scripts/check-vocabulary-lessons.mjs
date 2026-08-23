@@ -13,6 +13,7 @@ if (lessons.UNITS.length !== 5) throw new Error("Expected five guided vocabulary
 const words = lessons.allWords(vocabulary);
 if (words.length !== 50) throw new Error(`Expected 50 guided words, got ${words.length}.`);
 if (new Set(words.map(lessons.wordKey)).size !== 50) throw new Error("Guided vocabulary keys must be unique.");
+if (Object.keys(lessons.PRONUNCIATIONS).length !== 50) throw new Error("Expected 50 pronunciation guides.");
 
 for (const unit of lessons.UNITS) {
   const unitWords = lessons.wordsFor(unit.id, vocabulary);
@@ -22,6 +23,9 @@ for (const unit of lessons.UNITS) {
   }
   for (const word of unitWords) {
     if (!word.japanese || !word.romaji || !word.english) throw new Error(`${unit.id} contains an incomplete word.`);
+    if (!lessons.pronunciationFor(word) || lessons.pronunciationFor(word) === word.romaji) {
+      throw new Error(`${unit.id} is missing an English-friendly pronunciation for ${word.romaji}.`);
+    }
   }
 }
 
@@ -64,7 +68,7 @@ if (progress.completed.length !== 50 || lessons.nextIncomplete(progress, vocabul
 const indexSource = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const appSource = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const workerSource = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=53")) {
+if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=56")) {
   throw new Error("Vocabulary lesson helper must load before the app bundle.");
 }
 for (const key of ["jrj-vocab-course-progress", "jrj-vocab-course-selection"]) {
@@ -73,6 +77,9 @@ for (const key of ["jrj-vocab-course-progress", "jrj-vocab-course-selection"]) {
 for (const marker of ["Your first 50 words", "Study five practical ten-word units", "not the full planned N5 vocabulary path"]) {
   if (!indexSource.includes(marker) && !appSource.includes(marker)) throw new Error(`Missing honest vocabulary-course marker: ${marker}`);
 }
+for (const marker of ["Say it like:", "pronunciationFor(word)"]) {
+  if (!appSource.includes(marker)) throw new Error(`Missing pronunciation UI marker: ${marker}`);
+}
 
 const workerContext = {
   self: { addEventListener() {}, skipWaiting() {} },
@@ -80,8 +87,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v53") throw new Error("Expected service worker v53.");
-for (const asset of ["./vocabulary-lessons.js", "./app.js?v=53", "./styles.css?v=53"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v56") throw new Error("Expected service worker v56.");
+for (const asset of ["./vocabulary-lessons.js", "./app.js?v=56", "./styles.css?v=56"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached vocabulary asset: ${asset}`);
 }
 

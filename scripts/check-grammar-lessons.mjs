@@ -64,7 +64,7 @@ if (lessons.remainingQuestions({ completed: [questions[0].id] }, lessons.UNITS[0
 const index = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const worker = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=53")) {
+if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=56")) {
   throw new Error("Grammar lesson helper must load before the app bundle.");
 }
 for (const marker of [
@@ -87,8 +87,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${worker}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v53") throw new Error("Expected service worker v53.");
-for (const asset of ["./grammar-lessons.js", "./app.js?v=53", "./styles.css?v=53"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v56") throw new Error("Expected service worker v56.");
+for (const asset of ["./grammar-lessons.js", "./app.js?v=56", "./styles.css?v=56"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached grammar asset: ${asset}`);
 }
 
