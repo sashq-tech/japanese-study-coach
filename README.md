@@ -9,7 +9,7 @@ Japan Ready Coach is live at `https://japanreadycoach.com/`. The `www` subdomain
 - Live apex domain: `https://japanreadycoach.com/`
 - Public routes verified: `/`, `/learn`, `/about`, `/blog`, `/blog/cash-cards-suica`, `/privacy`, `/terms`, `/contact`, `/robots.txt`, `/sitemap.xml`, and `/ads.txt`.
 - Current launch posture: browser-based public site, localStorage progress, no accounts, no backend, and beginner/N5 scope.
-- Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, mode-selection visibility, and local human review notes save feedback.
+- Post-launch stabilization completed: extensionless public routing, service-worker cache refresh behavior, Local Data backup control alignment, and mode-selection visibility.
 - Current product focus: a structured N5 path with kana first, short reading practice, and calm progressive disclosure before broader N4+ content.
 
 ## Human Launch Checklist
@@ -51,7 +51,7 @@ Recommended public description:
 
 There is no account, backend, analytics, or external API.
 
-Progress is stored in browser `localStorage`, including scores, kana-row lesson completion, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, study timer stats, and local human review notes. Clearing browser storage will remove progress unless a backup has been exported.
+Progress is stored in browser `localStorage`, including scores, kana-row lesson completion, kana mastery, N5 mode counts, weak-item review, resume snapshot inputs, mini-session summary, and study timer stats. Clearing browser storage will remove progress unless a backup has been exported.
 
 ## Learning Scope
 
@@ -130,9 +130,9 @@ The no-kanji scan should return no matches while the first learning pass remains
 
 Canonical, social metadata, navigation, and sitemap entries use extensionless apex routes such as `https://japanreadycoach.com/about`. Do not advertise `www` unless it resolves or redirects.
 
-## Content Review Notes
+## Content Review Workflow
 
-Human review notes are stored locally in the browser and included in progress backups. They are a note pad for future feedback, not a server-side review workflow.
+Curriculum review belongs outside the public learner interface. Reviewer feedback should be collected in the private curriculum workflow and merged only after approval; it is not stored with learner progress.
 
 Reviewer feedback should focus on:
 

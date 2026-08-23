@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=56">
+  <link rel="stylesheet" href="styles.css?v=57">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -747,7 +747,7 @@
         <article>
           <span class="panel-label">Privacy</span>
           <h3>No account. No server-side learner profile.</h3>
-          <p>Progress, study timers, review items, and notes stay in this browser's local storage. Export a backup before switching browsers or devices. Cloudflare may process basic delivery, security, and aggregate traffic data.</p>
+          <p>Progress, study timers, and review items stay in this browser's local storage. Export a backup before switching browsers or devices. Cloudflare may process basic delivery, security, and aggregate traffic data.</p>
         </article>
         <article>
           <span class="panel-label">Learning scope</span>
@@ -768,7 +768,7 @@
         </article>
         <article class="local-data-panel">
           <span class="panel-label">Local data</span>
-          <p class="review-copy">Everything is stored in this browser only: scores, kana mastery, weak review, study time, mini-session history, and notes.</p>
+          <p class="review-copy">Everything is stored in this browser only: scores, kana mastery, weak review, study time, and mini-session history.</p>
           <ul class="local-data-list">
             <li>No account, app backend, or cloud sync. Study progress stays local.</li>
             <li>Export a backup before switching browsers or clearing cache.</li>
@@ -785,13 +785,6 @@
           </label>
           <button id="resetLocalDataButton" class="danger-action" type="button" disabled>Reset Local Data</button>
           <p id="backupStatus" class="feedback" aria-live="polite"></p>
-        </article>
-        <article>
-          <span class="panel-label">Human review notes</span>
-          <p class="review-copy">Use this local note pad for feedback from Emi or another reviewer on naturalness, politeness, or better phrase choices. Notes stay in this browser and are included in backup exports.</p>
-          <textarea id="reviewNotesInput" rows="4" aria-label="Human review notes" placeholder="Example: Ask Emi if this phrase sounds natural, or note a better wording to check later..."></textarea>
-          <button id="saveNotesButton" type="button">Save Notes</button>
-          <p id="notesStatus" class="feedback" aria-live="polite"></p>
         </article>
       </section>
 
@@ -815,6 +808,6 @@
   <script src="kana-lessons.js"></script>
   <script src="vocabulary-lessons.js"></script>
   <script src="grammar-lessons.js"></script>
-  <script src="app.js?v=56"></script>
+  <script src="app.js?v=57"></script>
 </body>
 </html>

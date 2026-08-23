@@ -22,6 +22,7 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const guide = read("learn.html");
 const index = read("index.html");
 const app = read("app.js");
+const privacy = read("privacy.html");
 const sitemap = read("sitemap.xml");
 const worker = read("service-worker.js");
 
@@ -57,12 +58,29 @@ for (const file of publicFiles) {
 if ((sitemap.match(/https:\/\/japanreadycoach\.com\/learn/g) || []).length !== 1) {
   throw new Error("Sitemap must contain the learning guide exactly once.");
 }
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v56"')) throw new Error("Expected service worker v56.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v57"')) throw new Error("Expected service worker v57.");
 if (!worker.includes('"/learn"')) throw new Error("Learning guide is not in the service worker shell.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Reading guide is not in the service worker shell.");
 if (!worker.includes('"/beginner-japanese-vocabulary"')) throw new Error("Vocabulary guide is not in the service worker shell.");
-if (!index.includes('src="app.js?v=56"') || !worker.includes('"./app.js?v=56"')) {
+if (!index.includes('src="app.js?v=57"') || !worker.includes('"./app.js?v=57"')) {
   throw new Error("Versioned app bundle is not aligned between the page and service worker.");
+}
+for (const marker of [
+  "Human review notes",
+  "reviewNotesInput",
+  "saveNotesButton",
+  "notesStatus",
+  "saveReviewNotes",
+  "loadReviewNotes",
+  "REVIEW_NOTES_STORAGE_KEY",
+  "local human review notes"
+]) {
+  if (`${index}\n${app}\n${privacy}`.includes(marker)) {
+    throw new Error(`Removed public review-notes feature remains: ${marker}`);
+  }
+}
+if (!app.includes('localStorage.removeItem("jrj-wife-notes")')) {
+  throw new Error("Legacy local review notes are not cleared.");
 }
 for (const staleClaim of ["N4 prep unlocked", "Earn N4 prep readiness", "counts toward N4 prep readiness"]) {
   if (index.includes(staleClaim) || app.includes(staleClaim)) throw new Error(`Stale readiness claim remains: ${staleClaim}`);

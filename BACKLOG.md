@@ -67,7 +67,7 @@ AdSense rejected Japan Ready Coach for low-value content. This supersedes the ea
 
 Current status: no active post-launch known issues are tracked here after the initial soft-launch fixes.
 
-- Human review notes are a local-only note pad with visible save/load feedback and backup export support. The app does not imply server-side or guaranteed native-speaker review.
+- Removed the local Human Review Notes panel because it did not provide a meaningful learner function. Curriculum review belongs in the private editorial workflow, not the public app or learner backups.
 - Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
 - Focused printable worksheet groups now cover every basic kana exactly once; standalone final N is labeled and included with the final Y/R/W group.
@@ -136,7 +136,7 @@ Severity-ranked follow-up:
 
 - Current app can export local browser progress to a JSON file.
 - Current app can import a valid backup JSON and restore progress in the browser.
-- Backup includes kana mastery, scores, N5 mode counts, sprint score, weak-item review pile, session reflection, mini-session summary, study stats, selected timer length, and local human review notes.
+- Backup includes kana mastery, scores, N5 mode counts, sprint score, weak-item review pile, session reflection, mini-session summary, study stats, and selected timer length.
 - Later: add cloud sync or account-based progress only if publishing and multi-device use truly require it.
 
 ### Study Habit Tracker
@@ -216,11 +216,11 @@ Severity-ranked follow-up:
 - Current app includes a 12-question mixed N5 sprint with an 80% pass target.
 - Current app stores recent N5 sprint attempts locally and includes them in progress backups.
 
-### Human Review Workflow
+### Private Human Review Workflow
 
-- Keep local human review notes per lesson.
-- Add a review status: needs review, reviewed, approved, needs rewrite.
-- Add an easy export/copy view for lesson feedback.
+- Keep reviewer notes out of the public learner interface and learner progress backups.
+- Use private review states: needs review, reviewed, approved, and needs rewrite.
+- Export only approved curriculum changes for validation and release.
 
 ### Foreign Name Helper
 
