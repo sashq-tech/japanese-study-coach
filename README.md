@@ -88,7 +88,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `index.html` - app structure and static trust/scope copy, deployed at `/`
 - `learn.html` - crawlable beginner kana guide, deployed at `/learn`
 - `hiragana-reading-practice.html` - crawlable beginner reading routine, deployed at `/hiragana-reading-practice`
-- `beginner-japanese-vocabulary.html` - crawlable guide to the shipped five-unit, 50-word course, staged for `/beginner-japanese-vocabulary`
+- `beginner-japanese-vocabulary.html` - crawlable guide to the shipped five-unit, 50-word course, deployed at `/beginner-japanese-vocabulary`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `blog.html` - static blog index, linked publicly as `/blog`
 - `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
