@@ -17,10 +17,30 @@ if (hiragana.length !== 46 || katakana.length !== 46) {
 if (!hiragana.some((item) => item.kana === "ん" && item.romaji === "n")) throw new Error("Hiragana final N is missing.");
 if (!katakana.some((item) => item.kana === "ン" && item.romaji === "n")) throw new Error("Katakana final N is missing.");
 
+for (const deck of [hiragana, katakana]) {
+  const groups = {
+    vowels: deck.filter((item) => item.group === "vowels"),
+    kst: deck.filter((item) => ["k", "s", "t"].includes(item.group)),
+    nhm: deck.filter((item) => ["n", "h", "m"].includes(item.group) && item.romaji !== "n"),
+    yrw: deck.filter((item) => ["y", "r", "w"].includes(item.group) || item.romaji === "n")
+  };
+  const focusedItems = Object.values(groups).flat();
+  if (groups.vowels.length !== 5 || groups.kst.length !== 15 || groups.nhm.length !== 15 || groups.yrw.length !== 11) {
+    throw new Error("Focused worksheet groups must partition the 46 basic kana as 5/15/15/11.");
+  }
+  if (new Set(focusedItems.map((item) => item.kana)).size !== 46) {
+    throw new Error("Focused worksheet groups must cover every basic kana exactly once.");
+  }
+  if (!groups.yrw.some((item) => item.romaji === "n") || groups.nhm.some((item) => item.romaji === "n")) {
+    throw new Error("Standalone final N must appear only in the Y/R/W + Final N worksheet group.");
+  }
+}
+
 for (const marker of [
   'data-worksheet-deck="hiragana"',
   'data-worksheet-deck="katakana"',
   'data-worksheet-deck="both"',
+  '>Y/R/W + Final N</button>',
   'data-worksheet-mode="trace"',
   'data-worksheet-mode="quiz"'
 ]) {
@@ -31,7 +51,9 @@ for (const marker of [
   '<details class="worksheet-answer-key">',
   '<summary>Show answer key after you finish</summary>',
   'answerKey.dataset.openedForPrint = "true"',
-  'function clearWorksheetPrintState()'
+  'function clearWorksheetPrintState()',
+  'item.romaji !== "n"',
+  'item.romaji === "n"'
 ]) {
   if (!app.includes(marker)) throw new Error(`Worksheet behavior is missing: ${marker}`);
 }
@@ -46,8 +68,8 @@ for (const marker of [
 }
 
 if (app.includes("jrj-worksheet")) throw new Error("Worksheet preferences must not alter local progress/backup contracts in this slice.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v52"')) throw new Error("Expected service worker v52.");
-for (const asset of ["./app.js?v=52", "./styles.css?v=52"]) {
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v53"')) throw new Error("Expected service worker v53.");
+for (const asset of ["./app.js?v=53", "./styles.css?v=53"]) {
   if (!worker.includes(`"${asset}"`)) throw new Error(`Missing worksheet asset from offline shell: ${asset}`);
 }
 

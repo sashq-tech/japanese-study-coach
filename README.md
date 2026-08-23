@@ -43,6 +43,7 @@ Recommended public description:
 - Adds five hiragana-only reading scenes with ten session-only comprehension checks under the collapsed Practice tools area.
 - Adds a crawlable three-pass Hiragana reading guide with a finite 15-minute routine and printable five-scene study log.
 - Keeps Blank Quiz answer keys collapsed during setup and prints them on a dedicated compact reference page.
+- Partitions focused worksheet sets across all 46 basic kana, with standalone final N included explicitly in the last Y/R/W group.
 - Provides static About, Privacy, Terms, and Contact pages for soft-launch review.
 - Provides a lightweight static Blog section with a starter first-person practical note: Cash, Cards, and Suica in Japan.
 

@@ -2021,7 +2021,7 @@ function worksheetGroupLabel(group) {
     vowels: "vowels",
     kst: "K/S/T rows",
     nhm: "N/H/M rows",
-    yrw: "Y/R/W rows"
+    yrw: "Y/R/W rows plus final N"
   }[group] || "all rows";
 }
 
@@ -2041,6 +2041,17 @@ function worksheetGroupKeys(group) {
   }[group] || [];
 }
 
+function worksheetItemMatchesGroup(item, group) {
+  if (group === "nhm") {
+    return worksheetGroupKeys(group).includes(item.group) && item.romaji !== "n";
+  }
+  if (group === "yrw") {
+    return worksheetGroupKeys(group).includes(item.group) || item.romaji === "n";
+  }
+  const groupKeys = worksheetGroupKeys(group);
+  return !groupKeys.length || groupKeys.includes(item.group);
+}
+
 function activeWorksheetSettings() {
   return {
     deck: document.querySelector("[data-worksheet-deck].active")?.dataset.worksheetDeck || "hiragana",
@@ -2050,10 +2061,7 @@ function activeWorksheetSettings() {
 }
 
 function worksheetItems(deck, group = "all") {
-  const groupKeys = worksheetGroupKeys(group);
-  const filterByGroup = (items) => groupKeys.length
-    ? items.filter((item) => groupKeys.includes(item.group))
-    : items;
+  const filterByGroup = (items) => items.filter((item) => worksheetItemMatchesGroup(item, group));
   if (deck === "both") {
     return [
       ...filterByGroup(n5Content.kanaDecks.hiragana).map((item) => ({ ...item, script: "Hiragana" })),

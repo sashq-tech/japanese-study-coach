@@ -69,6 +69,7 @@ Current status: no active post-launch known issues are tracked here after the in
 - Human review notes are a local-only note pad with visible save/load feedback and backup export support. The app does not imply server-side or guaranteed native-speaker review.
 - Mode-button selection now scrolls and focuses the active study panel so the learner sees the selected content immediately.
 - Local Data import/export controls now align as a two-action backup row while keeping the file input accessible.
+- Focused printable worksheet groups now cover every basic kana exactly once; standalone final N is labeled and included with the final Y/R/W group.
 
 Recommended next area: continue strengthening beginner N5 retention and review flow before adding broader N4+ content or larger human review workflows.
 
