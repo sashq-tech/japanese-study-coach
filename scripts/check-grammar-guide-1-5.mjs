@@ -62,7 +62,7 @@ for (const marker of [
   if (!app.includes(marker)) throw new Error(`Grammar direct-link behavior is missing: ${marker}`);
 }
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) throw new Error("Sitemap must contain the Grammar Lessons 1-5 guide exactly once.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v61"')) throw new Error("Expected service worker v61.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v62"')) throw new Error("Expected service worker v62.");
 if (!worker.includes('"/beginner-japanese-grammar-lessons-1-5"')) throw new Error("Service worker does not precache the Grammar Lessons 1-5 guide.");
 if (/\b(?:prototype|beta)\b/i.test(guide)) throw new Error("Grammar guide contains stale prototype/beta wording.");
 if (/href="[^"#]+\.html/.test(guide)) throw new Error("Grammar guide contains a stale public .html link.");

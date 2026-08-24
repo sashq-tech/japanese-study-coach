@@ -462,7 +462,7 @@ const els = {
   particleList: document.querySelector("#particleList"),
   grammarList: document.querySelector("#grammarList"),
   starterPhraseList: document.querySelector("#starterPhraseList"),
-  kanjiLaterMessage: document.querySelector("#kanjiLaterMessage"),
+  worksheetAvailabilityMessage: document.querySelector("#worksheetAvailabilityMessage"),
   readingSetProgress: document.querySelector("#readingSetProgress"),
   readingScenarioList: document.querySelector("#readingScenarioList"),
   readingScenarioMeta: document.querySelector("#readingScenarioMeta"),
@@ -766,7 +766,7 @@ function getRoadmapResumeState() {
     const deckLabel = rowTask.deck === "katakana" ? "Katakana" : "Hiragana";
     return {
       step: 1,
-      meta: "Current focus - Step 1 row lesson",
+        meta: "Current focus - Door 1 row lesson",
       title: `${deckLabel} ${rowTask.row.label}`,
       summary: `${rowTask.status.done}/${rowTask.status.total} cards complete in this row. Finish each card once, then continue to the next row.`,
       action: `kana-lesson:${rowTask.deck}:${rowTask.rowId}`,
@@ -808,13 +808,13 @@ function getRoadmapResumeState() {
     const stats = kanaTask?.stats || hiragana;
     return {
       step: 1,
-      meta: hasUsefulProgress ? "Current focus - Step 1" : "Start here - Step 1",
+      meta: hasUsefulProgress ? "Current focus - Door 1" : "Start here - Door 1",
       title: `${deck === "katakana" ? "Katakana" : "Hiragana"} and kana confidence`,
       summary: hasUsefulProgress
         ? `${stats.mastered}/${stats.total} mastered in this deck. Keep the first lap focused on kana before kanji.`
         : "No saved study progress found in this browser yet. Start with hiragana recognition.",
       action: `kana:${deck}`,
-      actionLabel: hasUsefulProgress ? "Resume Kana" : "Start Step 1"
+      actionLabel: hasUsefulProgress ? "Resume Kana" : "Start Kana"
     };
   }
 
@@ -822,20 +822,21 @@ function getRoadmapResumeState() {
   if (structuredTask?.kind === "vocabulary") {
     return {
       step: 2,
-      meta: `Current focus - Step 2, Unit ${structuredTask.unitNumber}`,
+      meta: `Current focus - Door 2, Unit ${structuredTask.unitNumber}`,
       title: structuredTask.unit.title,
-      summary: `${structuredTask.done}/${structuredTask.total} guided words complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this unit. This is one bounded block toward the larger vocabulary roadmap.`,
+      summary: `${structuredTask.done}/${structuredTask.total} released words complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this unit. Finish this five-unit course one word at a time.`,
       action: structuredTask.action,
       actionLabel: structuredTask.unitDone ? "Resume Unit" : "Start Unit"
     };
   }
 
   if (structuredTask?.kind === "grammar") {
+    const grammarDoor = structuredTask.unitNumber <= 5 ? 3 : 4;
     return {
-      step: 3,
-      meta: `Current focus - Step 3, Lesson ${structuredTask.unitNumber}`,
+      step: grammarDoor,
+      meta: `Current focus - Door ${grammarDoor}, Lesson ${structuredTask.unitNumber}`,
       title: structuredTask.unit.title,
-      summary: `${structuredTask.done}/${structuredTask.total} guided checks complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this lesson. This remains a bounded grammar block, not the full planned sentence path.`,
+      summary: `${structuredTask.done}/${structuredTask.total} released grammar checks complete; ${structuredTask.unitDone}/${structuredTask.unitTotal} complete in this lesson.`,
       action: structuredTask.action,
       actionLabel: structuredTask.unitDone ? "Resume Lesson" : "Start Lesson"
     };
@@ -844,8 +845,8 @@ function getRoadmapResumeState() {
   if (structuredTask?.kind === "reading") {
     const scenario = readingScenarios[structuredTask.scenarioIndex];
     return {
-      step: 4,
-      meta: `Current focus - Step 4, Scene ${structuredTask.scenarioIndex + 1}`,
+      step: 5,
+      meta: `Current focus - Door 5, Scene ${structuredTask.scenarioIndex + 1}`,
       title: "Hiragana reading for understanding",
       summary: `${structuredTask.done}/${structuredTask.total} scenes passed. Read ${scenario.title}, then answer both questions correctly to complete it.`,
       action: structuredTask.action,
@@ -855,9 +856,9 @@ function getRoadmapResumeState() {
 
   return {
     step: 5,
-    meta: "Next focus - Step 5",
-    title: "Kanji is next on the roadmap",
-    summary: "The first reviewed kanji lessons are the next content layer. Use the checkpoint while that course is prepared.",
+    meta: "Released beginner path complete",
+    title: "Review the course you finished",
+    summary: "Your released kana, vocabulary, grammar, and reading work is complete in this browser. Use the checkpoint or revisit a learning door to keep it fresh.",
     action: "checkpoint",
     actionLabel: "Open Checkpoint"
   };
@@ -1511,12 +1512,11 @@ function renderSessionReflection() {
 }
 
 function renderLevels() {
-  els.levelList.innerHTML = n5Content.levels.map((level) => {
-    const isActive = level.status === "active";
+  els.levelList.innerHTML = n5Content.levels.filter((level) => level.status === "active").map((level) => {
     return `
-    <button class="level-button ${level.status}" type="button" ${isActive ? 'data-level-target="kanaSection"' : 'disabled aria-disabled="true"'}>
+    <button class="level-button ${level.status}" type="button" data-level-target="kanaSection">
       <span>${level.label}</span>
-      <strong>${isActive ? "Start here" : "Locked for later"}</strong>
+      <strong>Current release</strong>
       <em>${level.description}</em>
     </button>
   `;
@@ -4003,7 +4003,7 @@ els.nameResult.addEventListener("click", (event) => {
   }
 });
 
-els.kanjiLaterMessage.textContent = n5Content.kanjiLater.message;
+els.worksheetAvailabilityMessage.textContent = "Open More Kana Tools after a guided lesson to print Hiragana, Katakana, or mixed tracing and blank-quiz sheets.";
 renderLevels();
 renderProgress();
 renderKanaLesson();

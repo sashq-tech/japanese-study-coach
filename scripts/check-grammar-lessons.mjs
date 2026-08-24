@@ -134,7 +134,7 @@ if (!lessons.isUnlocked(oldProgress, secondBuilder[0].id) || lessons.isUnlocked(
 const index = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const worker = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=60")) {
+if (index.indexOf("grammar-lessons.js") > index.indexOf("app.js?v=61")) {
   throw new Error("Grammar lesson helper must load before the app bundle.");
 }
 for (const marker of [
@@ -147,7 +147,7 @@ for (const marker of [
 ]) {
   if (!`${index}\n${app}`.includes(marker)) throw new Error(`Missing grammar course marker: ${marker}`);
 }
-for (const phrase of ["not the full planned sentence path", "not a claim of grammar mastery or full N5 coverage"]) {
+for (const phrase of ["released grammar checks complete", "not a claim of grammar mastery or full N5 coverage"]) {
   if (!app.includes(phrase)) throw new Error(`Missing honest scope language: ${phrase}`);
 }
 for (const marker of [
@@ -164,8 +164,8 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${worker}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v61") throw new Error("Expected service worker v61.");
-for (const asset of ["./grammar-lessons.js", "./app.js?v=60", "./styles.css?v=60"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v62") throw new Error("Expected service worker v62.");
+for (const asset of ["./grammar-lessons.js", "./app.js?v=61", "./styles.css?v=61"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached grammar asset: ${asset}`);
 }
 

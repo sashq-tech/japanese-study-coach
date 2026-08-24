@@ -565,6 +565,21 @@ button {
   line-height: 1.4;
 }
 
+.learning-door-link {
+  align-self: end;
+  margin-top: auto;
+  color: var(--red-dark);
+  font-weight: 900;
+  line-height: 1.35;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.learning-door-link:hover,
+.learning-door-link:focus-visible {
+  color: var(--red);
+}
+
 .roadmap-later {
   grid-column: 1 / -1;
   padding-top: 2px;

@@ -68,8 +68,8 @@ for (const marker of [
 }
 
 if (app.includes("jrj-worksheet")) throw new Error("Worksheet preferences must not alter local progress/backup contracts in this slice.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v61"')) throw new Error("Expected service worker v61.");
-for (const asset of ["./app.js?v=60", "./styles.css?v=60"]) {
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v62"')) throw new Error("Expected service worker v62.");
+for (const asset of ["./app.js?v=61", "./styles.css?v=61"]) {
   if (!worker.includes(`"${asset}"`)) throw new Error(`Missing worksheet asset from offline shell: ${asset}`);
 }
 

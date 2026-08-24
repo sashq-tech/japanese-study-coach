@@ -21,7 +21,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css?v=60">
+  <link rel="stylesheet" href="styles.css?v=61">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -65,7 +65,7 @@
       </nav>
 
       <details class="sidebar-progress-drawer" open>
-        <summary>Progress and JLPT levels</summary>
+        <summary>Progress and current release</summary>
         <div class="sidebar-progress-content">
           <section class="progress-panel" aria-label="Progress">
             <div>
@@ -92,7 +92,7 @@
             <button id="resetProgressButton" class="secondary-action" type="button">Reset Score</button>
           </section>
 
-          <nav class="level-list" id="levelList" aria-label="JLPT progression"></nav>
+          <nav class="level-list" id="levelList" aria-label="Current beginner release"></nav>
         </div>
       </details>
     </aside>
@@ -100,8 +100,8 @@
     <main class="lesson-area">
       <header class="top-bar">
         <div>
-          <p class="eyebrow">N5 Starter Path</p>
-          <h2>Start with kana, then follow the ladder.</h2>
+          <p class="eyebrow">Released Beginner Path</p>
+          <h2>Choose one clear place to begin.</h2>
         </div>
         <details class="mode-drawer">
           <summary>Practice Extras</summary>
@@ -116,55 +116,55 @@
         </details>
       </header>
 
-      <section class="roadmap-panel" aria-label="N5 structured learning path">
+      <section class="roadmap-panel" aria-label="Released beginner learning path">
         <div class="roadmap-intro">
-          <span class="panel-label">Structured N5 roadmap</span>
-          <h3>One step at a time.</h3>
-          <p>Japan Ready Coach now starts with the path instead of a wall of tools. The first job is kana. Vocabulary, grammar, and kanji stay visible as the ladder, but they do not need to compete for attention on day one.</p>
+          <span class="panel-label">Available now</span>
+          <h3>Five useful learning doors.</h3>
+          <p>This beginner release is ready to use: 22 kana lessons, 50 released words, 10 grammar lessons with 30 worked examples and 36 checks, and five Hiragana reading scenarios with ten comprehension checks. Printable worksheets, local progress, and backup controls support the path.</p>
           <article class="roadmap-resume" aria-live="polite">
             <span id="roadmapResumeMeta">Current focus</span>
-            <strong id="roadmapResumeTitle">Step 1: Hiragana and Katakana</strong>
+            <strong id="roadmapResumeTitle">Door 1: Hiragana and Katakana</strong>
             <p id="roadmapResumeSummary">Start with kana recognition. This guidance uses progress saved in this browser only.</p>
-            <button id="roadmapResumeButton" type="button" data-roadmap-action="kana:hiragana">Start Step 1</button>
+            <button id="roadmapResumeButton" type="button" data-roadmap-action="kana:hiragana">Start Kana</button>
           </article>
           <div class="roadmap-actions">
-            <button type="button" data-section="kanaSection">Practice Step 1</button>
-            <a href="/learn">Read the Kana Study Path</a>
-            <button class="secondary-action compact-action" type="button" data-section="n5Section">Preview N5 basics</button>
+            <button type="button" data-section="kanaSection">Practice Kana</button>
+            <a href="/learn">See How The Path Works</a>
           </div>
         </div>
         <ol class="roadmap-steps">
           <li class="current" data-roadmap-step="1">
-            <span>Step 1</span>
-            <strong>Hiragana and Katakana</strong>
-            <p>Recognize kana, connect sounds, type without IME, and build confidence before kanji.</p>
+            <span>Door 1</span>
+            <strong>Kana</strong>
+            <p>Complete 22 guided row lessons covering all 46 basic Hiragana and Katakana characters.</p>
+            <a class="learning-door-link" href="/learn">Open the Kana path</a>
           </li>
           <li data-roadmap-step="2">
-            <span>Step 2</span>
-            <strong>840 basic vocabulary words</strong>
-            <p>Grow in small practical groups instead of one giant list.</p>
-            <small>Planned target. The current app does not cover all 840 words yet.</small>
+            <span>Door 2</span>
+            <strong>First 50 Words</strong>
+            <p>Study five released ten-word units with pronunciation support and a finite finish line.</p>
+            <a class="learning-door-link" href="/beginner-japanese-vocabulary">Open the vocabulary guide</a>
           </li>
           <li data-roadmap-step="3">
-            <span>Step 3</span>
-            <strong>100 grammar example sentences</strong>
-            <p>Learn particles and patterns through short examples and checks.</p>
-            <small>Planned target. The current app does not include all 100 sentences yet.</small>
+            <span>Door 3</span>
+            <strong>Grammar 1-5</strong>
+            <p>Learn five sentence foundations through 15 worked examples and 18 guided checks.</p>
+            <a class="learning-door-link" href="/beginner-japanese-grammar-lessons-1-5">Open Grammar 1-5</a>
           </li>
           <li data-roadmap-step="4">
-            <span>Step 4</span>
-            <strong>Reading for understanding</strong>
-            <p>Use familiar kana, words, and grammar in short scenes with comprehension checks.</p>
-            <small>The first five Hiragana scenes are available now.</small>
+            <span>Door 4</span>
+            <strong>Grammar 6-10</strong>
+            <p>Continue with five more patterns, 15 worked examples, and 18 guided checks.</p>
+            <a class="learning-door-link" href="/beginner-japanese-grammar-lessons-6-10">Open Grammar 6-10</a>
           </li>
           <li data-roadmap-step="5">
-            <span>Step 5</span>
-            <strong>100 basic kanji</strong>
-            <p>Add kanji after familiar words, grammar, and short reading feel manageable.</p>
-            <small>Planned target. The current app does not include the 100-kanji path yet.</small>
+            <span>Door 5</span>
+            <strong>First Five Reading Scenarios</strong>
+            <p>Read five short Hiragana scenes and clear ten comprehension checks.</p>
+            <a class="learning-door-link" href="/hiragana-reading-practice">Open the reading guide</a>
           </li>
         </ol>
-        <p class="roadmap-later">Later N4-N1 can mirror this ladder: vocabulary, grammar, kanji, reading, review, and a checkpoint before moving on.</p>
+        <p class="roadmap-later">This is a bounded beginner release, not a claim of complete JLPT N5 preparation. Use one door at a time and return to unfinished work before adding more.</p>
       </section>
 
       <details class="study-guide-drawer">
@@ -759,7 +759,7 @@
         <article>
           <span class="panel-label">Learning scope</span>
           <h3>Learning tool, not an official JLPT claim.</h3>
-          <p>The current focus is beginner-safe N5 practice and habit-building. Kanji, advanced levels, listening, and full JLPT readiness checks are roadmap items. Human review is still needed for naturalness and authenticity.</p>
+          <p>The current release provides kana foundations, 50 vocabulary words, 10 grammar lessons, and five short reading scenarios. It is a beginner learning aid, not official JLPT certification or a claim of complete N5 coverage.</p>
         </article>
         <article>
           <span class="panel-label">Travel readiness</span>
@@ -768,10 +768,10 @@
         </article>
       </section>
 
-      <section class="review-row" aria-label="Review and feedback">
+      <section class="review-row" aria-label="Printable practice and local data">
         <article>
-          <span class="panel-label">Kanji side quest</span>
-          <p id="kanjiLaterMessage"></p>
+          <span class="panel-label">Printable writing practice</span>
+          <p id="worksheetAvailabilityMessage"></p>
         </article>
         <article class="local-data-panel">
           <span class="panel-label">Local data</span>
@@ -815,6 +815,6 @@
   <script src="kana-lessons.js"></script>
   <script src="vocabulary-lessons.js"></script>
   <script src="grammar-lessons.js"></script>
-  <script src="app.js?v=60"></script>
+  <script src="app.js?v=61"></script>
 </body>
 </html>
