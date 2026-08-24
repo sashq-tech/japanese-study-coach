@@ -8,6 +8,7 @@ const grammar = require("../grammar-lessons.js");
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const guide = read("beginner-japanese-grammar-lessons-6-10.html");
+const firstGuide = read("beginner-japanese-grammar-lessons-1-5.html");
 const index = read("index.html");
 const learn = read("learn.html");
 const app = read("app.js");
@@ -47,6 +48,9 @@ for (const unit of units) {
 
 if (!index.includes('href="/beginner-japanese-grammar-lessons-6-10"')) throw new Error("Guided grammar app does not link to the guide.");
 if (!learn.includes('href="/beginner-japanese-grammar-lessons-6-10"')) throw new Error("Learning path does not link to the grammar guide.");
+if (!guide.includes('href="/beginner-japanese-grammar-lessons-1-5"') || !firstGuide.includes('href="/beginner-japanese-grammar-lessons-6-10"')) {
+  throw new Error("Grammar guides are not connected in sequence.");
+}
 if ((guide.match(/href="\/#grammarCourse"/g) || []).length < 2) throw new Error("Grammar guide needs direct app links near the start and finish.");
 for (const marker of [
   'window.location.hash === "#grammarCourse"',
