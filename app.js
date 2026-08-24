@@ -3682,9 +3682,16 @@ function showSection(id, options = {}) {
 }
 
 function revealLinkedStudyArea() {
-  if (window.location.hash !== "#vocabularyCourse") return;
-  showSection("n5Section");
-  window.requestAnimationFrame(() => revealActiveSection(document.querySelector("#vocabularyCourse")));
+  if (window.location.hash === "#vocabularyCourse") {
+    showSection("n5Section");
+    window.requestAnimationFrame(() => revealActiveSection(document.querySelector("#vocabularyCourse")));
+    return;
+  }
+  if (window.location.hash === "#grammarCourse") {
+    showSection("n5Section");
+    els.grammarCourse.open = true;
+    window.requestAnimationFrame(() => revealActiveSection(document.querySelector("#grammarCourse")));
+  }
 }
 
 function runTodayAction(action, options = {}) {

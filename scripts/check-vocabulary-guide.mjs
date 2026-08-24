@@ -59,7 +59,7 @@ if (!index.includes('href="/beginner-japanese-vocabulary"')) {
 }
 for (const marker of [
   'function revealLinkedStudyArea()',
-  'window.location.hash !== "#vocabularyCourse"',
+  'window.location.hash === "#vocabularyCourse"',
   'showSection("n5Section")',
   'window.addEventListener("hashchange", revealLinkedStudyArea)'
 ]) {
