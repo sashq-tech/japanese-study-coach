@@ -60,7 +60,7 @@ for (const file of publicFiles) {
 if ((sitemap.match(/https:\/\/japanreadycoach\.com\/learn/g) || []).length !== 1) {
   throw new Error("Sitemap must contain the learning guide exactly once.");
 }
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v63"')) throw new Error("Expected service worker v63.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v64"')) throw new Error("Expected service worker v64.");
 if (!worker.includes('"/learn"')) throw new Error("Learning guide is not in the service worker shell.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Reading guide is not in the service worker shell.");
 if (!worker.includes('"/beginner-japanese-vocabulary"')) throw new Error("Vocabulary guide is not in the service worker shell.");

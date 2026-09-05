@@ -89,7 +89,7 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v63") throw new Error("Expected service worker v63.");
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v64") throw new Error("Expected service worker v64.");
 if (!workerContext.__shell.APP_SHELL.includes("./kana-lessons.js")) throw new Error("Kana lesson helper is not precached.");
 if (!workerContext.__shell.APP_SHELL.includes("/learn")) throw new Error("Beginner kana study path is not precached.");
 const resolvedShell = workerContext.__shell.APP_SHELL.map((url) => new URL(url, "https://japanreadycoach.com/service-worker.js").href);

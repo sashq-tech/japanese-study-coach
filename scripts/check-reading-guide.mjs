@@ -92,7 +92,7 @@ if (!learn.includes('href="/hiragana-reading-practice"')) throw new Error("Kana 
 if (!index.includes('href="/hiragana-reading-practice"')) throw new Error("Reading tool does not link to the reading guide.");
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) throw new Error("Sitemap must contain the reading guide exactly once.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Service worker does not precache the reading guide.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v63"')) throw new Error("Expected service worker v63.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v64"')) throw new Error("Expected service worker v64.");
 if (!index.includes('src="app.js?v=62"') || !worker.includes('"./app.js?v=62"')) {
   throw new Error("Reading handoff app bundle is not cache-version aligned.");
 }
