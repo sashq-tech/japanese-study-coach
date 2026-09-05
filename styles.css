@@ -3212,6 +3212,43 @@ textarea {
   line-height: 1.55;
 }
 
+.static-hero-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 18px;
+  padding: 10px 14px;
+  color: var(--red-dark);
+  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.static-hero-action:hover,
+.static-hero-action:focus-visible {
+  color: var(--red-dark);
+  background: #fff5f2;
+}
+
+.guide-attribution {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.guide-attribution span + span::before {
+  margin-right: 18px;
+  content: "|";
+  color: var(--line-strong);
+}
+
 .static-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3591,6 +3628,17 @@ textarea {
 
   .roadmap-steps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .guide-attribution {
+    display: grid;
+    gap: 4px;
+  }
+
+  .guide-attribution span + span::before {
+    content: none;
   }
 }
 

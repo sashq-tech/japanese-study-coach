@@ -3682,6 +3682,10 @@ function showSection(id, options = {}) {
 }
 
 function revealLinkedStudyArea() {
+  if (window.location.hash === "#readingSection") {
+    runTodayAction("reading-course", { reveal: true });
+    return;
+  }
   if (window.location.hash === "#vocabularyCourse") {
     showSection("n5Section");
     window.requestAnimationFrame(() => revealActiveSection(document.querySelector("#vocabularyCourse")));

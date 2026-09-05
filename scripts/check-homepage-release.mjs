@@ -104,11 +104,11 @@ for (const href of ["/", "/learn", "/blog", "/contact"]) {
   if (!notFound.includes(`href="${href}"`)) throw new Error(`404 recovery navigation is missing: ${href}`);
 }
 if (sitemap.includes("/404")) throw new Error("404 page must not appear in the sitemap.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v62"')) throw new Error("Expected service worker v62.");
-for (const asset of ["./404.html", "./styles.css?v=61", "./app.js?v=61"]) {
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v63"')) throw new Error("Expected service worker v63.");
+for (const asset of ["./404.html", "./styles.css?v=62", "./app.js?v=62"]) {
   if (!worker.includes(`"${asset}"`)) throw new Error(`Offline shell is missing release asset: ${asset}`);
 }
-if (!index.includes('href="styles.css?v=61"') || !index.includes('src="app.js?v=61"')) {
+if (!index.includes('href="styles.css?v=62"') || !index.includes('src="app.js?v=62"')) {
   throw new Error("Homepage release assets are not version-aligned.");
 }
 
