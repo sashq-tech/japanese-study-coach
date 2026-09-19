@@ -51,6 +51,7 @@ if (!learn.includes('href="/beginner-japanese-grammar-lessons-6-10"')) throw new
 if (!guide.includes('href="/beginner-japanese-grammar-lessons-1-5"') || !firstGuide.includes('href="/beginner-japanese-grammar-lessons-6-10"')) {
   throw new Error("Grammar guides are not connected in sequence.");
 }
+if (!guide.includes('href="/hiragana-reading-practice"')) throw new Error("Grammar Lessons 6-10 does not continue into the released reading guide.");
 if ((guide.match(/href="\/#grammarCourse"/g) || []).length < 2) throw new Error("Grammar guide needs direct app links near the start and finish.");
 for (const marker of [
   'window.location.hash === "#grammarCourse"',

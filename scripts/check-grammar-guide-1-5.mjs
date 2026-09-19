@@ -52,6 +52,7 @@ for (const source of [index, learn, secondGuide]) {
   }
 }
 if (!guide.includes('href="/beginner-japanese-grammar-lessons-6-10"')) throw new Error("Grammar guides are not connected in sequence.");
+if (!guide.includes('href="/hiragana-reading-practice"')) throw new Error("Grammar Lessons 1-5 does not preview the released reading finish line.");
 if ((guide.match(/href="\/#grammarCourse"/g) || []).length < 2) throw new Error("Grammar guide needs direct app links near the start and finish.");
 for (const marker of [
   'window.location.hash === "#grammarCourse"',
@@ -62,7 +63,7 @@ for (const marker of [
   if (!app.includes(marker)) throw new Error(`Grammar direct-link behavior is missing: ${marker}`);
 }
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) throw new Error("Sitemap must contain the Grammar Lessons 1-5 guide exactly once.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v64"')) throw new Error("Expected service worker v64.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v65"')) throw new Error("Expected service worker v65.");
 if (!worker.includes('"/beginner-japanese-grammar-lessons-1-5"')) throw new Error("Service worker does not precache the Grammar Lessons 1-5 guide.");
 if (/\b(?:prototype|beta)\b/i.test(guide)) throw new Error("Grammar guide contains stale prototype/beta wording.");
 if (/href="[^"#]+\.html/.test(guide)) throw new Error("Grammar guide contains a stale public .html link.");

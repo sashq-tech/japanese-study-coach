@@ -8,6 +8,9 @@ const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const guide = read("hiragana-reading-practice.html");
 const learn = read("learn.html");
 const index = read("index.html");
+const vocabularyGuide = read("beginner-japanese-vocabulary.html");
+const grammarGuideOne = read("beginner-japanese-grammar-lessons-1-5.html");
+const grammarGuideTwo = read("beginner-japanese-grammar-lessons-6-10.html");
 const app = read("app.js");
 const about = read("about.html");
 const scenariosSource = read("reading-scenarios.js");
@@ -90,9 +93,27 @@ for (let session = 1; session <= 5; session += 1) {
 
 if (!learn.includes('href="/hiragana-reading-practice"')) throw new Error("Kana learning path does not link to the reading guide.");
 if (!index.includes('href="/hiragana-reading-practice"')) throw new Error("Reading tool does not link to the reading guide.");
+for (const [label, source] of [
+  ["homepage", index],
+  ["vocabulary guide", vocabularyGuide],
+  ["Grammar Lessons 1-5 guide", grammarGuideOne],
+  ["Grammar Lessons 6-10 guide", grammarGuideTwo]
+]) {
+  if (!source.includes('href="/hiragana-reading-practice"')) {
+    throw new Error(`${label} does not hand the learner into the released reading guide.`);
+  }
+}
+if (!index.includes("Bring the words and sentence patterns from Doors 2-4")) {
+  throw new Error("Homepage reading door does not explain its place in the released sequence.");
+}
+if (!vocabularyGuide.includes("Your next reading finish line")
+  || !grammarGuideOne.includes("Where the grammar path leads")
+  || !grammarGuideTwo.includes("Your next door: five Hiragana reading scenarios")) {
+  throw new Error("Released guide-to-reading orientation is incomplete.");
+}
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) throw new Error("Sitemap must contain the reading guide exactly once.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Service worker does not precache the reading guide.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v64"')) throw new Error("Expected service worker v64.");
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v65"')) throw new Error("Expected service worker v65.");
 if (!index.includes('src="app.js?v=62"') || !worker.includes('"./app.js?v=62"')) {
   throw new Error("Reading handoff app bundle is not cache-version aligned.");
 }

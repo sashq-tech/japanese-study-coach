@@ -164,7 +164,7 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${worker}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v64") throw new Error("Expected service worker v64.");
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v65") throw new Error("Expected service worker v65.");
 for (const asset of ["./grammar-lessons.js", "./app.js?v=62", "./styles.css?v=63"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached grammar asset: ${asset}`);
 }

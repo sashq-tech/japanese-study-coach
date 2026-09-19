@@ -70,6 +70,13 @@ for (const marker of [
 if (!learn.includes('href="/beginner-japanese-vocabulary"')) {
   throw new Error("Kana learning path does not link to the vocabulary guide.");
 }
+for (const route of [
+  "/beginner-japanese-grammar-lessons-1-5",
+  "/beginner-japanese-grammar-lessons-6-10",
+  "/hiragana-reading-practice"
+]) {
+  if (!guide.includes(`href="${route}"`)) throw new Error(`Vocabulary guide is missing the released next-step route: ${route}`);
+}
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) {
   throw new Error("Sitemap must contain the vocabulary guide exactly once.");
 }
