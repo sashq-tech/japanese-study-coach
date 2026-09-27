@@ -61,7 +61,7 @@ Current focus:
 
 - Kana-first beginner ramp
 - N5 starter vocabulary
-- A guided 50-word vocabulary foundation in five ten-word units, with study-before-check lessons, romaji plus English-friendly pronunciation approximations, and a visible finish line
+- A guided 100-word vocabulary foundation in ten ten-word units, with study-before-check lessons, romaji plus English-friendly pronunciation approximations, missed-word retry, and two visible 50-word finish lines
 - Basic particles
 - Basic grammar patterns
 - A guided first grammar block with five teach-before-check lessons, 18 unique checks, sentence assembly, deliberate retry, and an honest finite finish line
@@ -89,6 +89,7 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `learn.html` - crawlable beginner kana guide, deployed at `/learn`
 - `hiragana-reading-practice.html` - crawlable beginner reading routine, deployed at `/hiragana-reading-practice`
 - `beginner-japanese-vocabulary.html` - crawlable guide to the shipped five-unit, 50-word course, deployed at `/beginner-japanese-vocabulary`
+- `beginner-japanese-vocabulary-51-100.html` - crawlable guide to the released second five-unit vocabulary block, deployed at `/beginner-japanese-vocabulary-51-100`
 - `about.html`, `privacy.html`, `terms.html`, `contact.html` - static public trust pages, linked publicly as `/about`, `/privacy`, `/terms`, and `/contact`
 - `blog.html` - static blog index, linked publicly as `/blog`
 - `blog/cash-cards-suica.html` - starter practical Japan money article, linked publicly as `/blog/cash-cards-suica`
@@ -97,8 +98,8 @@ For service worker and PWA install testing, serve the folder over `http://localh
 - `styles.css` - responsive layout and visual design
 - `app.js` - interactions, scoring, local progress, review, calibration, and mini-sessions
 - `kana-lessons.js` - basic kana-row sequence, unlocking, and progress normalization
-- `vocabulary-lessons.js` - five guided vocabulary units, sequential unlocking, and unique-word progress normalization
-- `scripts/check-vocabulary-guide.mjs` - verifies the crawlable guide against all 50 words in the shipped lesson source
+- `vocabulary-lessons.js` - ten guided vocabulary units, sequential unlocking, pronunciation support, and unique-word progress normalization
+- `scripts/check-vocabulary-guide.mjs`, `scripts/check-vocabulary-guide-51-100.mjs` - verify both crawlable vocabulary guides against the exact 100-word lesson source
 - `grammar-lessons.js` - five guided sentence-pattern lessons, stable check IDs, sequential unlocking, and local progress normalization
 - `n5-content.js` - beginner-first N5 kana, vocabulary, particles, grammar, and phrases
 - `lessons.js` - editable scenario and phrase content

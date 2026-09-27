@@ -56,8 +56,8 @@ AdSense rejected Japan Ready Coach for low-value content. This supersedes the ea
 - Published recovery content also includes `/hiragana-reading-practice`, a crawlable three-pass method tied to the five real Hiragana scenes, with a finite 15-minute routine and printable study log rather than duplicated app controls.
 - The generic activity percentage is labeled Study momentum instead of N5 Foundation because it measures quiz activity and study days, not curriculum coverage.
 - Do not resubmit from this documentation change alone. First publish and human-review the learning guide, then deepen the actual guided curriculum.
-- The app now includes 50 deliberately ordered beginner vocabulary words in five ten-word units, with teach-before-check flow, unique item progress, missed-word retry, sequential unlocking, and a visible finish line. This is explicitly the first 50-word block, not the planned 840-word course.
-- Published recovery content now includes `/beginner-japanese-vocabulary`, a crawlable guide that exposes the exact five-unit sequence and all 50 shipped words, explains the finite retry loop, and links directly into the interactive course. The interactive course and guide pair standard romaji with clearly labeled English-friendly pronunciation approximations while stating that the aid does not replace native audio or feedback.
+- The app now includes 100 deliberately ordered beginner vocabulary words in ten ten-word units, with teach-before-check flow, unique item progress, missed-word retry, sequential unlocking, and visible finish lines at 50 and 100 words. This remains a bounded foundation, not the planned 840-word course.
+- Published recovery content includes `/beginner-japanese-vocabulary` and `/beginner-japanese-vocabulary-51-100`, two crawlable guides that expose the exact ten-unit sequence and all 100 released words. The interactive course and guides pair standard romaji with clearly labeled English-friendly pronunciation approximations while stating that the aid does not replace native audio or feedback.
 - The app now includes a first guided grammar block: five sequential teach-before-check lessons, 18 unique checks across は/です/か, を, に/で, の, and と/も, guided sentence assembly, same-session retry, local progress/backup support, and a visible finish line. It explicitly does not claim grammar mastery, full N5 coverage, or completion of the planned 100-example path.
 - After this first grammar block: human-review the lesson wording and then add a second finite sentence-pattern block before claiming a complete N5 path.
 - A live browser check observed Cloudflare's injected analytics beacon. Homepage and Privacy copy now distinguish local-only study progress from Cloudflare delivery, security, and aggregate traffic processing.
@@ -239,13 +239,13 @@ Severity-ranked follow-up:
 ### Mobile / PWA Groundwork
 
 - Current app includes PWA metadata, an app icon, and a service worker for local-server or hosted use.
-- Service-worker v52 precaches the expanded kana foundation, crawlable kana and Hiragana reading guides, guided 50-word vocabulary course, and first finite grammar block. Blank Quiz answer keys stay collapsed on screen and print on a dedicated compact reference page.
+- Service-worker v66 precaches the expanded kana foundation, crawlable kana and Hiragana reading guides, both vocabulary guides, the guided 100-word vocabulary course, and the finite grammar blocks. Blank Quiz answer keys stay collapsed on screen and print on a dedicated compact reference page.
 - Current app keeps direct `index.html` opening as the simplest local path; service worker registration is skipped on `file://`.
 - Mobile layout has a sticky section switcher, fixed type scales, larger answer targets, and reduced small-screen background weight.
 - Later: test on real phone/tablet after a domain or temporary local network URL exists.
 
 ## Next Implementation Candidates
 
-1. Human-review the kana guide, guided 50-word vocabulary block, and first 18-check grammar block on a real phone/tablet.
-2. Build the next bounded curriculum layer: a second finite grammar/example-sentence block or a 10-scenario reading set, based on human review.
+1. Human-review the kana guide, guided 100-word vocabulary path, and both grammar blocks on a real phone/tablet.
+2. Review the five existing Hiragana passages for naturalness, then decide whether to release the prepared second reading block.
 3. Reassess public learner depth and trust after these slices; resubmission to AdSense remains a separate human decision.

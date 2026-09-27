@@ -96,7 +96,8 @@ function loadVocabularyProgress() {
 function loadVocabularySelection(progress) {
   const saved = localStorage.getItem(VOCAB_SELECTION_STORAGE_KEY) || "";
   const valid = JapanReadyVocabularyLessons.UNITS.some((unit) => unit.id === saved)
-    && JapanReadyVocabularyLessons.isUnlocked(progress, saved, n5Content.n5Vocabulary);
+    && JapanReadyVocabularyLessons.isUnlocked(progress, saved, n5Content.n5Vocabulary)
+    && !JapanReadyVocabularyLessons.unitStatus(progress, saved, n5Content.n5Vocabulary).complete;
   return valid
     ? saved
     : JapanReadyVocabularyLessons.nextIncomplete(progress, n5Content.n5Vocabulary)?.id

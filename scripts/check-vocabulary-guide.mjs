@@ -38,7 +38,10 @@ vm.runInContext(read("vocabulary-lessons.js"), context);
 
 const lessonHelper = context.JapanReadyVocabularyLessons;
 const vocabulary = context.__n5Content.n5Vocabulary;
-const words = lessonHelper.allWords(vocabulary);
+const firstPackage = lessonHelper.PACKAGES.find((item) => item.sequenceStart === 1);
+const words = lessonHelper.ALL_UNITS
+  .filter((unit) => unit.packageId === firstPackage.packageId)
+  .flatMap((unit) => lessonHelper.wordsFor(unit.id, vocabulary));
 if (words.length !== 50) throw new Error(`Expected 50 guided vocabulary words, found ${words.length}.`);
 
 for (const word of words) {
@@ -71,13 +74,14 @@ if (!learn.includes('href="/beginner-japanese-vocabulary"')) {
   throw new Error("Kana learning path does not link to the vocabulary guide.");
 }
 for (const route of [
+  "/beginner-japanese-vocabulary-51-100",
   "/beginner-japanese-grammar-lessons-1-5",
   "/beginner-japanese-grammar-lessons-6-10",
   "/hiragana-reading-practice"
 ]) {
   if (!guide.includes(`href="${route}"`)) throw new Error(`Vocabulary guide is missing the released next-step route: ${route}`);
 }
-if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) {
+if ((sitemap.match(new RegExp(`<loc>${canonical}</loc>`, "g")) || []).length !== 1) {
   throw new Error("Sitemap must contain the vocabulary guide exactly once.");
 }
 if (!worker.includes('"/beginner-japanese-vocabulary"')) {

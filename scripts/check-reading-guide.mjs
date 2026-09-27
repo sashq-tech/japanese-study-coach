@@ -113,8 +113,8 @@ if (!vocabularyGuide.includes("Your next reading finish line")
 }
 if ((sitemap.match(new RegExp(canonical, "g")) || []).length !== 1) throw new Error("Sitemap must contain the reading guide exactly once.");
 if (!worker.includes('"/hiragana-reading-practice"')) throw new Error("Service worker does not precache the reading guide.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v65"')) throw new Error("Expected service worker v65.");
-if (!index.includes('src="app.js?v=62"') || !worker.includes('"./app.js?v=62"')) {
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v66"')) throw new Error("Expected service worker v66.");
+if (!index.includes('src="app.js?v=63"') || !worker.includes('"./app.js?v=63"')) {
   throw new Error("Reading handoff app bundle is not cache-version aligned.");
 }
 for (const marker of [

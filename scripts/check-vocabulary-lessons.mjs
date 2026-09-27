@@ -10,8 +10,8 @@ vm.runInNewContext(`${source}; globalThis.__content = n5Content;`, context);
 const vocabulary = context.__content.n5Vocabulary;
 
 if (lessons.ALL_UNITS.length !== 10) throw new Error("Expected ten modeled vocabulary units.");
-if (lessons.UNITS.length !== 5) throw new Error("Only the five released units may be learner-visible.");
-if (lessons.METADATA?.reviewStatus !== "needs_review") throw new Error("Vocabulary review status must remain explicit.");
+if (lessons.UNITS.length !== 10) throw new Error("All ten released vocabulary units must be learner-visible.");
+if (lessons.METADATA?.reviewStatus !== "released_foundation_100") throw new Error("Vocabulary release status must remain explicit.");
 if (lessons.METADATA?.compatibility?.website !== "active") throw new Error("Vocabulary website compatibility is incomplete.");
 if (lessons.METADATA?.plannedWordTarget !== 840) throw new Error("The internal vocabulary planning target changed unexpectedly.");
 if (lessons.METADATA?.officialJlptAlignment !== false) throw new Error("Vocabulary metadata must not claim official JLPT alignment.");
@@ -30,11 +30,11 @@ const reviewPackage = lessons.PACKAGES.find((item) => item.sequenceStart === 51)
 if (!releasedPackage?.learnerVisible || releasedPackage.sequenceEnd !== 50) {
   throw new Error("The existing 1-50 package must remain learner-visible.");
 }
-if (reviewPackage?.learnerVisible || reviewPackage?.releaseStatus !== "review_gated") {
-  throw new Error("Words 51-100 must remain review-gated.");
+if (!reviewPackage?.learnerVisible || reviewPackage?.releaseStatus !== "released") {
+  throw new Error("Words 51-100 must be released and learner-visible.");
 }
-if (reviewPackage?.sourceReviewStatus !== "needs_review" || reviewPackage?.languageReviewStatus !== "needs_review") {
-  throw new Error("Words 51-100 must require source and language review.");
+if (reviewPackage?.sourceReviewStatus !== "reconciled_existing_seed" || reviewPackage?.languageReviewStatus !== "editorial_review_complete") {
+  throw new Error("Words 51-100 must retain their completed editorial review markers.");
 }
 
 if (lessons.WORDS.length !== 100) throw new Error("Expected 100 stable vocabulary records.");
@@ -56,9 +56,9 @@ for (const word of trackWords) {
 }
 
 const words = lessons.allWords(vocabulary);
-if (words.length !== 50) throw new Error(`Expected 50 guided words, got ${words.length}.`);
-if (new Set(words.map(lessons.wordKey)).size !== 50) throw new Error("Guided vocabulary keys must be unique.");
-if (Object.keys(lessons.PRONUNCIATIONS).length !== 50) throw new Error("Expected 50 pronunciation guides.");
+if (words.length !== 100) throw new Error(`Expected 100 guided words, got ${words.length}.`);
+if (new Set(words.map(lessons.wordKey)).size !== 100) throw new Error("Guided vocabulary keys must be unique.");
+if (Object.keys(lessons.PRONUNCIATIONS).length !== 100) throw new Error("Expected 100 pronunciation guides.");
 
 for (const unit of lessons.UNITS) {
   const unitWords = lessons.wordsFor(unit.id, vocabulary);
@@ -75,7 +75,7 @@ for (const unit of lessons.UNITS) {
 }
 
 const reviewUnits = lessons.ALL_UNITS.filter((unit) => unit.packageId === reviewPackage.packageId);
-if (reviewUnits.length !== 5) throw new Error("Expected five review-gated units for words 51-100.");
+if (reviewUnits.length !== 5) throw new Error("Expected five released units for words 51-100.");
 const expectedReviewUnitIds = ["places-daily-needs", "time-routine", "numbers-one-ten", "everyday-adjectives", "actions-questions"];
 if (reviewUnits.map((unit) => unit.id).join("|") !== expectedReviewUnitIds.join("|")) {
   throw new Error("Words 51-100 no longer follow the approved five-theme sequence.");
@@ -90,7 +90,7 @@ for (const unit of reviewUnits) {
     throw new Error(`${unit.id} contains a word from the wrong package.`);
   }
   if (lessons.isUnlocked({}, unit.id, vocabulary)) {
-    throw new Error(`${unit.id} became learner-accessible before review approval.`);
+    throw new Error(`${unit.id} unlocked before the first five units were complete.`);
   }
 }
 
@@ -124,24 +124,30 @@ const migrated = lessons.normalizeProgress({ completed: [`vocab-${first.romaji}`
 if (migrated.completed[0] !== lessons.wordKey(first)) throw new Error("Legacy romaji progress did not migrate to the stable word ID.");
 if (lessons.wordKey(first) !== "vocab-word-watashi") throw new Error("Stable vocabulary progress key changed unexpectedly.");
 
-for (const unit of lessons.UNITS.slice(1)) {
+for (const unit of lessons.UNITS.slice(1, 5)) {
   for (const word of lessons.wordsFor(unit.id, vocabulary)) {
     progress = lessons.markComplete(progress, word, vocabulary);
   }
 }
-if (progress.completed.length !== 50 || lessons.nextIncomplete(progress, vocabulary) !== null) {
-  throw new Error("The complete five-unit sequence must end at exactly 50 unique words.");
+if (progress.completed.length !== 50 || lessons.nextIncomplete(progress, vocabulary)?.id !== reviewUnits[0].id) {
+  throw new Error("Completing the first block must resume at Unit 6 with exactly 50 unique words.");
+}
+if (!lessons.isUnlocked(progress, reviewUnits[0].id, vocabulary) || lessons.isUnlocked(progress, reviewUnits[1].id, vocabulary)) {
+  throw new Error("Only Unit 6 may unlock after the first 50 words are complete.");
 }
 for (const unit of reviewUnits) {
-  if (lessons.isUnlocked(progress, unit.id, vocabulary)) {
-    throw new Error(`${unit.id} unlocked after the released block despite its review gate.`);
+  for (const word of lessons.wordsFor(unit.id, vocabulary)) {
+    progress = lessons.markComplete(progress, word, vocabulary);
   }
+}
+if (progress.completed.length !== 100 || lessons.nextIncomplete(progress, vocabulary) !== null) {
+  throw new Error("The complete ten-unit sequence must end at exactly 100 unique words.");
 }
 
 const indexSource = fs.readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const appSource = fs.readFileSync(new URL("../app.js", import.meta.url), "utf8");
 const workerSource = fs.readFileSync(new URL("../service-worker.js", import.meta.url), "utf8");
-if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=62")) {
+if (indexSource.indexOf("vocabulary-lessons.js") > indexSource.indexOf("app.js?v=63")) {
   throw new Error("Vocabulary lesson helper must load before the app bundle.");
 }
 for (const key of ["jrj-vocab-course-progress", "jrj-vocab-course-selection"]) {
@@ -163,9 +169,9 @@ const workerContext = {
   fetch() {}
 };
 vm.runInNewContext(`${workerSource}; globalThis.__shell = { CACHE_NAME, APP_SHELL };`, workerContext);
-if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v65") throw new Error("Expected service worker v65.");
-for (const asset of ["./vocabulary-lessons.js", "./app.js?v=62", "./styles.css?v=63"]) {
+if (workerContext.__shell.CACHE_NAME !== "japan-ready-coach-v66") throw new Error("Expected service worker v66.");
+for (const asset of ["./vocabulary-lessons.js", "./app.js?v=63", "./styles.css?v=63", "/beginner-japanese-vocabulary-51-100"]) {
   if (!workerContext.__shell.APP_SHELL.includes(asset)) throw new Error(`Missing precached vocabulary asset: ${asset}`);
 }
 
-console.log("Vocabulary track checks passed: 50 released words and 50 review-gated candidates.");
+console.log("Vocabulary track checks passed: 100 released words across ten finite units.");

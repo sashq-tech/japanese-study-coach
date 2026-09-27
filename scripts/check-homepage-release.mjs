@@ -30,7 +30,7 @@ const counts = {
 
 const expected = {
   kanaLessons: 22,
-  vocabularyWords: 50,
+  vocabularyWords: 100,
   grammarLessons: 10,
   grammarExamples: 30,
   grammarChecks: 36,
@@ -43,7 +43,7 @@ for (const [key, value] of Object.entries(expected)) {
 
 for (const marker of [
   "22 kana lessons",
-  "50 released words",
+  "100 released words",
   "10 grammar lessons with 30 worked examples and 36 checks",
   "five Hiragana reading scenarios with ten comprehension checks",
   "Printable worksheets, local progress, and backup controls",
@@ -111,11 +111,11 @@ for (const href of ["/", "/learn", "/blog", "/contact"]) {
   if (!notFound.includes(`href="${href}"`)) throw new Error(`404 recovery navigation is missing: ${href}`);
 }
 if (sitemap.includes("/404")) throw new Error("404 page must not appear in the sitemap.");
-if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v65"')) throw new Error("Expected service worker v65.");
-for (const asset of ["./404.html", "./styles.css?v=63", "./app.js?v=62"]) {
+if (!worker.includes('const CACHE_NAME = "japan-ready-coach-v66"')) throw new Error("Expected service worker v66.");
+for (const asset of ["./404.html", "./styles.css?v=63", "./app.js?v=63"]) {
   if (!worker.includes(`"${asset}"`)) throw new Error(`Offline shell is missing release asset: ${asset}`);
 }
-if (!index.includes('href="styles.css?v=63"') || !index.includes('src="app.js?v=62"')) {
+if (!index.includes('href="styles.css?v=63"') || !index.includes('src="app.js?v=63"')) {
   throw new Error("Homepage release assets are not version-aligned.");
 }
 
